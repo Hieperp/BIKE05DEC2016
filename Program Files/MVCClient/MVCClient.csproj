@@ -391,6 +391,8 @@
     <Content Include="Content\Images\Menu\Factory-32.png" />
     <Content Include="Content\Images\Menu\Factory-32x.png" />
     <Content Include="Content\Images\Menu\Ferry-32.png" />
+    <Content Include="Content\Images\Menu\Home-icon-32.png" />
+    <Content Include="Content\Images\Menu\Home-icon-48.png" />
     <Content Include="Content\Images\Menu\Motorcycle-32.png" />
     <Content Include="Content\Images\Menu\Motorcycle-32y.png" />
     <Content Include="Content\Images\Menu\Motorcycle-50-1.png" />
