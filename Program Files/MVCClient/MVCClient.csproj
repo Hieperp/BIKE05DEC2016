@@ -748,6 +748,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\kendo\2014.1.415\images\kendoui.ttf" />
     <Content Include="Content\kendo\2014.1.415\images\kendoui.woff" />
+    <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\HotelManager.pubxml" />
     <None Include="Properties\PublishProfiles\NMVN Office.pubxml" />
     <None Include="Properties\PublishProfiles\PublishTanThanh.pubxml" />
