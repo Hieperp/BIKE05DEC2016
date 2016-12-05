@@ -1,0 +1,41 @@
+﻿@using MVCClient.Configuration;
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    @(Html.Kendo().TabStrip()
+        .HtmlAttributes(new { @style = "height: 466px; margin-left: 0px; margin-right: 0px;" })
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Xe tiếp nhận đã có báo giá")
+                .Content(@<text>
+                    @Html.Partial("~/Views/Helpers/Commons/_SearchQuotation.cshtml")
+                </text>);
+
+            tabStrip.Add().Text("Xe đã đăng ký hồ sơ")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("~/Views/Helpers/Commons/_SearchServiceContract.cshtml")
+                </text>);
+        })
+    )
+
+    
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="okButton" type="button" value="OK" class="k-button" onclick="okButton_Click()" />
+            <input id="cancelButton" type="button" value="Thoát" class="k-button" onclick="cancelButton_Click()" />
+        </div>
+    </div>
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/SalesTasks/salesInvoiceCreateWizard.js")"></script>
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent($($("#tabStrip").data("kendoTabStrip").select().index() === 0 ? "#gridQuotations" : "#gridServiceContracts").data("kendoGrid"));
+    }
+</script>

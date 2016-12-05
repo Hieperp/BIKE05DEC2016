@@ -1,0 +1,123 @@
+﻿@using MVCClient.Configuration
+
+@model string
+
+@(Html.Kendo().AutoCompleteFor(m => m)
+        .Name("CommodityName")
+        .DataTextField("CommodityName")
+        .Filter("contains")
+        .MinLength(SettingsManager.AutoCompleteMinLenght)
+        .Placeholder("Chọn ...")
+        .HeaderTemplate("<div class=\"dropdown-header custom-header\">" +
+                "<span class=\"k-widget k-header\">Mã</span>" +
+                "<span class=\"k-widget k-header\">Tên</span>" +
+                "<span class=\"k-widget k-header\">Kho</span>" +
+                "<span class=\"k-widget k-header\">SL tồn</span>" +
+                "</div>")
+        .Template("<div class=\"dropdown-body\">" +
+                "<span class=\"k-state-default\"><p>#: data.CommodityCode #</p></span>" +
+                "<span class=\"k-state-default\"><p>#: data.CommodityName #</p></span>" +
+                "<span class=\"k-state-default\"><p>#: data.WarehouseCode #</p></span>" +
+                "<span class=\"k-state-default\"><p>#: data.QuantityAvailable #</p></span>" +
+                "</div>")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetPartAvailables", "CommoditiesApi").Data(@<text>
+
+                    function (e) {
+                    return {
+                    locationID: $("#SourceLocationID").val(),
+                    entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
+                    searchText: $("#CommodityName").data("kendoAutoComplete").value()
+                    };}
+
+                </text>);//Send parameter to controller search action: parameter locationID?????
+            })
+            .ServerFiltering(true);
+        })
+        .Events(e =>
+        {
+            e.Select("commoditiesInWarehousesSelect");
+            e.Change("commoditiesInWarehousesChange");
+
+            e.DataBound("commoditiesInWarehousesDataBound");
+        })
+        .Value(Model)
+        .HtmlAttributes(new { @class = "custom-control" })
+)
+
+<script type="text/javascript">
+    $("#CommodityName").focus(function (e) {
+        window.commodityNameBeforeChange = $("#CommodityName").val();
+    });
+</script>
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralCommoditiesAutoComplete.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    .custom-header {
+        width: 496px;
+    }
+
+    .dropdown-body {
+        width: 486px;
+    }
+
+    #CommodityName-list > .dropdown-header > span {
+        width: 70px;
+    }
+
+        #CommodityName-list > .dropdown-header > span:first-child {
+            width: 128px;
+        }
+
+        #CommodityName-list > .dropdown-header > span:nth-child(2) {
+            width: 220px;
+        }
+
+        /*#CommodityName-list > .dropdown-header > span:nth-child(3) {
+            width: 70px;
+        }*/
+
+        #CommodityName-list > .dropdown-header > span:last-child {
+            width: 70px;
+        }
+
+    #CommodityName-list .k-item > .dropdown-body > span {
+        width: 70px;
+    }
+
+        #CommodityName-list .k-item > .dropdown-body > span:first-child {
+            width: 127px;
+        }
+
+        #CommodityName-list .k-item > .dropdown-body > span:nth-child(2) {
+            width: 220px;
+        }
+
+        /*#CommodityName-list .k-item > .dropdown-body > span:nth-child(3) {
+            width: 70px;
+        }*/
+
+        #CommodityName-list .k-item > .dropdown-body > span:last-child {
+            padding-right: 2px;
+            width: 68px;
+            text-align: right;
+        }
+
+    #CommodityName-list h3 {
+        font-size: 1.6em;
+        margin: 0;
+        padding: 0;
+    }
+
+    #CommodityName-list p {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+
+

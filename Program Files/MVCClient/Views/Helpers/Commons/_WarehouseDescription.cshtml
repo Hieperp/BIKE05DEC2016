@@ -1,0 +1,24 @@
+﻿@model MVCClient.ViewModels.Helpers.IWarehouseAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.WarehouseID)
+
+@Html.HiddenFor(model => model.WarehouseLocationTelephone)
+@Html.HiddenFor(model => model.WarehouseLocationFacsimile)
+@Html.HiddenFor(model => model.WarehouseLocationName)
+@Html.HiddenFor(model => model.WarehouseLocationAddress)
+
+<div class="div-row3">
+    <div class="div-input" style="margin-left: 0px; margin-top: 4px;">
+
+        <a href="javascript:void(0)" style="margin-left: 46px; color:black;"><img id="img-birthday" src="~/Content/Images/New/BirthdayIcon.png" title="Số fax" /> <label id="label-birthday" class="label-description" style="min-width:70px;">@Model.WarehouseLocationFacsimile</label></a>
+        <a href="javascript:void(0)" style="margin-left: 2px; color:black;"><img id="img-telephone" src="~/Content/Images/New/Telephone.png" title="Điện thoại" /> <label id="label-telephone" class="label-description">@Model.WarehouseLocationTelephone</label></a>
+
+    </div>
+</div>
+<div class="div-row2">
+    <label id="TerritoriesDescriptions" class="label-description">@Model.WarehouseLocationName, @Model.WarehouseLocationAddress</label>
+</div>
+<div class="div-row2">
+    @Html.ValidationMessageFor(model => model.WarehouseName, "", new { @class = "text-danger" })
+</div>
+

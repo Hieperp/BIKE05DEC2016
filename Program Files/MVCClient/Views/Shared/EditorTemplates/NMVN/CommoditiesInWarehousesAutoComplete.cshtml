@@ -1,0 +1,9 @@
+﻿@using MVCClient.Configuration
+
+@model string
+
+@Html.Partial("EditorTemplates/NMVN/CommoditiesInWarehouses", Model)
+
+<script type="text/javascript">
+    window.includeCommoditiesOutOfStock = false;
+</script>

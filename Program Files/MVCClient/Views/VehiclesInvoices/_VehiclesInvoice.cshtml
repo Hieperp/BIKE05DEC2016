@@ -1,0 +1,286 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.SalesTasks.VehiclesInvoiceViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="popupWindow"></div>
+        @Html.HiddenFor(model => model.IsFinished)
+
+        <div class="div-main">
+
+            <div class="div-left">
+                @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionA.cshtml")
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceNo, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceNo).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceSeries, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceSeries).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceSeries, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionC.cshtml")
+
+            </div>
+
+            <div class="div-right">
+                <div class="contract-separator">
+                    @Html.Partial("~/Views/SalesInvoices/_ContractlessInvoice.cshtml")
+
+                    <div id="vehiclesinvoice-background" class="vehiclesinvoice-background" style="float: right; text-align: center; display: none">
+                        <div class="div-in-background">
+                                <a id="MinReference" style="color: #0026ff;" href="#" target="_blank"> </a>
+                            <div id="TotalPartsAmount"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    @(Html.Kendo().Grid(Model.VehiclesInvoiceViewDetails)
+                        .Name("kendoGridDetails")
+                        .Columns(columns =>
+                        {
+                            columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
+
+
+                            columns.Bound(p => p.SalesInvoiceDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= SalesInvoiceDetailID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].SalesInvoiceDetailID' value='#= SalesInvoiceDetailID #' />");
+                            columns.Bound(p => p.SalesInvoiceID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= SalesInvoiceID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].SalesInvoiceID' value='#= SalesInvoiceID #' />");
+
+
+                            columns.Bound(p => p.GoodsReceiptDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= GoodsReceiptDetailID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].GoodsReceiptDetailID' value='#= GoodsReceiptDetailID #' />");
+
+
+                            columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(200)
+                                .ClientFooterTemplate("Tổng cộng:")
+                                .ClientTemplate("<div class = 'multiline-grid'> #= CommodityName #</div>" +
+                                        "<div> #= CommodityCode # #= '[' ##= WarehouseCode ##= ']' #</div>" +
+                                        "<div> #= ChassisCode #</div>" +
+                                        "<div class = 'multiline-grid'> #= EngineCode #</div>" +
+                                        "<div class = 'multiline-grid'> #= ColorCode #</div>" +
+                                        "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
+
+                            columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
+
+
+                            columns.Bound(p => p.ChassisCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= ChassisCode #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].ChassisCode' value='#= ChassisCode #' />");
+                            columns.Bound(p => p.EngineCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= EngineCode #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].EngineCode' value='#= EngineCode #' />");
+                            columns.Bound(p => p.ColorCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= ColorCode #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].ColorCode' value='#= ColorCode #' />");
+
+
+                            columns.Bound(p => p.WarehouseID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= WarehouseID #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].WarehouseID' value='#= WarehouseID #' />");
+                            columns.Bound(p => p.WarehouseCode).DisplayNameTitle().Filterable(false).Width(120).Hidden()
+                                .ClientTemplate("#= WarehouseCode #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].WarehouseCode' value='#= WarehouseCode #' />");
+
+
+                            columns.Bound(p => p.QuantityAvailable).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientTemplate("#= kendo.format('{0:n0}', QuantityAvailable) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].QuantityAvailable' value='#= QuantityAvailable #' />");
+                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Quantity) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");
+                            columns.Bound(p => p.ListedPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                               .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', ListedPrice) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].ListedPrice' value='#= ListedPrice #' />");
+
+                            columns.Bound(p => p.DiscountPercent).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                               .Format("{0:n1}%")
+                               .ClientFooterTemplate("#= kendo.format('{0:n1}%', average) #")
+                               .ClientTemplate("#= kendo.format('{0:n1}%', DiscountPercent) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].DiscountPercent' value='#= DiscountPercent #' />");
+
+                            columns.Bound(p => p.UnitPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', UnitPrice) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].UnitPrice' value='#= UnitPrice #' />");
+
+                            columns.Bound(p => p.Amount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Amount) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].Amount' value='#= Amount #' />");
+
+                            columns.Bound(p => p.VATPercent).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientTemplate("#= kendo.format('{0:n0}%', VATPercent) #" +
+                                    "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].VATPercent' value='#= VATPercent #' />");
+                            columns.Bound(p => p.VATAmount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', VATAmount) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].VATAmount' value='#= VATAmount #' />");
+
+                            columns.Bound(p => p.GrossPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                               .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', GrossPrice) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].GrossPrice' value='#= GrossPrice #' />");
+
+                            columns.Bound(p => p.GrossAmount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', GrossAmount) #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].GrossAmount' value='#= GrossAmount #' />");
+
+                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+
+                            columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
+                        })
+                        .Filterable()
+                        .Navigatable()
+                        .ToolBar(toolbar =>
+                        {
+                            if (Model.Editable)
+                            {
+                                toolbar.Create();
+                            }
+                            else
+                            {//Add a functionless button for display purpose only
+                                toolbar.Template(
+                                    @<text>
+                                        <div>
+                                            @(Html.Kendo().Button()
+                                                .Name("iconButton")
+                                                .HtmlAttributes(new { type = "button" })
+                                                .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
+                                            )
+                                        </div>
+                                    </text>);
+                            }
+                        })
+
+
+                        .Editable(editable => { editable.Enabled(Model.Editable); editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true).CreateAt(GridInsertRowPosition.Bottom); })
+                        .Selectable(settings =>
+                        {
+                            settings.Mode(GridSelectionMode.Multiple);
+                            settings.Type(GridSelectionType.Row);
+                        })
+                        .Events(events =>
+                        {
+                            events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
+                        })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Model(model =>
+                            {
+                                model.Id(x => x.SalesInvoiceDetailID);
+                                model.Field(m => m.SalesInvoiceDetailID).DefaultValue(0);
+                                model.Field(m => m.SalesInvoiceID).DefaultValue(@Model.SalesInvoiceID);
+                            })
+                            .Events(events =>
+                            {
+                                events.Error("kendGrid_ErrorHandler");
+                            })
+                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
+                            .Aggregates(a => a.Add(x => x.Amount).Sum())
+                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
+                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
+                            )
+                    )
+
+                    @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionB.cshtml")
+
+                </div>
+
+            </div>
+            
+
+            <div class="div-button">
+                @if (Model.Editable)
+                {
+                    <button id="submitButton" type="submit" onclick="$('#IsFinished').val(false);" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="Lưu phiếu" /> Lưu </button>
+                    <button id="closedSubmitButton_NMVN" type="submit" onclick="$('#IsFinished').val(false);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn </button>
+                    <button id="closedSubmitButton" type="submit" onclick="$('#IsFinished').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/payment-icon.png" alt="SaveFinish" /> Hoàn tất </button>                                        
+                }
+                else
+                {
+                    <button formaction="@Url.Action("Print", "VehiclesInvoices", new {id = @Model.SalesInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn </button>
+                }
+            </div>
+
+
+            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        </div>
+    }
+
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        (function getRelatedPartsInvoiceValue() {
+            $.ajax({
+                url: '@Url.Action("GetRelatedPartsInvoiceValue", "ServicesInvoiceApi")',
+                data: JSON.stringify({ "serviceInvoiceID": $("#SalesInvoiceID").val() }),
+                type: 'POST',
+                contentType: 'application/json;',
+                dataType: 'json',
+                error: function (request, error) {
+                    $("#vehiclesinvoice-background").css("display", "none");
+                },
+                success: function (result) {
+                    $("#vehiclesinvoice-background").css("display", "inline-block");
+                    if (result.NoInvoice > 0) {
+                        var myRoute = "@Url.Action("Edit", "PartsInvoices", new { id = "_id_" })".replace("_id_", result.MinSalesInvoiceID);
+                        
+                        $("#MinReference").html(result.MinReference);
+                        $("#TotalPartsAmount").html("#:" + kendo.format('{0:n0}', result.TotalQuantity) + " $:" + kendo.format('{0:n0}', result.TotalPartsAmount));
+                    }
+                    else {
+                        var myRoute = "@Url.Action("Promotion", "PartsInvoices", new { id = "_id_" })".replace("_id_", $("#SalesInvoiceID").val());
+                        
+                        $("#MinReference").html("Quà tặng...");
+                        $("#TotalPartsAmount").html("");
+                    }
+                    $("#MinReference").attr("href", myRoute);
+                }
+            });
+
+            setTimeout(getRelatedPartsInvoiceValue, 10000); // every 10 sec
+        })();
+    });
+
+</script>
+
+
+<style type="text/css">
+    .k-event {
+        min-height: 48px;
+        height: 48px;
+    }
+</style>

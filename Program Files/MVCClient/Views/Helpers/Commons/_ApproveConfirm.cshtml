@@ -1,0 +1,21 @@
+﻿@model MVCDTO.BaseDTO
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        if (Model.Approvable || Model.UnApprovable)
+        {
+            <div class="div-button">
+                <button type="submit" form="MainForm" class="k-button custom-button"> <img src="~/Content/Images/New/Delete32m.png" alt="" /> @(Model.Approvable ? "Duyệt": "Hủy duyệt") </button>
+            </div>
+        }
+        else
+        {
+            <div id="div-DeleteConfirm">
+                <label>Dữ liệu này đã bị khóa.</label> <img src="~/Content/Images/New/alert1.png" alt="Alert" />
+            </div>
+        }
+    }
+</div>
+

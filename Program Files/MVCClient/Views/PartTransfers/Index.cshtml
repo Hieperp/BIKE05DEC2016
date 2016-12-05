@@ -1,0 +1,59 @@
+﻿@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken();
+
+    ViewBag.urlAction = @Url.Action("CreateWizard", "PartTransfers");
+    
+    <div>
+        @(Html.Kendo().Grid<MVCModel.Models.PartTransferIndex>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.StockTransferID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.LocationCode).Title("CN").Width(3);
+                columns.Bound(p => p.EntryDate).Title("Ngày").Format("{0:dd/MM/yyyy}").Width(40);
+                columns.Bound(p => p.Reference).Title("Số phiếu").Width(10);
+                columns.Bound(p => p.WarehouseCode).Title("Nơi Nhận").Width(10);
+                columns.Bound(p => p.TransferOrderReference).Title("Lệnh ĐH").Width(10);
+                columns.Bound(p => p.TransferOrderEntryDate).Title("Ngày lệnh").Format("{0:dd/MM HH:mm}").Width(50);
+                columns.Bound(p => p.TransferOrderRequestedDate).Title("Ngày y/c").Format("{0:dd/MM HH:mm}").Width(50);
+                columns.Bound(p => p.Description).Title("Diễn giải").Width(220);
+                columns.Bound(p => p.TotalQuantity).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Filterable(false).Width(65);//.ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" })
+
+                columns.Template(model => null).Width(76)
+                    .ClientTemplate("<a class='k-button' style='padding-left:5px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "PartTransfers", action = "Edit" }) + "/#= StockTransferID #'><span class='k-icon k-edit'></span></a> <a class='k-button' style='padding-left:0px; padding-right:0px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "PartTransfers", action = "Delete" }) + "/#= StockTransferID #'><span class='k-icon k-delete'></span></a>");
+                
+            })
+            .ToolBar(toolbar => toolbar.Template("<a class='k-button k-button-icontext k-grid-add' href='javascript:void(0)' onClick='createWizard()'>Create</a>"))
+            .Pageable()
+            .Groupable()
+            .Filterable()
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetPartTransferIndexes", "PartTransferApi"))
+                .Sort(sort =>
+                    {
+                        sort.Add(p => p.EntryDate).Descending();
+                        sort.Add(p => p.StockTransferID).Descending();
+                    })
+                //.Events(events => events.Error("onError"))
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(x => x.StockTransferID);
+                    model.Field(m => m.StockTransferID).DefaultValue(0);
+                })
+                .ServerOperation(true)
+                .Aggregates(a => a.Add(x => x.TotalQuantity).Sum())
+                ).HtmlAttributes(new { @class = "grid-class" }))
+    </div>
+
+    @Html.Partial("~/Views/StockTransfers/_Index.cshtml");
+}
+

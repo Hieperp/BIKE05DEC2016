@@ -1,0 +1,36 @@
+﻿@model MVCClient.ViewModels.Home.OptionViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="div-main">
+            <div class="div-panel-right" style="margin-left: 150px;">
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.GlobalFromDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input" style="float: right">
+                        @Html.Kendo().DateTimePickerFor(model => model.GlobalFromDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.GlobalFromDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.GlobalToDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input" style="float: right">
+                        @Html.Kendo().DateTimePickerFor(model => model.GlobalToDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.GlobalToDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    <input id="closedSubmitButton" type="submit" formaction="@Url.Action("Options", "Home")" value="   OK    " class="k-button custom-button" />
+                </div>
+                @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+            </div>
+        </div>
+    }
+</div>
+
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />

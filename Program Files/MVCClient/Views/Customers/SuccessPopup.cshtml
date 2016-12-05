@@ -1,0 +1,40 @@
+﻿@model MVCClient.ViewModels.CommonTasks.CustomerViewModel
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@Html.HiddenFor(model => model.CustomerID)
+@Html.HiddenFor(model => model.Name)
+@Html.Kendo().DatePickerFor(model => model.Birthday)
+@Html.HiddenFor(model => model.AttentionName)
+@Html.HiddenFor(model => model.VATCode)
+@Html.HiddenFor(model => model.Telephone)
+@Html.HiddenFor(model => model.AddressNo)
+@Html.HiddenFor(model => model.EntireTerritoryEntireName)
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if (window.parent.$("#CustomerID") != undefined) window.parent.$("#CustomerID").val($("#CustomerID").val());
+        if (window.parent.$("#SupplierID") != undefined) window.parent.$("#SupplierID").val($("#CustomerID").val());
+
+
+        if (window.parent.$("#CustomerName") != undefined) window.parent.$("#CustomerName").val($("#Name").val());
+        if (window.parent.$("#CustomerBirthday") != undefined) window.parent.$("#CustomerBirthday").val($("#Birthday").val());
+        if (window.parent.$("#CustomerVATCode") != undefined) window.parent.$("#CustomerVATCode").val($("#VATCode").val());
+        if (window.parent.$("#CustomerAttentionName") != undefined) window.parent.$("#CustomerAttentionName").val($("#AttentionName").val());
+        if (window.parent.$("#CustomerTelephone") != undefined) window.parent.$("#CustomerTelephone").val($("#Telephone").val());
+        if (window.parent.$("#CustomerAddressNo") != undefined) window.parent.$("#CustomerAddressNo").val($("#AddressNo").val());
+        if (window.parent.$("#CustomerEntireTerritoryEntireName") != undefined) window.parent.$("#CustomerEntireTerritoryEntireName").val($("#EntireTerritoryEntireName").val());
+
+        if (window.parent.$("#label-birthday") != undefined) window.parent.$("#label-birthday").text($('#Birthday').val());
+        if (window.parent.$("#label-attentionName") != undefined) window.parent.$("#label-attentionName").text($("#AttentionName").val());
+        if (window.parent.$("#label-telephone") != undefined) window.parent.$("#label-telephone").text($("#Telephone").val());
+        if (window.parent.$("#TerritoriesDescriptions") != undefined) window.parent.$("#TerritoriesDescriptions").text(($("#VATCode").val() != null && $("#VATCode").val() != "" ? "MST: " + $("#VATCode").val() : "") + " Đ/C: " + $("#AddressNo").val() + ", " + $("#EntireTerritoryEntireName").val());
+
+
+        window.parent.$("#CustomerNameTemp").val($("#Name").val());
+
+        window.parent.$("#window").data("kendoWindow").close();
+    });
+</script>
+

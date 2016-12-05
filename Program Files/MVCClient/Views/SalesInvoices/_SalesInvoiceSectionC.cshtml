@@ -1,0 +1,12 @@
+﻿@model MVCDTO.SalesTasks.SalesInvoicePrimitiveDTO
+
+@Html.Partial("~/Views/Helpers/Commons/_EmployeeAutoComplete.cshtml")
+@Html.Partial("~/Views/Helpers/Commons/_PromotionAutoComplete.cshtml")
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.PromotionVouchers, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().MaskedTextBoxFor(model => model.PromotionVouchers).HtmlAttributes(new { @class = "input-class" })
+        @Html.ValidationMessageFor(model => model.PromotionVouchers, "", new { @class = "text-danger" })
+    </div>
+</div>

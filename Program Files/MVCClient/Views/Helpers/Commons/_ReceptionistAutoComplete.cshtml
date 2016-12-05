@@ -1,0 +1,62 @@
+﻿
+@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.IReceptionistAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.ReceptionistID)
+
+<div class="form-group1">
+
+    @Html.LabelFor(model => model.ReceptionistName, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @(Html.Kendo().AutoCompleteFor(model => model.ReceptionistName)
+            .Name("ReceptionistName")
+            .DataTextField("Name")
+            .Filter("contains")
+            .MinLength(SettingsManager.AutoCompleteMinLenght)
+            .Placeholder("Nhập nhân viên thực hiện ...")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("SearchReceptionists", "EmployeesApi").Data(@<text>
+
+                        function(e) {
+                        return {
+                        locationID: requireConfig.pageOptions.LocationID,
+                        searchText: $("#ReceptionistName").data("kendoAutoComplete").value()
+                        };}
+
+                    </text>);
+                })
+                .ServerFiltering(true);
+            })
+                    .Events(e =>
+                    {
+                        e.Select("ReceptionistName_Select");
+                    })
+                    .HtmlAttributes(new { @class = "input-class" })
+        )
+
+        <input id="ReceptionistNameTemp" name="ReceptionistNameTemp" value="@Model.ReceptionistName" type="hidden" class="k-textbox" />
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $("#ReceptionistName").focusout(function () {
+        $("#ReceptionistName").val($("#ReceptionistNameTemp").val());
+    });
+
+    ReceptionistName_Select = function (e) {
+        var dataItem = e.sender.dataItem(e.item.index());
+
+        $("#ReceptionistID").val(dataItem.ReceptionistID);
+
+        $("#ReceptionistNameTemp").val(dataItem.Name);
+    }
+
+</script>

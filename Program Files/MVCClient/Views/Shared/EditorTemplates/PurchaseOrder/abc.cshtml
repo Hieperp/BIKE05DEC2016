@@ -1,0 +1,7 @@
+﻿@model MVCClient.ViewModels.Api.PurchaseTasks.PurchaseOrderDetailViewModel
+
+@(Html.Kendo().NumericTextBoxFor(m => m.Quantity * -1 )
+      .HtmlAttributes(new { style = "width:100%" })
+      .Spinners(false)
+)
+

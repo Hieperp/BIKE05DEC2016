@@ -1,0 +1,53 @@
+﻿@using MVCModel.Models
+@using MVCClient.Configuration
+
+
+@(Html.Kendo().Grid<ServiceContractResult>()
+    .Name("gridServiceContracts")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CustomerName).Title("Chủ xe").Width(18);
+        columns.Bound(c => c.CustomerAddressNo).Title("Địa chỉ").Width(22);
+
+        columns.Bound(c => c.ServiceContractCommodityName).Title("Loại xe").Width(14);
+        columns.Bound(c => c.ServiceContractChassisCode).Title("Số khung").Width(16);
+        columns.Bound(c => c.ServiceContractEngineCode).Title("Số máy").Width(12);
+        columns.Bound(c => c.ServiceContractLicensePlate).Title("Biển số").Width(9);
+
+        columns.Bound(c => c.ServiceContractPurchaseDate).Title("Ngày mua").Width(9).Format("{0:" + SettingsManager.DateFormat + "}");
+    })
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập biển số, hoặc số khung, hoặc số máy:</label>
+                    <input id="serviceContractsSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="serviceContractsSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+    .Read(read => read.Action("SearchServiceContracts", "ServiceContractsApi").Data("onAdditionalGetServiceContracts"))
+    .ServerOperation(true))
+    .Selectable()
+)
+    
+
+<script type="text/javascript">
+
+    function onAdditionalGetServiceContracts(e) {
+        return {
+            searchText: $("#serviceContractsSearchBox").val()
+        };
+    }
+
+    function serviceContractsSearchBox_KeyUp() {
+        if ($("#serviceContractsSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridServiceContracts").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#gridServiceContracts").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>

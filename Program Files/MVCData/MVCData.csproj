@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38F618F5-B6C5-427F-90F9-4B34DFAEE4CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MVCData</RootNamespace>
+    <AssemblyName>MVCData</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityFrameworkExtension.cs" />
+    <Compile Include="Helpers\SqlProgrammability\CommonTasks\AccessControl.cs" />
+    <Compile Include="Helpers\SqlProgrammability\CommonTasks\Commodity.cs" />
+    <Compile Include="Helpers\SqlProgrammability\CommonTasks\Commons.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\AccountInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\SalesInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\BackupInventory14DEC.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\BackupInventory15DEC.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\GoodsReceipt.cs" />
+    <Compile Include="Helpers\SqlProgrammability\PurchaseTasks\PurchaseOrder.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\PartsInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\PurchaseTasks\PurchaseInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\Quotation.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\ServiceContracts.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\ServicesInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\SalesTasks\VehiclesInvoice.cs" />
+    <Compile Include="Helpers\SqlProgrammability\InitReference.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\Inventories.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\PartAdjustment.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\PartTransfer.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\TransferOrder.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\VehicleAdjustment.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\VehicleTransfer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Analysis\ReportRepository.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\EmployeeRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\LocationRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\PromotionRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\TerritoryRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CustomerTypeRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CustomerCategoryRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CommodityTypeRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CommodityRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\EntireTerritoryRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CustomerRepository.cs" />
+    <Compile Include="Helpers\ModuleDetailRepository.cs" />
+    <Compile Include="Helpers\ModuleRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\InventoryRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\CommodityCategoryRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\ServiceContractTypeRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\WarehouseRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\PaymentTermRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\AspNetUserRepository.cs" />
+    <Compile Include="Repositories\CommonTasks\PriceTermRepository.cs" />
+    <Compile Include="Repositories\GenericAPIRepository.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\GenericWithDetailRepository.cs" />
+    <Compile Include="Repositories\SalesTasks\AccountInvoiceRepository.cs" />
+    <Compile Include="Repositories\StockTasks\GoodsReceiptRepository.cs" />
+    <Compile Include="Repositories\PurchaseTasks\PurchaseInvoiceRepository.cs" />
+    <Compile Include="Repositories\SalesTasks\QuotationRepository.cs" />
+    <Compile Include="Repositories\SalesTasks\ServiceContractRepository.cs" />
+    <Compile Include="Repositories\SalesTasks\SalesInvoiceRepository.cs" />
+    <Compile Include="Repositories\PurchaseTasks\PurchaseOrderRepository.cs" />
+    <Compile Include="Repositories\StockTasks\InventoryAdjustmentRepository.cs" />
+    <Compile Include="Repositories\StockTasks\StockTransferRepository.cs" />
+    <Compile Include="Repositories\StockTasks\TransferOrderRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MVCBase\MVCBase.csproj">
+      <Project>{8a85caec-2aa7-4ac4-a5fa-65269ab99751}</Project>
+      <Name>MVCBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVCCore\MVCCore.csproj">
+      <Project>{1724e2d8-58ea-4f31-b1f3-bb48f7e24e45}</Project>
+      <Name>MVCCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVCModel\MVCModel.csproj">
+      <Project>{eab6fc2d-d96a-41ae-9958-053ddb440155}</Project>
+      <Name>MVCModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

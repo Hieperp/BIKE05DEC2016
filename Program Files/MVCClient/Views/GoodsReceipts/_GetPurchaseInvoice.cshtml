@@ -1,0 +1,55 @@
+﻿@using MVCClient.Configuration
+@using MVCModel.Models;
+
+
+@(Html.Kendo().Grid<GoodsReceiptGetPurchaseInvoice>()
+    .Name("getPurchaseInvoicesGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.EntryDate).Title("Ngày").Width(10).Format("{0:" + SettingsManager.DateFormat + "}");
+        columns.Bound(c => c.Reference).Title("Số phiếu").Width(8);
+        columns.Bound(c => c.VATInvoiceNo).Title("Hóa đơn").Width(12);
+        columns.Bound(c => c.VATInvoiceDate).Title("Ngày HĐ").Width(10).Format("{0:" + SettingsManager.DateFormat + "}");
+
+        columns.Bound(c => c.CustomerName).Title("Nhà cung cấp").Width(18);
+        columns.Bound(c => c.AttentionName).Title("Người liên hệ").Width(17);
+        columns.Bound(c => c.Telephone).Title("Điện thoại").Width(10);
+
+        columns.Bound(c => c.Description).Title("Diễn giải").Width(15);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập số hóa đơn:</label>
+                <input id="purchaseInvoiceReferenceSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="purchaseInvoiceReferenceSearchBox_KeyUp()" />
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetPurchaseInvoices", "GoodsReceiptsApi").Data("onAdditionalGetPurchaseInvoices"))
+            .ServerOperation(true)
+    )
+    .Selectable()
+)
+
+<script type="text/javascript">
+    function onAdditionalGetPurchaseInvoices(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            goodsReceiptID: window.parent.$("#goodsReceiptID").val(),
+            purchaseInvoiceReference: $("#purchaseInvoiceReferenceSearchBox").val()
+        };
+    }
+
+    function purchaseInvoiceReferenceSearchBox_KeyUp() {
+        if ($("#purchaseInvoiceReferenceSearchBox").val().length === 0 || $("#purchaseInvoiceReferenceSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#getPurchaseInvoicesGrid").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#getPurchaseInvoicesGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>

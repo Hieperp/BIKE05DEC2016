@@ -1,0 +1,39 @@
+﻿@using MVCClient.Configuration
+
+@model string
+
+@(Html.Kendo().AutoCompleteFor(m => m)
+        .Name("WarehouseCode")
+        .DataTextField("Code")
+        .Filter("contains")
+        .Placeholder("Chọn kho...")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("SearchWarehousesByName", "WarehousesApi").Data(@<text>
+
+                    function(e) {
+                    return {
+                        locationID: requireConfig.pageOptions.LocationID,
+                        searchText: $("#WarehouseCode").data("kendoAutoComplete").value()                    
+                    };}
+
+                </text>);//Send parameter to controller search action
+            })
+            .ServerFiltering(true);
+        })
+        .Events(e =>
+        {
+            e.Select("gridEditorWarehouseSelect");
+            e.Change("gridEditorWarehouseChange");
+        })
+        .Value(Model)
+        .HtmlAttributes(new { @class = "custom-control" })
+)
+
+<script type="text/javascript">
+    $("#WarehouseCode").focus(function (e) {
+        window.WarehouseCodeBeforeChange = $("#WarehouseCode").val();
+    });
+</script>

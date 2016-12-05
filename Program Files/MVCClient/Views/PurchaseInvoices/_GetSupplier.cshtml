@@ -1,0 +1,51 @@
+﻿@using MVCClient.Configuration
+@using MVCModel.Models;
+
+@(Html.Kendo().Grid<PurchaseInvoiceGetSupplier>()
+    .Name("getSuppliersGrid")
+
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CustomerName).Title("Nhà cung cấp").Width(120);
+        columns.Bound(c => c.CustomerAttentionName).Title("Người liên hệ").Width(100);
+        columns.Bound(c => c.CustomerTelephone).Title("Điện thoại").Width(80);
+        columns.Bound(c => c.CustomerAddressNo).Title("Địa chỉ").Width(160);
+        columns.Bound(c => c.CustomerEntireTerritoryEntireName).Title("Tỉnh thành").Width(160);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập tên nhà cung cấp:</label>
+                <input id="supplierNameSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="supplierNameSearchBox_KeyUp()" />
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("GetSuppliers", "PurchaseInvoicesApi").Data("onAdditionalGetSuppliers"))
+        .ServerOperation(true)
+    )
+    .Selectable()
+)
+
+<script type="text/javascript">
+    function onAdditionalGetSuppliers(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            purchaseInvoiceID: window.parent.$("#PurchaseInvoiceID").val(),
+            supplierName: $("#supplierNameSearchBox").val()
+        };
+    }
+
+    function supplierNameSearchBox_KeyUp() {
+        if ($("#supplierNameSearchBox").val().length === 0 || $("#supplierNameSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#getSuppliersGrid").data("kendoGrid").dataSource.read();
+        }
+    }
+
+
+    $("#getSuppliersGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>

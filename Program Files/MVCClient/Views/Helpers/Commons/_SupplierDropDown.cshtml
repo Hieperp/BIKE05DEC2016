@@ -1,0 +1,12 @@
+﻿@model MVCClient.ViewModels.Helpers.ISupplierDropDownViewModel
+
+<div class="div-row">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.SupplierID, htmlAttributes: new { @class = "control-label-left" })
+        <div class="div-input">
+            @Html.Kendo().DropDownListFor(m => m.SupplierID).BindTo(Model.SupplierDropDown).HtmlAttributes(new { @class = "input-class" })                    
+            @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+

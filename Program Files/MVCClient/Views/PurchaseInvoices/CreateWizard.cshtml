@@ -1,0 +1,46 @@
+﻿@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    @(Html.Kendo().TabStrip()
+        .HtmlAttributes(new { @style = "height: 466px; margin-left: 0px; margin-right: 0px;" })
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Chọn phiếu đặt hàng")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("~/Views/PurchaseInvoices/_GetPurchaseOrder.cshtml")
+                </text>);
+
+            tabStrip.Add().Text("Chọn nhà cung cấp")
+                .Content(@<text>
+                    @Html.Partial("~/Views/PurchaseInvoices/_GetSupplier.cshtml")
+                </text>);
+        })
+    )
+
+    
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="okButton" type="button" value="Ok" class="k-button" onclick="okButton_Click()" />
+            <input id="cancelButton" type="button" value="Cancel" class="k-button" onclick="cancelButton_Click()" />
+        </div>
+    </div>
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/PurchaseTasks/purchasesCreateWizard.js")"></script>
+
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent($("#tabStrip").data("kendoTabStrip").select().index());
+    }
+
+    function okWOSelectButton_Click() {
+        handleOKEvent();
+    }
+</script>
+
+

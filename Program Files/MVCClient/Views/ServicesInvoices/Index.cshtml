@@ -1,0 +1,105 @@
+﻿@using MVCClient.Configuration
+@model MVCClient.ViewModels.SalesTasks.ServicesInvoiceViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    int serviceContractID = @ViewBag.ServiceContractID == null ? -1 : (int)@ViewBag.ServiceContractID;
+    
+    <div id="popupWindow" style="position: absolute"></div>
+    
+    @Html.HiddenFor(model => model.ServiceContractID);
+    @Html.HiddenFor(model => model.ServiceContractPurchaseDate);
+    @Html.HiddenFor(model => model.ServiceContractReference);
+    @Html.HiddenFor(model => model.QuotationID);
+    @Html.HiddenFor(model => model.QuotationEntryDate);
+    @Html.HiddenFor(model => model.QuotationReference);
+    @Html.HiddenFor(model => model.CustomerID);
+    @Html.HiddenFor(model => model.CustomerName);
+    @Html.HiddenFor(model => model.CustomerBirthday);
+    @Html.HiddenFor(model => model.CustomerTelephone);
+    @Html.HiddenFor(model => model.CustomerAddressNo);
+    @Html.HiddenFor(model => model.CustomerEntireTerritoryEntireName);
+    @Html.HiddenFor(model => model.ServiceContractCommodityID);
+    @Html.HiddenFor(model => model.ServiceContractCommodityCode);
+    @Html.HiddenFor(model => model.ServiceContractCommodityName);
+    @Html.HiddenFor(model => model.ServiceContractLicensePlate);
+    @Html.HiddenFor(model => model.ServiceContractChassisCode);
+    @Html.HiddenFor(model => model.ServiceContractEngineCode);
+    @Html.HiddenFor(model => model.ServiceContractColorCode);
+
+
+    <div>
+        @(Html.Kendo().Grid<MVCModel.Models.ServicesInvoiceIndex>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.SalesInvoiceID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.LocationCode).Title("CN").Width(3).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.EntryDate).Title("Ngày").Format("{0:dd/MM/yyyy}").Width(40).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.Reference).Title("Số").Width(30).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.CustomerDescription).Title("Khách hàng").Width(420).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.CommodityName).Title("Xe").Width(180).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.ChassisCode).Title("Số khung").Width(110).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.EngineCode).Title("Số máy").Width(50).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.LicensePlate).Title("Biển số").Width(100).HtmlAttributes(new { style = "color: # if (IsFinished) { #black# } else { #blue# } #" });
+                columns.Bound(p => p.TotalGrossAmount).Title("Thành tiền").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column", @style = "color: # if (IsFinished) { #black# } else { #blue# } #" }).Filterable(false).Width(62);//.ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" })
+
+                columns.Template(model => null).Width(170)
+                    .ClientTemplate("<a class='k-button' style='padding-left:5px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "ServicesInvoices", action = "Edit" }) + "/#= SalesInvoiceID #'><span class='k-icon k-edit'></span></a> <a class='k-button' style='padding-left:5px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "ServicesInvoices", action = "Print" }) + "/#= SalesInvoiceID #' target='_blank'><span class='k-icon k-i-folder-add'></span></a> <a class='k-button' style='padding-left:0px; padding-right:0px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "ServicesInvoices", action = "Delete" }) + "/#= SalesInvoiceID #'><span class='k-icon k-delete'></span></a>");
+            })
+            .ToolBar(toolbar => toolbar.Template("<a class='k-button k-button-icontext k-grid-add' href='javascript:void(0)' onClick='createWizard()'>Create</a>"))
+            .Pageable()
+            .Groupable()
+            .Filterable()
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetServicesInvoiceIndexes", "ServicesInvoiceApi").Data(@<text> function (e) { return {serviceContractID: @serviceContractID};} </text>))
+                .Sort(sort =>
+                    {
+                        sort.Add(p => p.EntryDate).Descending();
+                        sort.Add(p => p.SalesInvoiceID).Descending();
+                    })
+                //.Events(events => events.Error("onError"))
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(x => x.SalesInvoiceID);
+                    model.Field(m => m.SalesInvoiceID).DefaultValue(0);
+                })
+                .ServerOperation(true)
+                .Aggregates(a => a.Add(x => x.TotalGrossAmount).Sum()))
+                .HtmlAttributes(new { @class = "grid-class" }))
+    </div>
+
+    <div class="div-button">
+        <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "ServicesInvoices")" style="display:none" class="k-button" />
+    </div>
+}
+
+
+
+<script type="text/javascript">
+
+
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("SalesInvoiceID", @ViewBag.SelectedEntityID);
+        });
+    }
+
+    function createWizard() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", "ServicesInvoices")", "Chọn khách hàng",  "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeightWithTab");
+        });
+    }
+</script>

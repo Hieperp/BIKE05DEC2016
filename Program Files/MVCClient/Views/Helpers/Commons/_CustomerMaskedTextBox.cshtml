@@ -1,0 +1,14 @@
+﻿@model MVCClient.ViewModels.Helpers.ICustomerAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.CustomerID)
+
+<div class="customer-lmargin" style="padding-top: 60px;">
+    <div class="div-row3">
+        <div class="div-input" style="margin-left: 0px;">
+            @Html.Kendo().MaskedTextBoxFor(model => model.CustomerName).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
+        </div>
+
+        @Html.Partial("~/Views/Helpers/Commons/_CustomerDescription.cshtml")
+    </div>
+</div>
+

@@ -1,0 +1,56 @@
+﻿@using MVCClient.Configuration
+@using MVCModel.Models;
+
+@(Html.Kendo().Grid<GoodsReceiptGetStockTransfer>()
+    .Name("getStockTransfersGrid")
+
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.EntryDate).Title("Ngày").Width(80).Format("{0:" + SettingsManager.DateFormat + "}");
+        columns.Bound(c => c.Reference).Title("Số phiếu").Width(80);
+        columns.Bound(c => c.StockTransferTypeCode).Title("Loại").Width(80);
+        
+        columns.Bound(c => c.LocationName).Title("Nơi chuyển").Width(160);
+        columns.Bound(c => c.Telephone).Title("Điện thoại").Width(120);
+        columns.Bound(c => c.Facsimile).Title("Số fax").Width(80);
+
+        columns.Bound(c => c.Description).Title("Diễn giải").Width(120);
+        columns.Bound(c => c.Remarks).Title("Ghi chú").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập phiếu chuyển kho:</label>
+                <input id="stockTransferReferenceSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="stockTransferReferenceSearchBox_KeyUp()" />
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetStockTransfers", "GoodsReceiptsApi").Data("onAdditionalGetStockTransfers"))
+            .ServerOperation(true)
+    )
+    .Selectable()
+)
+
+<script type="text/javascript">
+    function onAdditionalGetStockTransfers(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            goodsReceiptID: window.parent.$("#GoodsReceiptID").val(),
+            stockTransferReference: $("#stockTransferReferenceSearchBox").val()
+        };
+    }
+
+    function stockTransferReferenceSearchBox_KeyUp() {
+        if ($("#stockTransferReferenceSearchBox").val().length === 0 || $("#stockTransferReferenceSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#getStockTransfersGrid").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#getStockTransfersGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+
+</script>

@@ -1,0 +1,69 @@
+﻿@using MVCModel.Models;
+@using MVCClient.Configuration;
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+
+@(Html.Kendo().Grid<PendingPartTransferOrder>()
+    .Name("gridTransferOrderDetails")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CommodityCode).Title("Mã phụ tùng").Width(20);
+        columns.Bound(c => c.CommodityName).Title("Tên phụ tùng").Width(38);
+        columns.Bound(c => c.WarehouseCode).Title("Kho").Width(8);
+        columns.Bound(c => c.QuantityAvailable).Title("Tồn kho").Format("{0:n0}").Width(8).HtmlAttributes(new { @class = "grid-number-column" });
+        columns.Bound(c => c.QuantityOrderPending).Title("SL điều").Format("{0:n0}").Width(8).HtmlAttributes(new { @class = "grid-number-column" });
+        columns.Bound(c => c.Remarks).DisplayNameTitle().Width(15);
+        
+        columns.Template(t => { }).Title("&nbsp;").ClientTemplate("<input class='IsSelected' #= IsSelected ? checked='checked':'' #  type='checkbox' />").Width(3);
+    })
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label class="category-label" for="category">Nhập mã phụ tùng:</label>
+                <input id="filterText" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="onFilterTextKeyUp()" />
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+    .Read(read => read.Action("GetPendingPartTransferOrders", "PartTransferApi").Data(@<text>
+
+            function(e) {
+            return {
+                locationID: window.parent.requireConfig.pageOptions.LocationID,
+                transferOrderID: window.parent.$("#TransferOrderID").val()
+            };}
+
+    </text>))
+    .ServerOperation(false))
+    .Selectable()
+)
+
+
+@Html.Partial("~/Views/StockTransfers/_GetPendingTransferOrders.cshtml")
+
+
+<script>
+    function onFilterTextKeyUp() {
+        var filterText = $("#filterText").val(), gridDetails = $("#gridTransferOrderDetails").data("kendoGrid");
+
+        if (filterText && filterText.length >= "@SettingsManager.AutoCompleteMinLenght") {
+
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                  { field: "CommodityCode", operator: "contains", value: filterText },
+                  { field: "IsSelected", operator: "eq", value: true }
+                ]
+            });
+
+
+        } else {
+            gridDetails.dataSource.filter({});
+        }
+    }
+</script>
+

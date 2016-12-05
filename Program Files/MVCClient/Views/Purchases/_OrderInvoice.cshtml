@@ -1,0 +1,43 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.IOrderInvoiceViewModel
+
+@Html.HiddenFor(model => model.PurchaseOrderID)
+@Html.HiddenFor(model => model.PurchaseOrderReference)
+@Html.HiddenFor(model => model.PurchaseOrderEntryDate)
+@Html.HiddenFor(model => model.PurchaseOrderAttentionName)
+@Html.HiddenFor(model => model.PurchaseOrderDescription)
+@Html.HiddenFor(model => model.PurchaseOrderRemarks)
+
+
+<div id="supplier-div" class="customer-background">
+    <div class="div-row2">
+        @Html.Partial("~/Views/Helpers/Commons/_SupplierMaskedTextBox.cshtml")
+    </div>
+    <div class="div-row2 customer-lmargin" style="padding-top: 20px;">
+        @{string purchaseOrderDate = "";}
+        @if (Model.PurchaseOrderEntryDate != null)
+        {
+            if (Model.PurchaseOrderEntryDate.Value.Year > 1900)
+            {
+                purchaseOrderDate = Model.PurchaseOrderEntryDate.Value.ToShortDateString();
+            }
+        }
+        <label class="label-description" style=" margin-top: 10px;">@Model.PurchaseOrderReference / @purchaseOrderDate / @Model.PurchaseOrderAttentionName / @Model.PurchaseOrderDescription/ @Model.PurchaseOrderRemarks</label>
+    </div>
+
+</div>
+
+<script type="text/javascript"> 
+    function changePurchaseOrder_click() {
+        var popupWindow = $("#popupWindow");
+        var mywindow = CreatePopUp("Change Purchase Order", "900px", "480px", popupWindow);
+
+        if (mywindow != null) {
+            var url = "@Url.Action("CreateWizard", "PurchaseInvoices")";
+
+            mywindow.center().open();
+            mywindow.refresh(url);
+        }
+    }
+</script>

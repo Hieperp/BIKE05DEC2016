@@ -1,0 +1,81 @@
+﻿@using MVCClient.Configuration
+@using MVCModel.Models;
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    @(Html.Kendo().Grid<ServiceContractGetVehiclesInvoice>()
+        .Name("gridVehiclesInvoices")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.CustomerName).Title("Chủ xe").Width(18);
+            columns.Bound(c => c.CustomerAddressNo).Title("Địa chỉ").Width(22);
+
+            columns.Bound(c => c.CommodityName).Title("Loại xe").Width(14);
+            columns.Bound(c => c.ChassisCode).Title("Số khung").Width(16);
+            columns.Bound(c => c.EngineCode).Title("Số máy").Width(12);
+            columns.Bound(c => c.ColorCode).Title("Mã màu").Width(9);
+
+            columns.Bound(c => c.EntryDate).Title("Ngày bán").Width(9).Format("{0:" + SettingsManager.DateFormat + "}");
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập mã xe, hoặc tên xe, hoặc số khung, hoặc số máy:</label>
+                    <input id="CommoditySearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="CommoditySearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+        .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("ServiceContractGetVehiclesInvoice", "ServiceContractsApi").Data("onAdditionalGetVehiclesInvoices"))
+        .ServerOperation(true))
+        .Selectable()
+    )
+
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="okButton" type="button" value="Lập hồ sơ cho xe đã bán" class="k-button" onclick="okButton_Click()" />
+            <input id="okWOSelectButton" type="button" value="Lập hồ sơ xe mua từ cửa hàng khác" class="k-button" onclick="okWOSelectButton_Click()" />
+            <input id="cancelButton" type="button" value="Thoát" class="k-button" onclick="cancelButton_Click()" />
+        </div>
+    </div>
+}
+
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/SalesTasks/serviceContractCreateWizard.js")"></script>
+
+<script type="text/javascript">
+
+    function onAdditionalGetVehiclesInvoices(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            searchText: $("#CommoditySearchBox").val(),
+            salesInvoiceID: 0,
+            serviceContractID: window.parent.$("#ServiceContractID").val()
+        };
+    }
+
+    function CommoditySearchBox_KeyUp() {
+        if ($("#CommoditySearchBox").val().length === 0 || $("#CommoditySearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridVehiclesInvoices").data("kendoGrid").dataSource.read();
+        }
+    }
+
+
+    $("#gridVehiclesInvoices").dblclick(function (e) {
+        okButton_Click();
+    })
+
+    function okButton_Click() {
+        handleOKEvent(0);
+    }
+
+    function okWOSelectButton_Click() {
+        handleOKEvent();
+    }
+
+</script>

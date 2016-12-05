@@ -1,0 +1,86 @@
+﻿@using MVCClient.Configuration
+@model MVCClient.ViewModels.StockTasks.GoodsReceiptViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="popupWindow" style="position: absolute"></div>
+
+    @Html.HiddenFor(model => model.VoucherID)
+    @Html.HiddenFor(model => model.GoodsReceiptTypeID)
+
+    @Html.HiddenFor(model => model.Description)
+    @Html.HiddenFor(model => model.Remarks)
+
+
+    <div>
+        @(Html.Kendo().Grid<MVCModel.Models.GoodsReceiptIndex>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.GoodsReceiptID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.LocationCode).Title("CN").Width(3);
+                columns.Bound(p => p.EntryDate).Title("Ngày").Format("{0:dd/MM/yyyy}").Width(40);
+                columns.Bound(p => p.Reference).Title("Số phiếu").Width(80);
+                columns.Bound(p => p.VoucherOwner).Title("Nơi xuất").Width(80);
+                columns.Bound(p => p.VoucherDate).Title("Ngày CT").Format("{0:dd/MM/yyyy}").Width(40);
+                columns.Bound(p => p.VoucherReference).Title("Số CT").Width(40);
+                columns.Bound(p => p.Description).Title("Diễn giải").Width(260);
+                columns.Bound(p => p.TotalQuantity).Title("SL").Format("{0:n0}").Filterable(false).Width(68).ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+                
+                columns.Template(model => null).Width(66)
+                    .ClientTemplate("<a class='k-button' style='padding-left:5px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "GoodsReceipts", action = "Edit" }) + "/#= GoodsReceiptID #'><span class='k-icon k-edit'></span></a> <a class='k-button' style='padding-left:0px; padding-right:0px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "GoodsReceipts", action = "Delete" }) + "/#= GoodsReceiptID #'><span class='k-icon k-delete'></span></a>");
+            })
+            .ToolBar(toolbar => toolbar.Template("<a class='k-button k-button-icontext k-grid-add' href='javascript:void(0)' onClick='createWizard()'>Create</a>"))
+            .Pageable()
+            .Groupable()
+            .Filterable()
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetGoodsReceiptIndexes", "GoodsReceiptsApi"))
+                .Sort(sort =>
+                    {
+                        sort.Add(p => p.EntryDate).Descending();
+                        sort.Add(p => p.GoodsReceiptID).Descending();
+                    })
+                //.Events(events => events.Error("onError"))
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(x => x.GoodsReceiptID);
+                    model.Field(m => m.GoodsReceiptID).DefaultValue(0);
+                })
+                .ServerOperation(true)
+                .Aggregates(a => a.Add(x => x.TotalQuantity).Sum())
+                ).HtmlAttributes(new { @class = "grid-class" }))
+    </div>
+
+    <div class="div-button">
+        <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "GoodsReceipts")" style="display:none" class="k-button" />
+    </div>
+}
+
+
+
+<script>
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("GoodsReceiptID", '@ViewBag.SelectedEntityID');
+        });
+    }
+
+    function createWizard() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", "GoodsReceipts")", "Chọn phiếu", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeightWithTab");
+        });
+    }
+</script>

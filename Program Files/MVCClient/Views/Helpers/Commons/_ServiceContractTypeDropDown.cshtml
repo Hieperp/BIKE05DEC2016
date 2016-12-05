@@ -1,0 +1,11 @@
+﻿@model MVCClient.ViewModels.Helpers.IServiceContractTypeDropDownViewModel
+
+<div class="div-row">
+    @Html.LabelFor(model => model.ServiceContractTypeID, htmlAttributes: new { @class = "control-label1" })
+    <div class="div-input">
+        @Html.Kendo().DropDownListFor(m => m.ServiceContractTypeID).BindTo(Model.ServiceContractTypeDropDown).HtmlAttributes(new { @class = "input-class1" })
+        @Html.ValidationMessageFor(model => model.ServiceContractTypeID, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+

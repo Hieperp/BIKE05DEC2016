@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CommonTableModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TotalBikePortals.dbo.SchemeRoutines' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SchemeRoutines">
+          <Key>
+            <PropertyRef Name="SPECIFIC_NAME" />
+            <PropertyRef Name="ROUTINE_NAME" />
+            <PropertyRef Name="CREATED" />
+            <PropertyRef Name="LAST_ALTERED" />
+          </Key>
+          <Property Name="SPECIFIC_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="SPECIFIC_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="SPECIFIC_NAME" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ROUTINE_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="ROUTINE_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="ROUTINE_NAME" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ROUTINE_TYPE" Type="nvarchar" MaxLength="20" />
+          <Property Name="MODULE_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="MODULE_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="MODULE_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="UDT_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="UDT_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="UDT_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="DATA_TYPE" Type="nvarchar" MaxLength="128" />
+          <Property Name="CHARACTER_MAXIMUM_LENGTH" Type="int" />
+          <Property Name="CHARACTER_OCTET_LENGTH" Type="int" />
+          <Property Name="COLLATION_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="COLLATION_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="COLLATION_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="CHARACTER_SET_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="CHARACTER_SET_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="CHARACTER_SET_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="NUMERIC_PRECISION" Type="tinyint" />
+          <Property Name="NUMERIC_PRECISION_RADIX" Type="smallint" />
+          <Property Name="NUMERIC_SCALE" Type="int" />
+          <Property Name="DATETIME_PRECISION" Type="smallint" />
+          <Property Name="INTERVAL_TYPE" Type="nvarchar" MaxLength="30" />
+          <Property Name="INTERVAL_PRECISION" Type="smallint" />
+          <Property Name="TYPE_UDT_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="TYPE_UDT_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="TYPE_UDT_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="SCOPE_CATALOG" Type="nvarchar" MaxLength="128" />
+          <Property Name="SCOPE_SCHEMA" Type="nvarchar" MaxLength="128" />
+          <Property Name="SCOPE_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="MAXIMUM_CARDINALITY" Type="bigint" />
+          <Property Name="DTD_IDENTIFIER" Type="nvarchar" MaxLength="128" />
+          <Property Name="ROUTINE_BODY" Type="nvarchar" MaxLength="30" />
+          <Property Name="ROUTINE_DEFINITION" Type="nvarchar" MaxLength="4000" />
+          <Property Name="EXTERNAL_NAME" Type="nvarchar" MaxLength="128" />
+          <Property Name="EXTERNAL_LANGUAGE" Type="nvarchar" MaxLength="30" />
+          <Property Name="PARAMETER_STYLE" Type="nvarchar" MaxLength="30" />
+          <Property Name="IS_DETERMINISTIC" Type="nvarchar" MaxLength="10" />
+          <Property Name="SQL_DATA_ACCESS" Type="nvarchar" MaxLength="30" />
+          <Property Name="IS_NULL_CALL" Type="nvarchar" MaxLength="10" />
+          <Property Name="SQL_PATH" Type="nvarchar" MaxLength="128" />
+          <Property Name="SCHEMA_LEVEL_ROUTINE" Type="nvarchar" MaxLength="10" />
+          <Property Name="MAX_DYNAMIC_RESULT_SETS" Type="smallint" />
+          <Property Name="IS_USER_DEFINED_CAST" Type="nvarchar" MaxLength="10" />
+          <Property Name="IS_IMPLICITLY_INVOCABLE" Type="nvarchar" MaxLength="10" />
+          <Property Name="CREATED" Type="datetime" Nullable="false" />
+          <Property Name="LAST_ALTERED" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="CommonTableModelStoreContainer">
+          <EntitySet Name="SchemeRoutines" EntityType="Self.SchemeRoutines" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SchemeRoutines].[SPECIFIC_CATALOG] AS [SPECIFIC_CATALOG], 
+    [SchemeRoutines].[SPECIFIC_SCHEMA] AS [SPECIFIC_SCHEMA], 
+    [SchemeRoutines].[SPECIFIC_NAME] AS [SPECIFIC_NAME], 
+    [SchemeRoutines].[ROUTINE_CATALOG] AS [ROUTINE_CATALOG], 
+    [SchemeRoutines].[ROUTINE_SCHEMA] AS [ROUTINE_SCHEMA], 
+    [SchemeRoutines].[ROUTINE_NAME] AS [ROUTINE_NAME], 
+    [SchemeRoutines].[ROUTINE_TYPE] AS [ROUTINE_TYPE], 
+    [SchemeRoutines].[MODULE_CATALOG] AS [MODULE_CATALOG], 
+    [SchemeRoutines].[MODULE_SCHEMA] AS [MODULE_SCHEMA], 
+    [SchemeRoutines].[MODULE_NAME] AS [MODULE_NAME], 
+    [SchemeRoutines].[UDT_CATALOG] AS [UDT_CATALOG], 
+    [SchemeRoutines].[UDT_SCHEMA] AS [UDT_SCHEMA], 
+    [SchemeRoutines].[UDT_NAME] AS [UDT_NAME], 
+    [SchemeRoutines].[DATA_TYPE] AS [DATA_TYPE], 
+    [SchemeRoutines].[CHARACTER_MAXIMUM_LENGTH] AS [CHARACTER_MAXIMUM_LENGTH], 
+    [SchemeRoutines].[CHARACTER_OCTET_LENGTH] AS [CHARACTER_OCTET_LENGTH], 
+    [SchemeRoutines].[COLLATION_CATALOG] AS [COLLATION_CATALOG], 
+    [SchemeRoutines].[COLLATION_SCHEMA] AS [COLLATION_SCHEMA], 
+    [SchemeRoutines].[COLLATION_NAME] AS [COLLATION_NAME], 
+    [SchemeRoutines].[CHARACTER_SET_CATALOG] AS [CHARACTER_SET_CATALOG], 
+    [SchemeRoutines].[CHARACTER_SET_SCHEMA] AS [CHARACTER_SET_SCHEMA], 
+    [SchemeRoutines].[CHARACTER_SET_NAME] AS [CHARACTER_SET_NAME], 
+    [SchemeRoutines].[NUMERIC_PRECISION] AS [NUMERIC_PRECISION], 
+    [SchemeRoutines].[NUMERIC_PRECISION_RADIX] AS [NUMERIC_PRECISION_RADIX], 
+    [SchemeRoutines].[NUMERIC_SCALE] AS [NUMERIC_SCALE], 
+    [SchemeRoutines].[DATETIME_PRECISION] AS [DATETIME_PRECISION], 
+    [SchemeRoutines].[INTERVAL_TYPE] AS [INTERVAL_TYPE], 
+    [SchemeRoutines].[INTERVAL_PRECISION] AS [INTERVAL_PRECISION], 
+    [SchemeRoutines].[TYPE_UDT_CATALOG] AS [TYPE_UDT_CATALOG], 
+    [SchemeRoutines].[TYPE_UDT_SCHEMA] AS [TYPE_UDT_SCHEMA], 
+    [SchemeRoutines].[TYPE_UDT_NAME] AS [TYPE_UDT_NAME], 
+    [SchemeRoutines].[SCOPE_CATALOG] AS [SCOPE_CATALOG], 
+    [SchemeRoutines].[SCOPE_SCHEMA] AS [SCOPE_SCHEMA], 
+    [SchemeRoutines].[SCOPE_NAME] AS [SCOPE_NAME], 
+    [SchemeRoutines].[MAXIMUM_CARDINALITY] AS [MAXIMUM_CARDINALITY], 
+    [SchemeRoutines].[DTD_IDENTIFIER] AS [DTD_IDENTIFIER], 
+    [SchemeRoutines].[ROUTINE_BODY] AS [ROUTINE_BODY], 
+    [SchemeRoutines].[ROUTINE_DEFINITION] AS [ROUTINE_DEFINITION], 
+    [SchemeRoutines].[EXTERNAL_NAME] AS [EXTERNAL_NAME], 
+    [SchemeRoutines].[EXTERNAL_LANGUAGE] AS [EXTERNAL_LANGUAGE], 
+    [SchemeRoutines].[PARAMETER_STYLE] AS [PARAMETER_STYLE], 
+    [SchemeRoutines].[IS_DETERMINISTIC] AS [IS_DETERMINISTIC], 
+    [SchemeRoutines].[SQL_DATA_ACCESS] AS [SQL_DATA_ACCESS], 
+    [SchemeRoutines].[IS_NULL_CALL] AS [IS_NULL_CALL], 
+    [SchemeRoutines].[SQL_PATH] AS [SQL_PATH], 
+    [SchemeRoutines].[SCHEMA_LEVEL_ROUTINE] AS [SCHEMA_LEVEL_ROUTINE], 
+    [SchemeRoutines].[MAX_DYNAMIC_RESULT_SETS] AS [MAX_DYNAMIC_RESULT_SETS], 
+    [SchemeRoutines].[IS_USER_DEFINED_CAST] AS [IS_USER_DEFINED_CAST], 
+    [SchemeRoutines].[IS_IMPLICITLY_INVOCABLE] AS [IS_IMPLICITLY_INVOCABLE], 
+    [SchemeRoutines].[CREATED] AS [CREATED], 
+    [SchemeRoutines].[LAST_ALTERED] AS [LAST_ALTERED]
+    FROM [dbo].[SchemeRoutines] AS [SchemeRoutines]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CommonTableModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="SchemeRoutine">
+          <Key>
+            <PropertyRef Name="SPECIFIC_NAME" />
+            <PropertyRef Name="ROUTINE_NAME" />
+            <PropertyRef Name="CREATED" />
+            <PropertyRef Name="LAST_ALTERED" />
+          </Key>
+          <Property Name="SPECIFIC_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SPECIFIC_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SPECIFIC_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROUTINE_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ROUTINE_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ROUTINE_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROUTINE_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MODULE_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MODULE_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MODULE_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UDT_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UDT_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UDT_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_TYPE" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CHARACTER_MAXIMUM_LENGTH" Type="Int32" />
+          <Property Name="CHARACTER_OCTET_LENGTH" Type="Int32" />
+          <Property Name="COLLATION_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="COLLATION_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="COLLATION_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CHARACTER_SET_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CHARACTER_SET_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CHARACTER_SET_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NUMERIC_PRECISION" Type="Byte" />
+          <Property Name="NUMERIC_PRECISION_RADIX" Type="Int16" />
+          <Property Name="NUMERIC_SCALE" Type="Int32" />
+          <Property Name="DATETIME_PRECISION" Type="Int16" />
+          <Property Name="INTERVAL_TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="INTERVAL_PRECISION" Type="Int16" />
+          <Property Name="TYPE_UDT_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TYPE_UDT_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TYPE_UDT_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SCOPE_CATALOG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SCOPE_SCHEMA" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SCOPE_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MAXIMUM_CARDINALITY" Type="Int64" />
+          <Property Name="DTD_IDENTIFIER" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ROUTINE_BODY" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ROUTINE_DEFINITION" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="EXTERNAL_NAME" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EXTERNAL_LANGUAGE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PARAMETER_STYLE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="IS_DETERMINISTIC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SQL_DATA_ACCESS" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="IS_NULL_CALL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SQL_PATH" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SCHEMA_LEVEL_ROUTINE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MAX_DYNAMIC_RESULT_SETS" Type="Int16" />
+          <Property Name="IS_USER_DEFINED_CAST" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IS_IMPLICITLY_INVOCABLE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_ALTERED" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="CommonTableEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SchemeRoutines" EntityType="Self.SchemeRoutine" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CommonTableModelStoreContainer" CdmEntityContainer="CommonTableEntities">
+          <EntitySetMapping Name="SchemeRoutines">
+            <EntityTypeMapping TypeName="CommonTableModel.SchemeRoutine">
+              <MappingFragment StoreEntitySet="SchemeRoutines">
+                <ScalarProperty Name="SPECIFIC_CATALOG" ColumnName="SPECIFIC_CATALOG" />
+                <ScalarProperty Name="SPECIFIC_SCHEMA" ColumnName="SPECIFIC_SCHEMA" />
+                <ScalarProperty Name="SPECIFIC_NAME" ColumnName="SPECIFIC_NAME" />
+                <ScalarProperty Name="ROUTINE_CATALOG" ColumnName="ROUTINE_CATALOG" />
+                <ScalarProperty Name="ROUTINE_SCHEMA" ColumnName="ROUTINE_SCHEMA" />
+                <ScalarProperty Name="ROUTINE_NAME" ColumnName="ROUTINE_NAME" />
+                <ScalarProperty Name="ROUTINE_TYPE" ColumnName="ROUTINE_TYPE" />
+                <ScalarProperty Name="MODULE_CATALOG" ColumnName="MODULE_CATALOG" />
+                <ScalarProperty Name="MODULE_SCHEMA" ColumnName="MODULE_SCHEMA" />
+                <ScalarProperty Name="MODULE_NAME" ColumnName="MODULE_NAME" />
+                <ScalarProperty Name="UDT_CATALOG" ColumnName="UDT_CATALOG" />
+                <ScalarProperty Name="UDT_SCHEMA" ColumnName="UDT_SCHEMA" />
+                <ScalarProperty Name="UDT_NAME" ColumnName="UDT_NAME" />
+                <ScalarProperty Name="DATA_TYPE" ColumnName="DATA_TYPE" />
+                <ScalarProperty Name="CHARACTER_MAXIMUM_LENGTH" ColumnName="CHARACTER_MAXIMUM_LENGTH" />
+                <ScalarProperty Name="CHARACTER_OCTET_LENGTH" ColumnName="CHARACTER_OCTET_LENGTH" />
+                <ScalarProperty Name="COLLATION_CATALOG" ColumnName="COLLATION_CATALOG" />
+                <ScalarProperty Name="COLLATION_SCHEMA" ColumnName="COLLATION_SCHEMA" />
+                <ScalarProperty Name="COLLATION_NAME" ColumnName="COLLATION_NAME" />
+                <ScalarProperty Name="CHARACTER_SET_CATALOG" ColumnName="CHARACTER_SET_CATALOG" />
+                <ScalarProperty Name="CHARACTER_SET_SCHEMA" ColumnName="CHARACTER_SET_SCHEMA" />
+                <ScalarProperty Name="CHARACTER_SET_NAME" ColumnName="CHARACTER_SET_NAME" />
+                <ScalarProperty Name="NUMERIC_PRECISION" ColumnName="NUMERIC_PRECISION" />
+                <ScalarProperty Name="NUMERIC_PRECISION_RADIX" ColumnName="NUMERIC_PRECISION_RADIX" />
+                <ScalarProperty Name="NUMERIC_SCALE" ColumnName="NUMERIC_SCALE" />
+                <ScalarProperty Name="DATETIME_PRECISION" ColumnName="DATETIME_PRECISION" />
+                <ScalarProperty Name="INTERVAL_TYPE" ColumnName="INTERVAL_TYPE" />
+                <ScalarProperty Name="INTERVAL_PRECISION" ColumnName="INTERVAL_PRECISION" />
+                <ScalarProperty Name="TYPE_UDT_CATALOG" ColumnName="TYPE_UDT_CATALOG" />
+                <ScalarProperty Name="TYPE_UDT_SCHEMA" ColumnName="TYPE_UDT_SCHEMA" />
+                <ScalarProperty Name="TYPE_UDT_NAME" ColumnName="TYPE_UDT_NAME" />
+                <ScalarProperty Name="SCOPE_CATALOG" ColumnName="SCOPE_CATALOG" />
+                <ScalarProperty Name="SCOPE_SCHEMA" ColumnName="SCOPE_SCHEMA" />
+                <ScalarProperty Name="SCOPE_NAME" ColumnName="SCOPE_NAME" />
+                <ScalarProperty Name="MAXIMUM_CARDINALITY" ColumnName="MAXIMUM_CARDINALITY" />
+                <ScalarProperty Name="DTD_IDENTIFIER" ColumnName="DTD_IDENTIFIER" />
+                <ScalarProperty Name="ROUTINE_BODY" ColumnName="ROUTINE_BODY" />
+                <ScalarProperty Name="ROUTINE_DEFINITION" ColumnName="ROUTINE_DEFINITION" />
+                <ScalarProperty Name="EXTERNAL_NAME" ColumnName="EXTERNAL_NAME" />
+                <ScalarProperty Name="EXTERNAL_LANGUAGE" ColumnName="EXTERNAL_LANGUAGE" />
+                <ScalarProperty Name="PARAMETER_STYLE" ColumnName="PARAMETER_STYLE" />
+                <ScalarProperty Name="IS_DETERMINISTIC" ColumnName="IS_DETERMINISTIC" />
+                <ScalarProperty Name="SQL_DATA_ACCESS" ColumnName="SQL_DATA_ACCESS" />
+                <ScalarProperty Name="IS_NULL_CALL" ColumnName="IS_NULL_CALL" />
+                <ScalarProperty Name="SQL_PATH" ColumnName="SQL_PATH" />
+                <ScalarProperty Name="SCHEMA_LEVEL_ROUTINE" ColumnName="SCHEMA_LEVEL_ROUTINE" />
+                <ScalarProperty Name="MAX_DYNAMIC_RESULT_SETS" ColumnName="MAX_DYNAMIC_RESULT_SETS" />
+                <ScalarProperty Name="IS_USER_DEFINED_CAST" ColumnName="IS_USER_DEFINED_CAST" />
+                <ScalarProperty Name="IS_IMPLICITLY_INVOCABLE" ColumnName="IS_IMPLICITLY_INVOCABLE" />
+                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
+                <ScalarProperty Name="LAST_ALTERED" ColumnName="LAST_ALTERED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

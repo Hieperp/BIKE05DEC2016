@@ -1,0 +1,54 @@
+﻿@model MVCDTO.StockTasks.StockTransferPrimitiveDTO
+
+
+@Html.HiddenFor(model => model.StockTransferID)
+@Html.HiddenFor(model => model.StockTransferTypeID)
+@Html.HiddenFor(model => model.TransferOrderID)
+
+@Html.HiddenFor(model => model.TotalQuantity)
+
+@Html.HiddenFor(model => model.SubmitTypeOption)
+
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+        @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.TransferOrderReference, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().MaskedTextBoxFor(model => model.TransferOrderReference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.TransferOrderReference, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.TransferOrderEntryDate, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().DateTimePickerFor(model => model.TransferOrderEntryDate).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.TransferOrderEntryDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.TransferOrderRequestedDate, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().DateTimePickerFor(model => model.TransferOrderRequestedDate).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.TransferOrderRequestedDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+

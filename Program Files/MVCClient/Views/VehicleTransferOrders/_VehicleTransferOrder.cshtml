@@ -1,0 +1,142 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.StockTasks.VehicleTransferOrderViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "MainForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="popupWindow"></div>
+
+        <div class="div-main">
+
+            @Html.Partial("~/Views/TransferOrders/_TransferOrderSectionA.cshtml")
+
+            <div class="div-right">
+                <div>
+                    @(Html.Kendo().Grid(Model.VehicleTransferOrderViewDetails)
+                        .Name("kendoGridDetails")
+                        .Columns(columns =>
+                        {
+                            columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
+
+                            columns.Bound(p => p.TransferOrderDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= TransferOrderDetailID #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].TransferOrderDetailID' value='#= TransferOrderDetailID #' />");
+                            columns.Bound(p => p.TransferOrderID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= TransferOrderID #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].TransferOrderID' value='#= TransferOrderID #' />");
+
+                            columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(200)
+                                .ClientFooterTemplate("Tổng cộng:")
+                                .ClientTemplate("<div class = 'multiline-grid'> #= CommodityName #</div>" +
+                                        "<div> #= CommodityCode # </div>" +
+                                        "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
+
+                            columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
+
+                            columns.Bound(p => p.WarehouseID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= WarehouseID #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].WarehouseID' value='#= WarehouseID #' />");
+                            columns.Bound(p => p.WarehouseCode).DisplayNameTitle().Filterable(false).Width(70)
+                                .ClientTemplate("#= WarehouseCode #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].WarehouseCode' value='#= WarehouseCode #' />");
+
+                            columns.Bound(p => p.QuantityAvailable).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientTemplate("#= kendo.format('{0:n0}', QuantityAvailable) #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].QuantityAvailable' value='#= QuantityAvailable #' />");
+
+                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Quantity) #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");
+
+                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false)
+                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='VehicleTransferOrderViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+
+                            columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
+                        })
+                        .Filterable()
+                        .Navigatable()
+                        .ToolBar(toolbar =>
+                        {
+                            if (Model.Editable)
+                            {
+                                toolbar.Create();
+                            }
+                            else
+                            {//Add a functionless button for display purpose only
+                                toolbar.Template(
+                                    @<text>
+                                        <div>
+                                            @(Html.Kendo().Button()
+                                                .Name("iconButton")
+                                                .HtmlAttributes(new { type = "button" })
+                                                .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
+                                            )
+                                        </div>
+                                    </text>);
+                            }
+                        })
+
+
+                        .Editable(editable => { editable.Enabled(Model.Editable); editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true).CreateAt(GridInsertRowPosition.Bottom); })
+
+                        .Selectable(settings =>
+                        {
+                            settings.Mode(GridSelectionMode.Multiple);
+                            settings.Type(GridSelectionType.Row);
+                        })
+                        .Events(events =>
+                        {
+                            events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
+                        })
+                            .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Model(model =>
+                            {
+                                model.Id(x => x.TransferOrderDetailID);
+                                model.Field(m => m.TransferOrderDetailID).DefaultValue(0);
+                                model.Field(m => m.TransferOrderID).DefaultValue(@Model.TransferOrderID);
+                                model.Field(m => m.Quantity).DefaultValue(0);
+                            })
+                            .Events(events =>
+                            {
+                                events.Error("kendGrid_ErrorHandler");
+                            })
+                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                            )
+                    )
+
+                    @Html.Partial("~/Views/TransferOrders/_TransferOrderSectionB.cshtml")
+
+                </div>
+
+            </div>
+
+            <div class="div-button">
+                @if (Model.Editable)
+                {
+                    <input id="closedSubmitButton" type="submit" value="Save" class="k-button custom-button" />
+                }
+            </div>
+            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        </div>
+    }
+
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
+
+
+<style type="text/css">
+    .k-event {
+        min-height: 48px;
+        height: 48px;
+    }
+</style>

@@ -1,0 +1,25 @@
+﻿@using MVCClient.Configuration;
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    <div class="div-notabstrip">
+        @Html.Partial("~/Views/Helpers/Commons/_SearchServiceContract.cshtml")
+    </div>
+
+    <div class="div-popup-button">
+        <input id="okButton" type="button" value="OK" class="k-button" onclick="okButton_Click()" />
+        <input id="cancelButton" type="button" value="Cancel" class="k-button" onclick="cancelButton_Click()" />
+    </div>
+}
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/SalesTasks/salesInvoiceCreateWizard.js")"></script>
+
+<script type="text/javascript">
+
+    function okButton_Click() {
+        handleOKEvent($("#gridServiceContracts").data("kendoGrid"));
+    }
+</script>

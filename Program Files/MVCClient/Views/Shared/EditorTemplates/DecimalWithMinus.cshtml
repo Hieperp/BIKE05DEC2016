@@ -1,0 +1,8 @@
+﻿@using MVCClient.Configuration
+@model decimal?
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+      .HtmlAttributes(new { style = "width:100%" })
+      .Spinners(false)
+      .Format(@SettingsManager.NumberFormat)
+)

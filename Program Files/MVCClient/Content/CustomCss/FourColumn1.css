@@ -1,0 +1,128 @@
+﻿.k-grid-edit-row .k-callout, .k-grid-edit-row .k-callout-n {
+    left: 5px;
+}
+
+#main-popup{    
+    max-width: 470px;
+}
+
+.custom-button {
+    /*width: 60px;*/
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.div-button-popup {
+    width: 450px;
+    clear: both;
+    text-align: right;
+    height: 50px;
+    margin-top: 5px;        
+}
+
+.div-row {
+    /*clear: both;*/
+    /*float: left;*/
+    width: 98%;
+    height: 30px;
+    margin-top: 10px;    
+}
+
+.div-validation-message{
+    margin-top: 3px;
+    float: left; 
+    width: 90%;   
+    text-align: right;
+}
+
+.div-validation-message1{    
+    margin-top: 4px;
+    float: left;
+    width: 98%;
+    text-align: right;
+}
+
+.form-group1 {
+    width: 100%;
+    float: left;
+}
+
+.input-class {
+    width: 270px;
+}
+
+.input-class1 {
+    width: 270px;
+}
+
+.text-danger {
+}
+
+.div-input {
+    /*margin-left: 10px;*/
+    float: left;
+}
+
+.k-numerictextbox .k-input {
+    width: 96%;
+    text-align: right;
+    padding-right: 5px;
+}
+.control-label1 {    
+    /*margin: 10px 10px 2px 20px;*/
+    margin: 5px 10px 2px 15px;
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+
+.control-label2 {
+    text-align: right;
+    margin: 10px 10px 2px 15px;
+    float: left;
+    width: 100px;
+}
+
+
+#div-caption{
+    font-size: large;
+    /*margin-top: 5px;*/        
+}
+
+.k-footer-template td{
+    text-align: right;
+}
+
+.div-main-popup{
+    width: 450px;
+}
+
+#div-alert{
+  width: 100%;
+}
+
+.validation-summary-errors{    
+   width: 100%;
+}
+
+.div-panel-left{
+    float:left;
+    width:98%;
+    margin-top: 5px;
+}
+
+.div-panel-right{
+    float:left;
+    width: 98%;
+    margin-top: 5px;
+}
+
+.div-top{
+    /*height: 240px;*/
+    margin-top: 40px;
+}
+
+.div-panelbar{
+    clear: both;
+    padding-top: 10px;
+}

@@ -1,0 +1,209 @@
+﻿@model IEnumerable<MVCClient.ViewModels.CommonTasks.CustomerViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="div-main">
+    <div class="div-left">
+        <div style="margin-bottom: 10px;">
+            @(Html.Kendo().DropDownList()
+                      .Name("filterCustomer")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { style = "width: 210px; text-align: left;" })
+                      .BindTo(new List<SelectListItem>()
+                      {
+                          new SelectListItem() {
+                            Text = "Phân khúc khách hàng", Value ="00001"
+                          },
+                          new SelectListItem() {
+                            Text = "Loại khách hàng", Value ="00002"
+                          },
+                           new SelectListItem() {
+                            Text = "Địa bàn", Value ="00003"
+                          }
+                      })
+                    .Events(events => events.Change("filterCustomer_Change"))
+            )
+        </div>
+
+        <div id="div-category">
+            @(Html.Kendo().TreeView()
+                .Name("treeviewCategory")
+                    //.HtmlAttributes(new { @class = "" })
+                .ExpandAll(false)
+                .DataTextField("Name")
+                .DataSource(dataSource => dataSource
+                    .Read(read => read
+                        .Action("CustomerCategoriesForTreeView", "CustomerCategoriesApi")
+                    )
+                )
+                .Events(events => events.Change("treeviewCategory_Change"))
+            )
+
+            <input id="texttreeviewCategory" value="0" style="display:none" />
+
+        </div>
+
+        <div id="div-type" style="display: none">
+            @(Html.Kendo().TreeView()
+                .Name("treeviewType")
+                .ExpandAll(false)
+                .DataTextField("Name")
+                .DataSource(dataSource => dataSource
+                    .Read(read => read
+                    .Action("CustomerTypesForTreeView", "CustomerTypesApi")
+                    )
+                )
+                .Events(events => events.Change("treeviewType_Change"))
+            )
+            <input id="texttreeviewType" value="0" style="display:none" />
+        </div>
+
+        <div id="div-territory" style="display: none">
+            @(Html.Kendo().TreeView()
+                .Name("treeviewTerritory")
+                .ExpandAll(false)
+                .DataTextField("Name")
+                .DataSource(dataSource => dataSource
+                    .Read(read => read
+                    .Action("TerritoriesForTreeView", "TerritoriesApi")
+                    )
+                )
+                    .Events(events => events.Change("treeviewTerritory_Change"))
+            )
+            <input id="texttreeviewterritory" value="0" style="display:none" />
+        </div>
+
+    </div>
+
+
+    <div class="div-right">
+        @(Html.Kendo().Grid<MVCDTO.CommonTasks.CustomerPrimitiveDTO>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.CustomerID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.Name).DisplayNameTitle().Width(140);                
+                columns.Bound(p => p.Birthday).DisplayNameTitle().Format("{0:d}").Width(90);
+                columns.Bound(p => p.Telephone).DisplayNameTitle().Width(90);
+                columns.Bound(p => p.AddressNo).DisplayNameTitle().Width(150);
+                columns.Bound(p => p.AttentionName).DisplayNameTitle().Width(100);
+                columns.Bound(p => p.AttentionTitle).DisplayNameTitle().Width(80);
+                columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Width(100);
+                columns.Template(model => null).Width(80)
+               .ClientTemplate("<a href='" + Url.RouteUrl("Default", new { controller = "Customers", action = "Edit" }) + "/#= CustomerID #'>Edit</a>");
+            })
+            .ToolBar(toolbar => toolbar.Custom().Action("Create", "Customers"))
+            .Pageable()
+                //.Groupable()
+            .Filterable()
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("customerGrid_DataBound");
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetCustomers", "CustomersApi").Data("onAdditionalCustomerGridData"))
+                .PageSize(30)
+                .Model(model =>
+                {
+                    model.Id(x => x.CustomerID);
+                    model.Field(m => m.CustomerID).DefaultValue(0);
+                })
+            .ServerOperation(true)
+                ).HtmlAttributes(new { @class = "grid-class" }))
+    </div>
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/CommonsIndex.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    var index = 0;
+    var load = true;
+
+    $(document).ready(function () {
+        var grid = $("#kendoGridIndex").data("kendoGrid");
+        grid.dataSource.fetch(function () {
+            grid.dataSource.page(index);
+        });
+    });
+
+    customerGrid_DataBound = function (e) {
+        var grid = this;
+        $.each(grid.dataSource.data(), function (idx, elem) {
+            if (elem.CustomerID == '@ViewBag.SelectedID') {
+                $('[data-uid=' + elem.uid + ']').addClass('k-state-selected');
+                index = Math.floor(idx / grid.dataSource.pageSize() + 1);
+            }
+        });
+    }
+
+    function onAdditionalCustomerGridData(e) {
+        return {//Send parameter to controller search action
+            customerCategoryID: $("#texttreeviewCategory").val(),
+            customerTypeID: $("#texttreeviewType").val(),
+            territoryID: $("#texttreeviewterritory").val()
+        };
+    }
+
+    filterCustomer_Change = function (e) {
+        var dataItem = this.dataItem(e.item);
+        if (dataItem.Value != undefined) {
+            $("#div-category").css("display", dataItem.Value == "00001" ? "block" : "none");
+            $("#div-type").css("display", dataItem.Value == "00002" ? "block" : "none");
+            $("#div-territory").css("display", dataItem.Value == "00003" ? "block" : "none");
+        }
+        else {
+            $("#div-category").css("display", "block");
+        }
+
+    }
+
+    treeviewCategory_Change = function (e) {
+        var treeview = $("#treeviewCategory").data("kendoTreeView");
+        var id = treeviewChange(treeview);
+
+        $("#texttreeviewCategory").val(id);
+        $("#texttreeviewType").val(0);
+        $("#texttreeviewterritory").val(0);
+        
+        $("#kendoGridIndex").data("kendoGrid").dataSource.read();
+    }
+
+    treeviewType_Change = function (e) {
+        var treeview = $("#treeviewType").data("kendoTreeView");
+        var id = treeviewChange(treeview);
+
+        $("#texttreeviewCategory").val(0);
+        $("#texttreeviewType").val(id);
+        $("#texttreeviewterritory").val(0);
+
+        $("#kendoGridIndex").data("kendoGrid").dataSource.read();
+    }
+
+    treeviewTerritory_Change = function (e) {
+        var treeview = $("#treeviewTerritory").data("kendoTreeView");
+        var id = treeviewChange(treeview);
+
+        $("#texttreeviewCategory").val(0);
+        $("#texttreeviewType").val(0);
+        $("#texttreeviewterritory").val(id);
+
+        $("#kendoGridIndex").data("kendoGrid").dataSource.read();
+    }
+
+    function treeviewChange(treeview) {
+        var selectedNode = treeview.select();
+
+        var id = -1;
+        if (selectedNode.length != 0) {
+            var item = treeview.dataItem(selectedNode);
+            id = item.id;
+        }
+        return id;
+    }
+
+</script>

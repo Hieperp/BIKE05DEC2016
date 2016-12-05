@@ -1,0 +1,88 @@
+﻿@model MVCClient.ViewModels.PurchaseTasks.PurchaseInvoiceViewModel
+
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="div-main">
+
+            @if (!Model.GlobalLocked)
+            {
+                @Html.HiddenFor(model => model.PurchaseInvoiceID)
+
+                <div class="div-left">
+
+                    <div class="form-group1">
+                        @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+                        <div class="div-input">
+                            @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group1">
+                        @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+                        <div class="div-input">
+                            @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group1">
+                        <div class="div-label">
+                            @Html.LabelFor(model => model.VATInvoiceNo, htmlAttributes: new { @class = "control-label-left" })
+                        </div>
+                        <div class="div-input">
+                            @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceNo).HtmlAttributes(new { @class = "input-class" })
+                            @Html.ValidationMessageFor(model => model.VATInvoiceNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group1">
+                        @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
+                        <div class="div-input">
+                            @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
+                            @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group1">
+                        @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label-left" })
+                        <div class="div-input">
+                            @Html.Kendo().DatePickerFor(model => model.DueDate).HtmlAttributes(new { @class = "input-class" })
+                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="div-right">
+                    <div class="contract-separator">
+                        @if (Model.PurchaseOrderID == 0 || Model.PurchaseOrderID == null)
+                        {
+                            @Html.Partial("~/Views/Purchases/_NoOrderInvoice.cshtml")}
+                        else
+                        {
+                            @Html.Partial("~/Views/Purchases/_OrderInvoice.cshtml")
+                        }
+                    </div>
+                </div>
+
+
+                <div class="div-button">
+                    <button type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Kết thúc điều chỉnh </button>
+                </div>
+                @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+            }
+            else
+            {
+                <div id="div-DeleteConfirm">
+                    <label>Dữ liệu này đã bị khóa.</label> <img src="~/Content/Images/New/alert1.png" alt="Alert" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />

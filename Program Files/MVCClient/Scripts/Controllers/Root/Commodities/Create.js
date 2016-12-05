@@ -1,0 +1,4 @@
+﻿require(["commonEditBasic"], function (commonEditBasic) {
+
+});
+

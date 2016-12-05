@@ -1,0 +1,201 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.StockTasks.VehicleTransferViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="popupWindow"></div>
+
+        <div class="div-main">
+
+            <div class="div-left">
+                @Html.Partial("~/Views/StockTransfers/_StockTransferSectionA.cshtml")
+
+            </div>
+
+            <div class="div-right">
+                <div class="contract-separator">
+                    <div id="warehouse-div" class="warehouse-background">
+                        @if (Model.TransferOrderID == null || Model.TransferOrderID == 0)
+                        {
+                            @Html.Partial("~/Views/Helpers/Commons/_WarehouseAutoComplete.cshtml")}
+                        else
+                        {
+                            @Html.Partial("~/Views/Helpers/Commons/_WarehouseMaskedTextBox.cshtml")}
+                    </div>
+                </div>
+
+                <div>
+                    @(Html.Kendo().Grid(Model.VehicleTransferViewDetails)
+                        .Name("kendoGridDetails")
+                        .Columns(columns =>
+                        {
+                            columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
+
+                            columns.Bound(p => p.StockTransferDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= StockTransferDetailID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].StockTransferDetailID' value='#= StockTransferDetailID #' />");
+                            columns.Bound(p => p.StockTransferID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= StockTransferID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].StockTransferID' value='#= StockTransferID #' />");
+
+                            columns.Bound(p => p.TransferOrderDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= TransferOrderDetailID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].TransferOrderDetailID' value='#= (TransferOrderDetailID == null) ? '' : TransferOrderDetailID #' />");
+
+                            columns.Bound(p => p.GoodsReceiptDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= GoodsReceiptDetailID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].GoodsReceiptDetailID' value='#= GoodsReceiptDetailID #' />");
+
+
+                            columns.Bound(p => p.SupplierID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= SupplierID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].SupplierID' value='#= SupplierID #' />");
+
+                            columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(200).EditorTemplateName(@Model.TransferOrderID != null && Model.TransferOrderID > 0 ? "StringReadonly" : "NMVN/CommoditiesInGoodsReceiptsAutoComplete")
+                                .ClientFooterTemplate("Tổng cộng:")
+                                .ClientTemplate("<div class = 'multiline-grid'> #= CommodityName #</div>" +
+                                        "<div> #= CommodityCode # </div>" +
+                                        "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
+
+
+                            columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
+
+
+                            columns.Bound(p => p.ChassisCode).DisplayNameTitle().Filterable(false).Width(120)
+                                .ClientTemplate("#= (ChassisCode == null) ? '' : ChassisCode #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].ChassisCode' value='#= (ChassisCode == null) ? '' : ChassisCode #' />");
+                            columns.Bound(p => p.EngineCode).DisplayNameTitle().Filterable(false).Width(120)
+                                .ClientTemplate("#= (EngineCode == null) ? '' : EngineCode #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].EngineCode' value='#= (EngineCode == null) ? '' : EngineCode #' />");
+                            columns.Bound(p => p.ColorCode).DisplayNameTitle().Filterable(false).Width(100)
+                                .ClientTemplate("#= (ColorCode == null)? '' : ColorCode #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].ColorCode' value='#= (ColorCode == null) ? '' : ColorCode #' />");
+
+
+                            columns.Bound(p => p.WarehouseID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= WarehouseID #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].WarehouseID' value='#= WarehouseID #' />");
+                            columns.Bound(p => p.WarehouseName).DisplayNameTitle().Filterable(false).Hidden()
+                              .ClientTemplate("#= WarehouseName #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].WarehouseName' value='#= WarehouseName #' />");
+                            columns.Bound(p => p.WarehouseCode).DisplayNameTitle().Filterable(false).Width(70)
+                                .ClientTemplate("#= WarehouseCode #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].WarehouseCode' value='#= WarehouseCode #' />");
+
+                            columns.Bound(p => p.QuantityAvailable).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientTemplate("#= kendo.format('{0:n0}', QuantityAvailable) #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].QuantityAvailable' value='#= QuantityAvailable #' />");
+
+                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Quantity) #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");
+
+
+                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='VehicleTransferViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+
+                            columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
+                        })
+                        .Filterable()
+                        .Navigatable()
+                        .ToolBar(toolbar =>
+                        {
+                            if (Model.Editable)
+                            {
+                                if (Model.TransferOrderID == null)
+                                    toolbar.Create();
+                                else
+                                    toolbar.Custom().Text("Điều hàng theo lệnh").Url("#").HtmlAttributes(new { onclick = "GetPendingVehicleTransferOrders()" });
+                            }
+                            else
+                            {//Add a functionless button for display purpose only
+                                toolbar.Template(
+                                    @<text>
+                                        <div>
+                                            @(Html.Kendo().Button()
+                                                .Name("iconButton")
+                                                .HtmlAttributes(new { type = "button" })
+                                                .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
+                                            )
+                                        </div>
+                                    </text>);
+                            }
+                        })
+
+                        .Editable(editable => { editable.Enabled(Model.Editable); editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true).CreateAt(GridInsertRowPosition.Bottom); })
+
+                        .Selectable(settings =>
+                        {
+                            settings.Mode(GridSelectionMode.Multiple);
+                            settings.Type(GridSelectionType.Row);
+                        })
+                        .Events(events =>
+                        {
+                            events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
+                        })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Model(model =>
+                            {
+                                model.Id(x => x.StockTransferDetailID);
+                                model.Field(m => m.StockTransferDetailID).DefaultValue(0);
+                                model.Field(m => m.StockTransferID).DefaultValue(@Model.StockTransferID);
+                                model.Field(m => m.Quantity).DefaultValue(0);
+                            })
+                            .Events(events =>
+                            {
+                                events.Error("kendGrid_ErrorHandler");
+                            })
+                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                            )
+                    )
+
+                    @Html.Partial("~/Views/StockTransfers/_StockTransferSectionB.cshtml")
+
+                </div>
+
+            </div>
+
+            <div class="div-button">
+                @if (Model.Editable)
+                {
+                    @Html.HiddenFor(model => model.PrintAfterClosedSubmit)
+                    <button id="closedSubmitButton" type="submit" formaction="@Url.Action("Edit", "VehicleTransfers")" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu phiếu </button>
+                    <button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" formaction="@Url.Action("Edit", "VehicleTransfers")" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In phiếu chuyển kho</button>
+                    
+                    <input id="submitCreateWizard" style="display:none" type="submit" formaction="@Url.Action("Edit", "VehicleTransfers")" class="k-button custom-button cancel" />
+                }
+                else
+                {
+                    <button formaction="@Url.Action("Print", "VehicleTransfers", new { id = @Model.StockTransferID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In phiếu chuyển kho </button>
+                }
+            </div>
+            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        </div>
+    }
+
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
+
+
+
+<script type="text/javascript">
+
+    function GetPendingVehicleTransferOrders() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingVehicleTransferOrders", "VehicleTransfers")", "Chọn xe", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+        });
+    }
+
+</script>
+
+<style type="text/css">
+    .k-event {
+        min-height: 48px;
+        height: 48px;
+    }
+</style>

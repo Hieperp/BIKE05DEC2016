@@ -1,0 +1,11 @@
+﻿@model MVCClient.ViewModels.Helpers.ICommodityTypeDropDownViewModel
+
+<div class="div-row">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.CommodityTypeID, htmlAttributes: new { @class = "control-label-left" })
+        <div class="div-input">
+            @Html.Kendo().DropDownListFor(m => m.CommodityTypeID).BindTo(Model.CommodityTypeDropDown).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.CommodityTypeID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+﻿@using MvcReportViewer;
+
+@model MVCClient.ViewModels.Helpers.PrintViewModel
+
+
+@{Layout = null;}
+
+@Html.MvcReportViewerFluent(@Model.ReportPath).ReportParameters(new { LocationID = @Model.Id }).Attributes(new { Height = 670, Width = 1270, style = "border: 1px solid #00688B" }).ControlSettings(new ControlSettings() { PromptAreaCollapsed = true })

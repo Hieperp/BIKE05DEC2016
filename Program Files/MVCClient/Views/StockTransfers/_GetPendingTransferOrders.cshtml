@@ -1,0 +1,21 @@
+﻿<div class="background-bar" style="height: 45px;">
+    <div class="popup-button-bar">
+        <input id="okButton" type="button" value="OK" class="k-button" onclick="okButton_Click()" />
+        <input id="cancelButton" type="button" value="Cancel" class="k-button" onclick="cancelButton_Click()" />
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/Helpers/StockTasks/stockTransferAddFromTransferOrder.js")"></script>
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridTransferOrderDetails").data("kendoGrid").dataSource);
+    }
+
+    $('#gridTransferOrderDetails').on('click', '.IsSelected', function () {
+        var checked = $(this).is(':checked');
+        var grid = $('#gridTransferOrderDetails').data().kendoGrid;
+        var dataItem = grid.dataItem($(this).closest('tr'));
+        dataItem.set('IsSelected', checked);
+    })
+</script>

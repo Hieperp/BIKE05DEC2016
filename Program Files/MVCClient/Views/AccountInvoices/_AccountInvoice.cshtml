@@ -1,0 +1,310 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.SalesTasks.AccountInvoiceViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.AccountInvoiceID)
+        @Html.HiddenFor(model => model.TotalQuantity)
+        @Html.HiddenFor(model => model.TotalAmount)
+        @Html.HiddenFor(model => model.TotalVATAmount)
+        @Html.HiddenFor(model => model.TotalGrossAmount)
+        @Html.HiddenFor(model => model.AverageDiscountPercent)
+
+        @Html.HiddenFor(model => model.SubmitTypeOption)
+        
+        <div id="popupWindow"></div>
+
+        <div class="div-main">
+
+            <div class="div-left">
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceNo, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceNo).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.VATInvoiceSeries, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceSeries).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATInvoiceSeries, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="div-right">
+                <div class="contract-separator">
+                    <div id="customer-div" class="customer-background">
+                        @Html.Partial("~/Views/Helpers/Commons/_CustomerAutoComplete.cshtml")
+                    </div>
+                </div>
+
+
+                <div>
+                    @(Html.Kendo().Grid(Model.AccountInvoiceViewDetails)
+                        .Name("kendoGridDetails")
+                        .Columns(columns =>
+                        {
+                            columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
+
+
+                            columns.Bound(p => p.AccountInvoiceDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= AccountInvoiceDetailID #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].AccountInvoiceDetailID' value='#= AccountInvoiceDetailID #' />");
+                            columns.Bound(p => p.AccountInvoiceID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= AccountInvoiceID #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].AccountInvoiceID' value='#= AccountInvoiceID #' />");
+
+
+                            columns.Bound(p => p.SalesInvoiceDetailID).DisplayNameTitle().Filterable(false).Hidden()
+                               .ClientTemplate("#= SalesInvoiceDetailID #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].SalesInvoiceDetailID' value='#= SalesInvoiceDetailID #' />");
+
+
+                            columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(200)
+                                .ClientFooterTemplate("Tổng cộng:")
+                                .ClientTemplate("<div class = 'multiline-grid'> #= CommodityName #</div>" +
+                                        "<div> #= CommodityCode #</div>" +
+                                        //"<div> #= ChassisCode #</div>" +
+                                        //"<div class = 'multiline-grid'> #= EngineCode #</div>" +
+                                        //"<div class = 'multiline-grid'> #= ColorCode #</div>" +
+                                        "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
+
+                            columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
+
+
+                            columns.Bound(p => p.ChassisCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= ChassisCode #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].ChassisCode' value='#= ChassisCode #' />");
+                            columns.Bound(p => p.EngineCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= EngineCode #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].EngineCode' value='#= EngineCode #' />");
+                            columns.Bound(p => p.ColorCode).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= ColorCode #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].ColorCode' value='#= ColorCode #' />");
+
+                            
+                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Quantity) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");
+                            columns.Bound(p => p.ListedPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                               .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', ListedPrice) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].ListedPrice' value='#= ListedPrice #' />");
+
+                            columns.Bound(p => p.DiscountPercent).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                               .Format("{0:n1}%")
+                               .ClientFooterTemplate("#= kendo.format('{0:n1}%', average) #")
+                               .ClientTemplate("#= kendo.format('{0:n1}%', DiscountPercent) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].DiscountPercent' value='#= DiscountPercent #' />");
+
+                            columns.Bound(p => p.UnitPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', UnitPrice) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].UnitPrice' value='#= UnitPrice #' />");
+
+                            columns.Bound(p => p.Amount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', Amount) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].Amount' value='#= Amount #' />");
+
+                            columns.Bound(p => p.VATPercent).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
+                                .Format("{0:n0}")
+                                .ClientTemplate("#= kendo.format('{0:n0}%', VATPercent) #" +
+                                    "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].VATPercent' value='#= VATPercent #' />");
+                            columns.Bound(p => p.VATAmount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', VATAmount) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].VATAmount' value='#= VATAmount #' />");
+
+                            columns.Bound(p => p.GrossPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                               .Format("{0:n0}")
+                               .ClientTemplate("#= kendo.format('{0:n0}', GrossPrice) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].GrossPrice' value='#= GrossPrice #' />");
+
+                            columns.Bound(p => p.GrossAmount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                                .Format("{0:n0}")
+                                .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
+                                .ClientTemplate("#= kendo.format('{0:n0}', GrossAmount) #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].GrossAmount' value='#= GrossAmount #' />");
+
+                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+
+                            columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
+                        })
+                        .Filterable()
+                        .Navigatable()
+                        .ToolBar(toolbar =>
+                        {
+                            if (Model.Editable)
+                            {
+                                toolbar.Custom().Text("Chọn phiếu bán hàng").Url("#").HtmlAttributes(new { onclick = "GetPendingSalesInvoices()" });
+                            }
+                            else
+                            {//Add a functionless button for display purpose only
+                                toolbar.Template(
+                                    @<text>
+                                        <div>
+                                            @(Html.Kendo().Button()
+                                                .Name("iconButton")
+                                                .HtmlAttributes(new { type = "button" })
+                                                .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
+                                            )
+                                        </div>
+                                    </text>);
+                            }
+                        })
+
+
+                        .Editable(editable => { editable.Enabled(Model.Editable); editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true).CreateAt(GridInsertRowPosition.Bottom); })
+                        .Selectable(settings =>
+                        {
+                            settings.Mode(GridSelectionMode.Multiple);
+                            settings.Type(GridSelectionType.Row);
+                        })
+                        .Events(events =>
+                        {
+                            events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
+                        })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Model(model =>
+                            {
+                                model.Id(x => x.AccountInvoiceDetailID);
+                                model.Field(m => m.AccountInvoiceDetailID).DefaultValue(0);
+                                model.Field(m => m.AccountInvoiceID).DefaultValue(@Model.AccountInvoiceID);
+                                model.Field(m => m.Quantity).DefaultValue(0);
+                                model.Field(m => m.DiscountPercent).DefaultValue(0);
+                            })
+                            .Events(events =>
+                            {
+                                events.Error("kendGrid_ErrorHandler");
+                            })
+                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
+                            .Aggregates(a => a.Add(x => x.Amount).Sum())
+                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
+                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
+)
+                    )
+
+
+
+
+                    <div class="panel-div">
+                        @(Html.Kendo().PanelBar()
+                            .Name("IntroPanelBar")
+                            .Items(items =>
+                            {
+                                items.Add()
+                                    .Text("Thông tin khác")
+                                    .Selected(true)
+                                    .Expanded(false)
+                                    .Content(@<text>
+                                        <div class="div-panel-left">
+                                            <div class="div-row"> 
+                                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                            <div class="div-row">
+                                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
+                                                <div class="div-input">
+                                                    @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
+                                                </div>
+                                                <div class="div-validation-message">
+                                                    @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="div-panel-right">
+                                            @Html.Partial("~/Views/Helpers/Commons/_PreparedPersonDropDown.cshtml")
+                                            @Html.Partial("~/Views/Helpers/Commons/_ApproverDropDown.cshtml")
+                                        </div>
+
+                                    </text>).HtmlAttributes(new { @class = "panel-class" });
+                            })
+                        )
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="div-button">
+                @if (Model.Editable)
+                {
+                    @Html.HiddenFor(model => model.PrintAfterClosedSubmit)
+                    <button id="closedSubmitButton" type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu hóa đơn </button>
+                    <button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+                }
+                else
+                {
+                    <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+                    <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
+                }
+            </div>
+            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        </div>
+    }
+
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
+
+
+<script type="text/javascript">
+
+    function GetPendingSalesInvoices() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingSalesInvoices", "AccountInvoices")", "Chọn phiếu bán hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+        });
+    }
+
+</script>
+
+<style type="text/css">
+    .k-event {
+        min-height: 48px;
+        height: 48px;
+    }
+</style>

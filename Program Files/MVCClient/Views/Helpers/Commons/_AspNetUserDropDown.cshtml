@@ -1,0 +1,12 @@
+﻿@model MVCClient.ViewModels.Helpers.IAspNetUserDropDownViewModel
+
+<div class="div-row">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label1" })
+        <div class="div-input">
+            @Html.Kendo().DropDownListFor(m => m.UserID).BindTo(Model.AspNetUserDropDown).HtmlAttributes(new { @class = "input-class1" })
+            @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+

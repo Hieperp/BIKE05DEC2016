@@ -1,0 +1,109 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.SalesTasks.ServiceContractViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="popupWindow" style="position: absolute"></div>
+    
+    @Html.HiddenFor(model => model.ServiceContractID);
+    @Html.HiddenFor(model => model.SalesInvoiceDetailID);
+    @Html.HiddenFor(model => model.PurchaseDate);
+    
+    @Html.HiddenFor(model => model.CustomerID);
+    @Html.HiddenFor(model => model.CustomerName);
+    @Html.HiddenFor(model => model.CustomerBirthday);
+    @Html.HiddenFor(model => model.CustomerTelephone);
+    @Html.HiddenFor(model => model.CustomerAddressNo);
+    @Html.HiddenFor(model => model.CustomerEntireTerritoryEntireName);
+    
+    @Html.HiddenFor(model => model.CommodityID);
+    @Html.HiddenFor(model => model.CommodityCode);
+    @Html.HiddenFor(model => model.CommodityName);
+    @Html.HiddenFor(model => model.ChassisCode);
+    @Html.HiddenFor(model => model.EngineCode);
+    @Html.HiddenFor(model => model.ColorCode);
+
+    @Html.HiddenFor(model => model.BeginningDate);
+    @Html.HiddenFor(model => model.EndingDate);
+    @Html.HiddenFor(model => model.BeginningMeters);
+    @Html.HiddenFor(model => model.EndingMeters);
+    
+
+    <div>
+        @(Html.Kendo().Grid<MVCModel.Models.ServiceContractIndex>()
+            .Name("kendoGridIndex")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.ServiceContractID).DisplayNameTitle().Hidden();
+                columns.Bound(p => p.LocationCode).Title("CN").Width(3);
+                columns.Bound(p => p.EntryDate).Title("Ngày").Format("{0:dd/MM/yyyy}").Width(40);
+                columns.Bound(p => p.CustomerDescription).Title("Khách hàng").Width(350);
+                columns.Bound(p => p.CommodityName).Title("Xe").Width(180);
+                columns.Bound(p => p.ChassisCode).Title("Số khung").Width(110);
+                columns.Bound(p => p.EngineCode).Title("Số máy").Width(50);
+                columns.Bound(p => p.LicensePlate).Title("Biển số").Width(100);
+                columns.Bound(p => p.AgentName).Title("Đại lý").Width(100);
+                columns.Bound(p => p.PurchaseDate).Title("Mua").Format("{0:dd/MM/yyyy}").Width(40);
+
+                columns.Template(model => null).Width(120)
+                    .ClientTemplate("<a class='k-button' style='padding-left:5px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "ServiceContracts", action = "Edit" }) + "/#= ServiceContractID #'><span class='k-icon k-edit'></span></a> <a class='k-button' style='padding-left:0px; padding-right:0px; min-width:28px; width:28px' href='" + Url.RouteUrl("Default", new { controller = "ServiceContracts", action = "Delete" }) + "/#= ServiceContractID #'><span class='k-icon k-delete'></span></a>");
+
+            })
+            .ToolBar(toolbar => toolbar.Template("<a class='k-button k-button-icontext k-grid-add' href='javascript:void(0)' onClick='createWizard()'>Create</a>"))
+            .Pageable()
+            .Groupable()
+            .Filterable()
+            .Selectable()
+            .Sortable()
+            .Events(e =>
+            {
+                e.DataBound("hightLightSelectedRow");                                
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetServiceContractIndexes", "ServiceContractsApi"))
+                .Sort(sort =>
+                    {
+                        sort.Add(p => p.EntryDate).Descending();
+                        sort.Add(p => p.ServiceContractID).Descending();
+                    })
+                //.Events(events => events.Error("onError"))
+                .PageSize(20)
+                .Model(model =>
+                {
+                    model.Id(x => x.ServiceContractID);
+                    model.Field(m => m.ServiceContractID).DefaultValue(0);
+                })                
+                .ServerOperation(true)
+                ).HtmlAttributes(new { @class = "grid-class" }))
+    </div>
+
+    <div class="div-button">
+        <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "ServiceContracts")" style="display:none" value="Save" class="k-button" />
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ServiceContractID").val("0");
+    });
+
+
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("ServiceContractID", @ViewBag.SelectedEntityID);
+        });
+    }
+
+    function createWizard() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("CreateWizard", "ServiceContracts")", "Chọn xe", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+        });
+    }
+</script>

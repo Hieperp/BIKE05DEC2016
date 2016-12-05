@@ -1,0 +1,68 @@
+﻿@model MVCClient.ViewModels.Helpers.ILocationAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.SourceLocationID)
+
+<div class="div-row3 warehouse-lmargin" style="padding-top: 34px;">
+    <div class="div-input" style="margin-left: 0px;">
+        @(Html.Kendo().AutoCompleteFor(model => model.LocationName)
+            .Name("LocationName")
+            .DataTextField("Name")
+            .Filter("contains")
+            .Placeholder("Chọn kho xuất...")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("SearchLocationsByName", "LocationsApi").Data(@<text>
+
+                        function(e) {
+                        return {
+                            filterLocationID: requireConfig.pageOptions.FilterLocationID,
+                            searchText: $("#LocationName").data("kendoAutoComplete").value()
+                        };}
+
+                    </text>);//Send parameter to controller search action
+
+                })
+                .ServerFiltering(true);
+            })
+            .Events(e =>
+            {
+                e.Select("Location_Select");
+            })
+            .HtmlAttributes(new { @class = "input-class1" })
+        )
+
+        <input id="LocationNameTemp" name="LocationNameTemp" value="@Model.LocationName" type="hidden" class="k-textbox" />
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $("#LocationName").focusout(function () {
+        $("#LocationName").val($("#LocationNameTemp").val());
+    });
+
+    Location_Select = function (e) { //This _LocationAutoComplete.cshtml is used for TransferOrder only, so this js is also code specific for use with this TransferOrder only
+        var dataItem = e.sender.dataItem(e.item.index());
+
+        $("#LocationNameTemp").val(dataItem.Name);
+
+        if ($("#SourceLocationID").val() != dataItem.LocationID) {
+            $("#SourceLocationID").val(dataItem.LocationID);
+
+            //$("#kendoGridDetails").data('kendoGrid').dataSource.data([]); //This will remove the grid quickly, BUT it does not raise event to call requiredJs module for update Model Total Properties
+
+            var gridDataSource = $("#kendoGridDetails").data("kendoGrid").dataSource;
+            var raw = gridDataSource.data();
+            var length = raw.length;
+
+            var i;
+            for (i = length - 1; i >= 0; i--) {
+                gridDataSource.remove(raw[i]);
+            }
+        }
+    }
+
+</script>

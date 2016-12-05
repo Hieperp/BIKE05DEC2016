@@ -1,0 +1,42 @@
+﻿@model MVCDTO.StockTasks.StockTransferPrimitiveDTO
+
+<div class="panel-div">
+    @(Html.Kendo().PanelBar()
+            .Name("IntroPanelBar")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text("Thông tin khác")
+                    .Selected(true)
+                    .Expanded(false)
+                    .Content(@<text>
+                        <div class="div-panel-left">
+                            <div class="div-row">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label1" })
+                                <div class="div-input">
+                                    @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class1" })
+                                </div>
+                                <div class="div-validation-message">
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="div-row">
+                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
+                                <div class="div-input">
+                                    @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
+                                </div>
+                                <div class="div-validation-message">
+                                    @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <div class="div-panel-right">                            
+                            @Html.Partial("~/Views/Helpers/Commons/_PreparedPersonDropDown.cshtml")
+                            @Html.Partial("~/Views/Helpers/Commons/_ApproverDropDown.cshtml")
+                        </div>
+
+                    </text>).HtmlAttributes(new { @class = "panel-class" });
+            })
+    )
+</div>

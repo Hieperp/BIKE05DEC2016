@@ -1,0 +1,24 @@
+﻿@model MVCDTO.BaseDTO
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.InActive)
+
+        string warningMessage = Model.InActive ? "vô hiệu" : "phục hồi";
+        string imgSrc = "~/Content/Images/New/" + (Model.InActive ? "void32m.png" : "Undo-icon32.png");
+        
+        
+        <div id="div-DeleteConfirm">
+            <label>Vui lòng xác nhận @warningMessage dữ liệu đang treo.</label>
+            <img src="~/Content/Images/New/alert1.png" alt="Alert" />
+        </div>
+
+        <div class="div-button">
+            <button type="submit" class="k-button custom-button"> <img src="@Url.Content(imgSrc)" /> Xác nhận @warningMessage dữ liệu </button>
+        </div>
+
+    }
+</div>

@@ -1,0 +1,185 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.CommonTasks.CustomerViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="div-main">
+
+            @Html.HiddenFor(model => model.CustomerID)
+
+            <div class="div-left">
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.Name).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.OfficialName, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.OfficialName).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.OfficialName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DatePickerFor(model => model.Birthday).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    <div class="div-label">
+                        @Html.LabelFor(model => model.VATCode, htmlAttributes: new { @class = "control-label-left" })
+                    </div>
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.VATCode).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VATCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    <div class="div-label">
+                        @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label-left" })
+                    </div>
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.Telephone).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    <div class="div-label">
+                        @Html.LabelFor(model => model.Facsimile, htmlAttributes: new { @class = "control-label-left" })
+                    </div>
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.Facsimile).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.Facsimile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.AttentionName, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.AttentionName).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.AttentionName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.AttentionTitle, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.AttentionTitle).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.AttentionTitle, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="div-right">               
+                    <div class="div-panel-left">
+                        @Html.Partial("~/Views/Helpers/Commons/_EntireTerritoryAutoComplete.cshtml")
+                        @Html.Partial("~/Views/Helpers/Commons/_CustomerCategoryDropDown.cshtml")
+                        @Html.Partial("~/Views/Helpers/Commons/_CustomerTypeDropDown.cshtml")
+                    </div>
+
+                    <div class="div-panel-right">
+                        <div class="div-row">
+                            @Html.LabelFor(model => model.AddressNo, htmlAttributes: new { @class = "control-label1" })
+                            <div class="div-input">
+                                @Html.Kendo().MaskedTextBoxFor(model => model.AddressNo).HtmlAttributes(new { @class = "input-class1" })
+                            </div>
+                            <div class="div-validation-message">
+                                @Html.ValidationMessageFor(model => model.AddressNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>                                               
+
+                        <div class="div-row">
+                            @Html.LabelFor(model => model.LimitAmount, htmlAttributes: new { @class = "control-label1" })
+                            <div class="div-input">
+                                @Html.Kendo().NumericTextBoxFor(model => model.LimitAmount).Format("{0:n0}").Decimals(0).HtmlAttributes(new { @class = "input-class1" })
+                            </div>
+                            <div class="div-validation-message">
+                                @Html.ValidationMessageFor(model => model.LimitAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                
+                <div style="margin-top:10px; clear:both">
+                    @(Html.Kendo().PanelBar()
+                    .Name("IntroPanelBar")
+                    .Items(items =>
+                    {
+                        items.Add()
+                            .Text("Thông tin khác")
+                            .Selected(true)
+                            .Expanded(false)
+                            .Content(@<text>
+                                <div class="div-panel-left">
+                                    <div class="div-row">
+                                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
+                                        <div class="div-input">
+                                            @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
+                                        </div>
+                                        <div class="div-validation-message">
+                                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="div-row">
+                                        @Html.LabelFor(model => model.IsCustomer, htmlAttributes: new { @class = "control-label1" })
+                                        <div class="div-input">
+                                            @Html.EditorFor(model => model.IsCustomer)
+                                        </div>
+                                        <div class="div-validation-message">
+                                            @Html.ValidationMessageFor(model => model.IsCustomer, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="div-row">
+                                        @Html.LabelFor(model => model.IsSupplier, htmlAttributes: new { @class = "control-label1" })
+                                        <div class="div-input">
+                                            @Html.EditorFor(model => model.IsSupplier)
+                                        </div>
+                                        <div class="div-validation-message">
+                                            @Html.ValidationMessageFor(model => model.IsSupplier, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="div-row">
+                                        @Html.LabelFor(model => model.IsFemale, htmlAttributes: new { @class = "control-label1" })
+                                        <div class="div-input">
+                                            @Html.EditorFor(model => model.IsFemale)
+                                        </div>
+                                        <div class="div-validation-message">
+                                            @Html.ValidationMessageFor(model => model.IsFemale, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </text>).HtmlAttributes(new { @class = "panel-class" });
+                    })
+                    )
+                </div>
+            </div>
+        </div>
+
+
+        <div class="div-button">
+            <input id="submitButton" type="submit" value="Save" class="k-button custom-button" />
+        </div>
+        @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+
+    }
+
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/CommonTasks/Customer.js")"></script>

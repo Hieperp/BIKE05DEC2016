@@ -1,0 +1,121 @@
+﻿@using MVCModel.Models;
+@using MVCClient.Configuration;
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+
+@(Html.Kendo().Grid<PendingSalesInvoice>()
+    .Name("gridPendingSalesInvoices")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CustomerName).Title("Khách hàng").Width(15);
+        columns.Bound(c => c.CommodityCode).Title("Mã xe, phụ tùng, dv").Width(15);
+        columns.Bound(c => c.CommodityName).Title("Tên xe, phụ tùng, dv").Width(22);
+        columns.Bound(c => c.ChassisCode).Title("Số khung").Width(15);
+        columns.Bound(c => c.EngineCode).Title("Số máy").Width(12);
+        columns.Bound(c => c.ColorCode).Title("Mã màu").Width(7);
+        columns.Bound(c => c.Quantity).Title("SL").Format("{0:n0}").Width(5).HtmlAttributes(new { @class = "grid-number-column" });
+        columns.Bound(c => c.GrossPrice).Title("Đơn giá").Format("{0:n0}").Width(10).HtmlAttributes(new { @class = "grid-number-column" });
+        columns.Bound(c => c.GrossAmount).Title("Thành tiền").Format("{0:n0}").Width(10).HtmlAttributes(new { @class = "grid-number-column" });
+
+        columns.Template(t => { }).Title("&nbsp;").ClientTemplate("<input class='IsSelected' #= IsSelected ? checked='checked':'' #  type='checkbox' />").Width(3);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label class="category-label" for="category">Tìm khách hàng, xe, phụ tùng, hoặc số khung, số máy:</label>
+                <input id="filterText" class="k-textbox" style="text-align: center;" onkeyup="onFilterTextKeyUp()" />
+                @Html.Kendo().DatePicker().Name("EntryDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingSalesInvoices")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
+
+                @(Html.Kendo().DropDownList()
+                    .Name("SalesInvoiceTypeID")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .HtmlAttributes(new { @style = "width: 125px; text-align: center; " })
+                    .BindTo(new List<SelectListItem>()
+                      {
+                            new SelectListItem { Text = "[Tất cả]", Value = "1"},
+                            new SelectListItem { Text = "Xe máy", Value = "10"},
+                            new SelectListItem { Text = "Phụ tùng", Value = "20"},
+                            new SelectListItem { Text = "Dịch vụ", Value = "30"}
+                      })
+                    .Events(e => e.Change("reReadPendingSalesInvoices"))
+                )
+
+            </div>
+        </text>);
+    })
+    .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+    .DataSource(ds => ds.Ajax()
+    .Read(read => read.Action("GetPendingSalesInvoices", "AccountInvoiceApi").Data(@<text>
+            function(e) {
+
+                var accountInvoiceJSON = window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource.data().toJSON();
+                
+                return {
+                    salesInvoiceID: 0,
+                    locationID: window.parent.requireConfig.pageOptions.LocationID,
+                    salesInvoiceTypeID: $("#SalesInvoiceTypeID").val(),
+                    entryDate: $("#EntryDate").val(),
+                    accountInvoiceID: window.parent.$("#AccountInvoiceID").val(),                    
+                    salesInvoiceDetailIDs : accountInvoiceJSON.map(function(elem){return elem.SalesInvoiceDetailID;}).join(",")
+            };}
+
+    </text>))
+    .ServerOperation(false)) //If this is TRUE: Apply filter to datasource will call Ajax to get new datasource result. If this is FALSE: filter will run on client
+    .Selectable()
+)
+
+
+<div class="background-bar" style="height: 45px;">
+    <div class="popup-button-bar">
+        <input id="okButton" type="button" value="OK" class="k-button" onclick="okButton_Click()" />
+        <input id="cancelButton" type="button" value="Cancel" class="k-button" onclick="cancelButton_Click()" />
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/Helpers/SalesTasks/accountInvoiceAddPendingSalesInvoice.js")"></script>
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridPendingSalesInvoices").data("kendoGrid").dataSource);
+    }
+
+    $('#gridPendingSalesInvoices').on('click', '.IsSelected', function () {
+        var checked = $(this).is(':checked');
+        var grid = $('#gridPendingSalesInvoices').data().kendoGrid;
+        var dataItem = grid.dataItem($(this).closest('tr'));
+        dataItem.set('IsSelected', checked);
+    })
+</script>
+
+
+
+<script>
+    function reReadPendingSalesInvoices() { $("#gridPendingSalesInvoices").data("kendoGrid").dataSource.read() }
+
+    function onFilterTextKeyUp() {
+        var filterText = $("#filterText").val(), gridDetails = $("#gridPendingSalesInvoices").data("kendoGrid");
+
+        if (filterText && filterText.length >= "@SettingsManager.AutoCompleteMinLenght") {
+
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "CustomerName", operator: "contains", value: filterText },
+                    { field: "CommodityCode", operator: "contains", value: filterText },
+                    { field: "CommodityName", operator: "contains", value: filterText },
+                    { field: "ChassisCode", operator: "contains", value: filterText },
+                    { field: "EngineCode", operator: "contains", value: filterText }
+                  //{ field: "IsSelected", operator: "eq", value: true }
+                ]
+            });
+
+
+        } else {
+            gridDetails.dataSource.filter({});
+        }
+    }
+</script>
+

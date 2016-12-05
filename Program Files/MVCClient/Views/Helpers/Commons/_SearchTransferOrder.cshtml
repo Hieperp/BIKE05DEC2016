@@ -1,0 +1,79 @@
+﻿@using MVCDTO.StockTasks;
+@using MVCClient.Configuration;
+
+@using (Html.BeginForm())
+{
+    @(Html.Kendo().Grid<PartTransferPrimitiveDTO>()
+        .Name("gridTransferOrders")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.TransferOrderReference).DisplayNameTitle().Width(80);
+            columns.Bound(c => c.TransferOrderEntryDate).DisplayNameTitle().Width(80).Format("{0:" + SettingsManager.DateFormat + "}");
+            columns.Bound(c => c.TransferOrderRequestedDate).DisplayNameTitle().Width(80).Format("{0:" + SettingsManager.DateFormat + "}");
+            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập lệnh điều hàng</label>
+                    <input id="transferOrdersSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="transferOrdersSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
+        .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("SearchTransferOrders", "VehicleTransferOrdersApi").Data("onAdditionalGetTransferOrders"))
+        .ServerOperation(true))
+        .Selectable()
+    )
+
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="okButton" type="button" value="Điều hàng theo lệnh" class="k-button" onclick="okButton_Click()" />
+            @*<input id="okWOSelectButton" type="button" value="Tự điều hàng" class="k-button" onclick="okWOSelectButton_Click()" /> PHAN MEM KHONG CAN DIEU CHINH GI HET, CHI CAN ACTIVE CAI CAU LENH NAY: THI SE CHO PHEP TU Tự điều hàng *@
+            <input id="cancelButton" type="button" value="Thoát" class="k-button" onclick="cancelButton_Click()" />
+        </div>
+    </div>
+
+}
+
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/StockTasks/stockTransferCreateWizard.js")"></script>
+
+
+<script type="text/javascript">
+
+    function onAdditionalGetTransferOrders(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            commodityTypeIDList: window.parent.requireConfig.pageOptions.commodityTypeIDList,
+            searchText: $("#transferOrdersSearchBox").val()
+        };
+    }
+
+    function transferOrdersSearchBox_KeyUp() {
+        if ($("#transferOrdersSearchBox").val().length === 0 || $("#transferOrdersSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridTransferOrders").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#gridTransferOrders").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>
+
+
+
+
+<script type="text/javascript">
+    function okButton_Click() {
+        handleOKEvent($("#gridTransferOrders").data("kendoGrid"));
+    }
+
+    function okWOSelectButton_Click() {
+        handleOKEvent();
+    }
+</script>
+

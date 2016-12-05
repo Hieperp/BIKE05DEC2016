@@ -1,0 +1,40 @@
+﻿@using MVCClient.Configuration
+@model MVCClient.ViewModels.StockTasks.PartTransferViewModel
+
+<div id="popupWindow" style="position: absolute"></div>
+
+
+@Html.HiddenFor(model => model.TransferOrderID)
+@Html.HiddenFor(model => model.TransferOrderReference)
+@Html.HiddenFor(model => model.TransferOrderEntryDate)
+@Html.HiddenFor(model => model.TransferOrderRequestedDate)
+
+@Html.HiddenFor(model => model.WarehouseID)
+@Html.HiddenFor(model => model.WarehouseName)
+@Html.HiddenFor(model => model.WarehouseLocationName)
+@Html.HiddenFor(model => model.WarehouseLocationTelephone)
+@Html.HiddenFor(model => model.WarehouseLocationFacsimile)
+@Html.HiddenFor(model => model.WarehouseLocationAddress)
+
+
+<div class="div-button">
+    <input id="submitCreateWizard" type="submit" formaction="@ViewBag.urlAction" style="display:none" class="k-button" />
+</div>
+
+
+<script type="text/javascript">
+    function hightLightSelectedRow(e) {
+        require(["kindexGrid"], function (kindexGrid) {
+            var kindexGridInstance = new kindexGrid("kendoGridIndex");
+            kindexGridInstance.setSelectedRow("StockTransferID", @ViewBag.SelectedEntityID);
+        });
+    }
+
+    function createWizard() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#popupWindow"), "@ViewBag.urlAction", "Chọn lệnh điều hàng", "@SettingsManager.PopupWidthSmall", "@SettingsManager.PopupHeightSmall");
+        });
+    }
+</script>
+

@@ -1,0 +1,109 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.ISupplierAutoCompleteViewModel
+
+<div id="popupWindow"></div>
+
+<div class="customer-lmargin" style="padding-top: 60px;">
+    <div class="div-row3">    
+        <div class="div-input" style="margin-left: 0px;">
+            @(Html.Kendo().AutoCompleteFor(model => model.CustomerName)
+                            .Name("CustomerName")
+                            .DataTextField("Name")
+                            .Filter("contains")
+                            .MinLength(SettingsManager.AutoCompleteMinLenght)
+                            .Placeholder("Chọn nhà cung cấp...")
+                            .HeaderTemplate("<div class=\"dropdown-header custom-header\">" +
+                                    "<span class=\"k-widget k-header\">Tên</span>" +
+                                    "<span class=\"k-widget k-header\">Ngày sinh</span>" +
+                                    "<span class=\"k-widget k-header\">Điện thoại</span>" +
+                                    "<span class=\"k-widget k-header\">Địa chỉ</span>" +
+                                    "</div>")
+                            .Template("<div class=\"dropdown-body\">" +
+                                    "<span class=\"k-state-default\"><p>#: data.Name #</p></span>" +
+                                    "<span class=\"k-state-default\"><p>#: kendo.toString(new Date(parseInt(data.Birthday.replace(/[A-Za-z$--/]/g, ''))), '" + SettingsManager.DateFormat + "') #</p></span>" +
+                                    "<span class=\"k-state-default\"><p>#: data.Telephone #</p></span>" +
+                                    "<span class=\"k-state-default\"><p>#: data.AddressNo + data.EntireTerritoryEntireName #</p></span>" +
+                                    "</div>")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SearchSuppliersByName", "CustomersApi").Data(@<text>
+
+                                        function(e) {
+                                        return {
+                                            searchText: $("#CustomerName").data("kendoAutoComplete").value()
+                                        };}
+
+                                    </text>);//Send parameter to controller search action
+                                })
+                                .ServerFiltering(true);
+                            })
+                            .Events(e =>
+                            {
+                                e.Select("supplier_Select");
+                                e.DataBound("customersDataBound");
+                            })
+                            .HtmlAttributes(new { @class = "input-class1" })
+            )
+
+            <input id="SupplierNameTemp" name="SupplierNameTemp" value="@Model.CustomerName" type="hidden" class="k-textbox" />
+            <input id="CustomerPopupName" name="CustomerPopupName" value="" type="hidden" class="k-textbox" />
+        </div>
+
+        @Html.Partial("~/Views/Helpers/Commons/_SupplierDescription.cshtml")
+    </div>
+</div>
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralCustomersAutoComplete.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/CustomCss/CustomersAutoComplete.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+
+    $("#CustomerName").keypress(function (e) {
+        if (e.charCode == 43) { // 43 = +
+            $("#CustomerPopupName").val($("#CustomerName").val());
+            //if (confirm("Bạn có muốn thêm mới nhà cung cấp không?")) {
+                var popupWindow = $("#popupWindow");
+                var mywindow = CreatePopUp("Thêm nhà cung cấp", "1000px", "550px", popupWindow);
+
+                if (mywindow != null) {
+                    var url = '@Url.Action("CreatePopup", "Customers")';
+
+                    mywindow.center().open();
+                    mywindow.refresh(url);
+                }
+            //}
+            return false;
+        }
+    });
+
+    $("#CustomerName").focusout(function () {
+        $("#CustomerName").val($("#SupplierNameTemp").val());
+    });
+
+    supplier_Select = function (e) {        
+        var dataItem = this.dataItem(e.item.index());
+
+        $("#SupplierID").val(dataItem.CustomerID);
+        $("#CustomerAttentionName").val(dataItem.AttentionName);
+        $("#CustomerTelephone").val(dataItem.Telephone);
+        $("#CustomerAddressNo").val(dataItem.AddressNo);
+        $("#CustomerEntireTerritoryEntireName").val(dataItem.EntireTerritoryEntireName);
+
+        $("#label-attentionName").text(dataItem.AttentionName);
+        $("#label-telephone").text(dataItem.Telephone);
+        $("#TerritoriesDescriptions").text(dataItem.AddressNo + " " + dataItem.EntireTerritoryEntireName);
+
+        $("#SupplierNameTemp").val(dataItem.Name);
+    }
+
+    customersDataBound = function (e) {
+        $(".k-animation-container:has(#CustomerName-list)").css("width", "743");
+        $("#CustomerName-list").css("width", "743");
+        $("#CustomerName-list").css("height", $("#CustomerName-list").height() + 1);
+    }
+    
+</script>
+

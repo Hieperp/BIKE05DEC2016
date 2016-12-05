@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C2A34B2-47C5-4E1B-B2B4-968FEB777DB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MVCDTO</RootNamespace>
+    <AssemblyName>MVCDTO</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDTO.cs" />
+    <Compile Include="BaseWithDetailDTO.cs" />
+    <Compile Include="CommonTasks\CommodityDTO.cs" />
+    <Compile Include="CustomValidation.cs" />
+    <Compile Include="Helpers\AmountDetailDTO.cs" />
+    <Compile Include="Helpers\AmountDTO.cs" />
+    <Compile Include="Helpers\DiscountVATAmountDetailDTO.cs" />
+    <Compile Include="Helpers\DiscountVATAmountDTO.cs" />
+    <Compile Include="Helpers\QuantityDetailDTO.cs" />
+    <Compile Include="Helpers\QuantityDTO.cs" />
+    <Compile Include="Helpers\VATAmountDetailDTO.cs" />
+    <Compile Include="Helpers\VATAmountDTO.cs" />
+    <Compile Include="IPrimitiveDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesTasks\AccountInvoiceDetailDTO.cs" />
+    <Compile Include="SalesTasks\AccountInvoiceDTO.cs" />
+    <Compile Include="StockTasks\GoodsReceiptDetailDTO.cs" />
+    <Compile Include="StockTasks\GoodsReceiptDTO.cs" />
+    <Compile Include="PurchaseTasks\PurchaseInvoiceDetailDTO.cs" />
+    <Compile Include="SalesTasks\QuotationDetailDTO.cs" />
+    <Compile Include="SalesTasks\QuotationDTO.cs" />
+    <Compile Include="SalesTasks\ServiceContractDTO.cs" />
+    <Compile Include="SalesTasks\SalesInvoiceDetailDTO.cs" />
+    <Compile Include="PurchaseTasks\PurchaseOrderDetailDTO.cs" />
+    <Compile Include="PurchaseTasks\PurchaseInvoiceDTO.cs" />
+    <Compile Include="CommonTasks\CustomerDTO.cs" />
+    <Compile Include="SalesTasks\SalesInvoiceDTO.cs" />
+    <Compile Include="PurchaseTasks\PurchaseOrderDTO.cs" />
+    <Compile Include="StockTasks\InventoryAdjustmentDetailDTO.cs" />
+    <Compile Include="StockTasks\InventoryAdjustmentDTO.cs" />
+    <Compile Include="StockTasks\StockTransferDetailDTO.cs" />
+    <Compile Include="StockTasks\StockTransferDTO.cs" />
+    <Compile Include="StockTasks\TransferOrderDTO.cs" />
+    <Compile Include="StockTasks\TransferOrderDetailDTO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MVCBase\MVCBase.csproj">
+      <Project>{8a85caec-2aa7-4ac4-a5fa-65269ab99751}</Project>
+      <Name>MVCBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVCModel\MVCModel.csproj">
+      <Project>{eab6fc2d-d96a-41ae-9958-053ddb440155}</Project>
+      <Name>MVCModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,47 @@
+﻿@model MVCDTO.StockTasks.TransferOrderPrimitiveDTO
+
+@Html.HiddenFor(model => model.TransferOrderID)
+@Html.HiddenFor(model => model.StockTransferTypeID)
+@Html.HiddenFor(model => model.TotalQuantity)
+@Html.HiddenFor(model => model.Approved)
+
+@Html.HiddenFor(model => model.SubmitTypeOption)
+
+<div class="div-left">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+        <div class="div-input">
+            @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+            @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group1">
+        @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+        <div class="div-input">
+            @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group1">
+        @Html.LabelFor(model => model.RequestedDate, htmlAttributes: new { @class = "control-label-left" })
+        <div class="div-input">
+            @Html.Kendo().DateTimePickerFor(model => model.RequestedDate).HtmlAttributes(new { @class = "input-class" })
+            @Html.ValidationMessageFor(model => model.RequestedDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+
+<div class="div-right">
+
+    <div class="contract-separator">
+        <div id="warehouse-div" class="warehouse-background">
+            @Html.Partial("~/Views/Helpers/Commons/_WarehouseAutoComplete.cshtml")
+
+            @Html.Partial("~/Views/Helpers/Commons/_LocationAutoComplete.cshtml")
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,13 @@
+﻿@model MVCClient.ViewModels.Helpers.IApproverDropDownViewModel
+
+<div class="div-row">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.ApproverID, htmlAttributes: new { @class = "control-label1" })
+        <div class="div-input">
+            @Html.Kendo().DropDownListFor(m => m.ApproverID).BindTo(Model.ApproverDropDown).HtmlAttributes(new { @class = "input-class1" })            
+        </div>
+        <div class="div-validation-message">
+            @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

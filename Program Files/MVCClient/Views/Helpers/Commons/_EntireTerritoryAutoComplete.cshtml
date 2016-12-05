@@ -1,0 +1,57 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.IEntireTerritoryAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.TerritoryID)
+
+<div class="div-row">
+    <div class="form-group1">
+        @Html.LabelFor(model => model.TerritoryID, htmlAttributes: new { @class = "control-label1" })
+        <div class="div-input">
+            @(Html.Kendo().AutoCompleteFor(model => model.EntireTerritoryEntireName)
+                    .Name("EntireTerritoryEntireName")
+                    .DataTextField("EntireName")
+                    .Filter("contains")
+                    .MinLength(2)
+                    .Placeholder("Chọn khu vực...")                         
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("SearchEntireTerritoriesByName", "EntireTerritoriesApi").Data("onAdditionalEntireTerritoryData");
+                        })
+                        .ServerFiltering(true);
+                    })
+                    .Events(e =>
+                    {
+                        e.Select("entireTerritory_Select");                        
+                    })
+                    .HtmlAttributes(new { @class = "input-class1" })
+            )
+            <input id="EntireTerritoryEntireNameTemp" name="EntireTerritoryEntireNameTemp" value="@Model.EntireTerritoryEntireName" type="hidden" class="k-textbox" />
+        </div>
+        <div class="div-validation-message">
+            @Html.ValidationMessageFor(model => model.EntireTerritoryEntireName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>         
+
+<script type="text/javascript">
+
+    function onAdditionalEntireTerritoryData(e) {
+        return {//Send parameter to controller search action
+            text: $("#EntireTerritoryEntireName").data("kendoAutoComplete").value()
+        };
+    }    
+
+    $("#EntireTerritoryEntireName").focusout(function () {
+        $("#EntireTerritoryEntireName").val($("#EntireTerritoryEntireNameTemp").val());
+    });
+
+    entireTerritory_Select = function (e) {        
+        var dataItem = this.dataItem(e.item.index());
+        $("#TerritoryID").val(dataItem.TerritoryID);
+        $("#EntireTerritoryEntireNameTemp").val(dataItem.EntireName);
+    }
+</script>
+

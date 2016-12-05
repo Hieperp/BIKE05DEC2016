@@ -1,0 +1,62 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.IPromotionAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.PromotionID)
+
+<div class="form-group1">
+
+    @Html.LabelFor(model => model.PromotionCode, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @(Html.Kendo().AutoCompleteFor(model => model.PromotionCode)
+            .Name("PromotionCode")
+            .DataTextField("Code")
+            .Filter("contains")
+            .MinLength(SettingsManager.AutoCompleteMinLenght)
+            .Placeholder("Nhập chương trình khuyến mãi ...")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("SearchPromotions", "PromotionsApi").Data(@<text>
+
+                        function(e) {
+                        return {
+                        locationID: requireConfig.pageOptions.LocationID,
+                        searchText: $("#PromotionCode").data("kendoAutoComplete").value()
+                        };}
+
+                    </text>);
+                })
+                .ServerFiltering(true);
+            })
+                    .Events(e =>
+                    {
+                        e.Select("promotionCode_Select");
+                    })
+                    .HtmlAttributes(new { @class = "input-class" })
+        )
+
+        <input id="PromotionCodeTemp" name="PromotionCodeTemp" value="@Model.PromotionCode" type="hidden" class="k-textbox" />
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $("#PromotionCode").focusout(function () {
+        $("#PromotionCode").val($("#PromotionCodeTemp").val());
+    });
+
+    promotionCode_Select = function (e) {
+        var dataItem = e.sender.dataItem(e.item.index());
+
+        $("#PromotionID").val(dataItem.PromotionID);
+
+        $("#PromotionCodeTemp").val(dataItem.Code);
+    }
+
+</script>
+

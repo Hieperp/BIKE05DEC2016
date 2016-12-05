@@ -1,0 +1,65 @@
+﻿@model MVCClient.ViewModels.Helpers.IWarehouseAutoCompleteViewModel
+
+<div class="warehouse-lmargin" style="padding-top: 60px;">
+    <div class="div-row3">
+        <div class="div-input" style="margin-left: 0px;">
+            @(Html.Kendo().AutoCompleteFor(model => model.WarehouseName)
+                    .Name("WarehouseName")
+                    .DataTextField("Name")
+                    .Filter("contains")
+                    .Placeholder("Chọn kho nhập...")
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("SearchWarehousesByName", "WarehousesApi").Data(@<text>
+
+                                function(e) {
+                                return {
+                                    locationID: -1976,
+                                    searchText: $("#WarehouseName").data("kendoAutoComplete").value()
+                                };}
+
+                            </text>);//Send parameter to controller search action
+                        })
+                        .ServerFiltering(true);
+                    })
+                            .Events(e =>
+                            {
+                                e.Select("warehouse_Select");
+                            })
+                            .HtmlAttributes(new { @class = "input-class1" })
+            )
+
+            <input id="WarehouseNameTemp" name="WarehouseNameTemp" value="@Model.WarehouseName" type="hidden" class="k-textbox" />
+        </div>
+
+        @Html.Partial("~/Views/Helpers/Commons/_WarehouseDescription.cshtml")
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $("#WarehouseName").focusout(function () {
+        $("#WarehouseName").val($("#WarehouseNameTemp").val());
+    });
+
+    warehouse_Select = function (e) {
+        var dataItem = e.sender.dataItem(e.item.index());
+
+        $("#WarehouseID").val(dataItem.WarehouseID);
+        $("#WarehouseLocationTelephone").val(dataItem.LocationTelephone);
+        $("#WarehouseLocationFacsimile").val(dataItem.LocationFacsimile);
+        $("#WarehouseLocationName").val(dataItem.LocationName);
+        $("#WarehouseLocationAddress").val(dataItem.LocationAddress);
+
+        $("#label-birthday").text(dataItem.LocationFacsimile);
+        $("#label-telephone").text(dataItem.LocationTelephone);
+        $("#TerritoriesDescriptions").text(dataItem.LocationName + ", " + dataItem.LocationAddress);
+
+        $("#WarehouseNameTemp").val(dataItem.Name);
+    }
+
+</script>

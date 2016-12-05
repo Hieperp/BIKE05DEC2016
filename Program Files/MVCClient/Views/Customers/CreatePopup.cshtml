@@ -1,0 +1,20 @@
+﻿@model MVCClient.ViewModels.CommonTasks.CustomerViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";
+}
+
+@Html.Partial("_CustomerPopup")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Name").val(window.parent.$("#CustomerPopupName").val());
+    });
+</script>
+
+@section scripts
+{    
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

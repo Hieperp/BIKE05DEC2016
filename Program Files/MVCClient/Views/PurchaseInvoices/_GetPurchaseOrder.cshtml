@@ -1,0 +1,50 @@
+﻿@using MVCClient.Configuration
+@using MVCModel.Models;
+
+@(Html.Kendo().Grid<PurchaseInvoiceGetPurchaseOrder>()
+    .Name("getPurchaseOrdersGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.PurchaseOrderReference).Title("Phiếu đặt hàng").Width(100);
+        columns.Bound(c => c.PurchaseOrderEntryDate).Title("Ngày mua").Width(80).Format("{0:" + SettingsManager.DateFormat + "}");
+        columns.Bound(c => c.CustomerName).Title("Nhà cung cấp").Width(160);
+        columns.Bound(c => c.PurchaseOrderConfirmReference).Title("Số xác nhận").Width(100);
+        columns.Bound(c => c.PurchaseOrderConfirmDate).Title("Ngày xác nhận").Width(80).Format("{0:" + SettingsManager.DateFormat + "}");
+        columns.Bound(c => c.Description).Title("Diễn giải").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar" style="float: right;">
+                <label>Nhập số phiếu đặt hàng:</label>
+                <input id="purchaseOrderReferenceSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="purchaseOrderReferenceSearchBox_KeyUp()" />
+            </div>
+        </text>);
+    })
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
+        .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetPurchaseOrders", "PurchaseInvoicesApi").Data("onAdditionalGetPurchaseOrders"))
+            .ServerOperation(true)
+        )
+        .Selectable()
+)
+
+<script type="text/javascript">
+    function onAdditionalGetPurchaseOrders(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID,
+            purchaseInvoiceID: window.parent.$("#PurchaseInvoiceID").val(),
+            purchaseOrderReference: $("#purchaseOrderReferenceSearchBox").val()
+        };
+    }
+
+    function purchaseOrderReferenceSearchBox_KeyUp() {
+        if ($("#purchaseOrderReferenceSearchBox").val().length === 0 || $("#purchaseOrderReferenceSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#getPurchaseOrdersGrid").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#getPurchaseOrdersGrid").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>

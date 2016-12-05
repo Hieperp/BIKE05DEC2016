@@ -1,0 +1,83 @@
+﻿@using MVCDTO.SalesTasks
+@using MVCClient.Configuration;
+
+
+@using (Html.BeginForm())
+{
+    <div class="div-notabstrip">
+
+        <div class="tabstrip-workspace">
+
+            <div>
+                @(Html.Kendo().Grid<QuotationDetailPopupDTO>()
+                    .Name("gridQuotationDetails")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(c => c.CommodityCode).DisplayNameTitle().Width(160);
+                        columns.Bound(c => c.CommodityName).DisplayNameTitle().Width(100);
+                        columns.Bound(c => c.QuantityAvailable).DisplayNameTitle().Format("{0:n0}");
+                        columns.Bound(c => c.Quantity).DisplayNameTitle().Format("{0:n0}");
+
+                        columns.Bound(c => c.ListedPrice).DisplayNameTitle().Width(160).Format("{0:n0}");
+                        columns.Bound(c => c.DiscountPercent).DisplayNameTitle().Width(80).Format("{0:n1}");
+                        columns.Bound(c => c.UnitPrice).DisplayNameTitle().Width(80).Format("{0:n0}");
+                        columns.Bound(c => c.GrossPrice).DisplayNameTitle().Width(80).Format("{0:n0}");
+                        columns.Template(t => { }).Title("&nbsp;").ClientTemplate("<input class='IsSelected' #= IsSelected ? checked='checked':'' #  type='checkbox' />").Width(30);
+                    })
+                    .Scrollable(s => s.Height(SettingsManager.GridPopupNoTabHeight))
+                    .DataSource(ds => ds.Ajax()
+                    .Read(read => read.Action("GetQuotationDetails", "QuotationsApi").Data(@<text>
+
+                            function(e) {
+                            return {
+                            quotationID: window.parent.$("#QuotationID").val(),
+                            commodityTypeIDList: window.parent.requireConfig.pageOptions.commodityTypeIDList
+                            };}
+
+                            </text>))
+                    .ServerOperation(true))
+                    .Selectable()
+                )
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="div-popup-button">
+        <input id="okButton" type="button" value="OK" class="k-button" onclick="okButton_Click()" />
+        <input id="cancelButton" type="button" value="Cancel" class="k-button" onclick="cancelButton_Click()" />
+    </div>
+}
+
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/Helpers/SalesTasks/salesInvoiceAddFromQuotation.js")"></script>
+
+<script type="text/javascript">
+
+    function okButton_Click() {
+        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridQuotationDetails").data("kendoGrid").dataSource);
+    }
+
+    $('#gridQuotationDetails').on('click', '.IsSelected', function () {
+        var checked = $(this).is(':checked');
+        var grid = $('#gridQuotationDetails').data().kendoGrid;
+        var dataItem = grid.dataItem($(this).closest('tr'));
+        dataItem.set('IsSelected', checked);
+    })
+</script>
+
+<style type="text/css">
+    #main-popup{
+        padding: 0;
+    }
+
+    .div-notabstrip, .tabstrip-workspace{
+        margin: 0;
+        width: 900px;
+        height: 350px;
+    }
+
+
+</style>

@@ -1,0 +1,23 @@
+﻿@model MVCClient.ViewModels.Helpers.ISupplierAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.SupplierID)
+
+@Html.HiddenFor(model => model.CustomerAttentionName)
+@Html.HiddenFor(model => model.CustomerTelephone)
+@Html.HiddenFor(model => model.CustomerAddressNo)
+@Html.HiddenFor(model => model.CustomerEntireTerritoryEntireName)
+
+
+
+<div class="div-row3">    
+    <div class="div-input" style="margin-left: 0px; margin-top: 4px;">                  
+        <a href="javascript:void(0)" style="margin-left: 46px; color:black;"><img id="img-birthday" src="~/Content/Images/New/PersonIcon.png" title="Người đại diện" /> <label id="label-attentionName" class="label-description" style="width:70px;">@Model.CustomerAttentionName</label></a>
+        <a href="javascript:void(0)" style="margin-left: 2px; color:black;"><img id="img-telephone" src="~/Content/Images/New/Telephone.png" title="Điện thoại" /> <label id="label-telephone" class="label-description">@Model.CustomerTelephone</label></a>                
+    </div>
+</div>
+<div class="div-row2">
+    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+    <label id="TerritoriesDescriptions" class="label-description">@Model.CustomerAddressNo, @Model.CustomerEntireTerritoryEntireName</label>
+</div>
+
+

@@ -1,0 +1,151 @@
+﻿@using RequireJsNet
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title - Hệ thống quản lý Cửa hàng Bán xe và Dịch vụ</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
+    @Scripts.Render("~/bundles/jquery")
+
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />    
+    @*<link href="@Url.Content("~/Content/kendo/console.css")" rel="stylesheet" type="text/css" />*@
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/console.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/nmvn-function.js")"></script>
+    
+    @*<script src="@Url.Content("~/Scripts/nmvn-function-v01.js")"></script>*@
+
+    <script type="text/javascript" src="@Url.Action("GlobalJavaScriptEnums")"></script>
+
+
+    @{
+        var culture = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+    }
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/cultures/kendo.culture." + culture + ".min.js")"></script>
+    
+    <script type="text/javascript">
+        kendo.culture("@culture");        //set current culture script
+        window.xlsxUrl = { //init varible with the Url (by Url.Content helper). Because can not use Url.Content helper in pure javascript file
+            xlsxworker: '@Url.Content("~/Scripts/js-xlsx-master/xlsxworker.js")',
+            xlsxworker1: '@Url.Content("~/Scripts/js-xlsx-master/xlsxworker1.js")',
+            xlsxworker2: '@Url.Content("~/Scripts/js-xlsx-master/xlsxworker2.js")'
+        }
+    </script>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+
+    @Html.RenderRequireJsSetup(new RequireRendererConfiguration
+        {
+            // the url from where require.js will be loaded
+            RequireJsUrl = Url.Content("~/Scripts/require.js"), //~/Scripts/Components/RequireJS/require.js
+            // baseUrl to be passed to require.js, will be used when composing urls for scripts
+            BaseUrl = Url.Content("~/Scripts/"),
+            // a list of all the configuration files you want to load
+            ConfigurationFiles = new[] { "~/RequireJS.json" },
+            // root folder for your js controllers, will be used for composing paths to entrypoint
+            EntryPointRoot = "~/Scripts/",
+            // whether we should load overrides or not, used for autoBundles, disabled on debug mode
+            LoadOverrides = true,//!HttpContext.Current.IsDebuggingEnabled
+            // compute the value you want locale to have, used for i18n
+            LocaleSelector = html => System.Threading.Thread.CurrentThread.CurrentUICulture.Name.Split('-')[0],
+            // instance of IRequireJsLogger
+            Logger = null,
+            // extensability point for the config object
+            ProcessConfig = config => { },
+            // extensability point for the options object
+            ProcessOptions = options => { },
+            // value for urlArgs to be passed to require.js, used for versioning
+            UrlArgs = "" //RenderHelper.RenderAppVersion()
+        })
+
+
+
+
+
+    <div id="czDLGWindow"></div>
+
+
+    <div id="header1" style="display:none;">
+        <div id="header">
+            <h1>
+                <a href="~/Home/Index/0">Cửa hàng Bán xe và Dịch vụ do Honda Ủy nhiệm</a>
+            </h1>
+            <ul id="navlist">
+
+
+                @Html.Partial("_LoginPartial")
+
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div id="main-menu-div">
+        <div id="main-menu-container">
+            @{Html.RenderAction("MainMenu", "MenuApi");}
+        </div>
+
+        @*<div class="menu-separation"></div>*@
+    </div>
+
+    <div id="detail-menu">
+        @{Html.RenderAction("TaskMenu", "MenuApi");}
+    </div>
+
+    <div id="main" class="container body-content">
+
+        @RenderBody()
+        @*<hr />*@
+        <div id="footer" style="display: none;" >
+            <p>&copy; @DateTime.Now.Year - NMVN Informatics Co., Ltd.</p>
+        </div>
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+
+    @*Comment out: 2 code block: this is block 1 + block 2 above
+    <script src="~/Scripts/jquery.signalR-2.0.3.min.js"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+    <!--SignalR script to update the chat page and send messages.-->
+    <script src="@Url.Content("~/Scripts/chatbox.js")"></script>*@
+
+
+    <script>     
+
+        //Comment out: 2 code block: this is block 2 + block 1 above
+        //Begin chatbox variable
+        //var text = $('#lblUserName').text();
+        //var d = new Date();
+        //var userName = text.split('@@')[text.split('@@').length - 2];
+        //var userName2 = userName + '(' + d.getHours() + ':' + d.getMinutes() + ')';
+        //$('#displayname').val(userName2);
+        //End chatbox variable
+    </script>
+   
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+
+<link href="@Url.Content("~/Content/GeneralLayout.css")" rel="stylesheet" type="text/css" />

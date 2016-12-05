@@ -1,0 +1,85 @@
+﻿@using MVCClient.Configuration
+
+@model MVCClient.ViewModels.Helpers.ICommodityAutoCompleteViewModel
+
+@Html.HiddenFor(model => model.CommodityID)
+
+<div class="div-row">
+    @Html.LabelFor(model => model.CommodityName, htmlAttributes: new { @class = "control-label1" })
+    <div class="div-input">
+        @(Html.Kendo().AutoCompleteFor(model => model.CommodityName)
+            .Name("CommodityName")
+            .DataTextField("Name")
+            .Filter("contains")
+            .MinLength(SettingsManager.AutoCompleteMinLenght)
+            .Placeholder("Chọn...")
+            .HeaderTemplate("<div class=\"dropdown-header custom-header\">" +
+                    "<span class=\"k-widget k-header\">Mã</span>" +
+                    "<span class=\"k-widget k-header\">Tên</span>" +
+                    "</div>")
+            .Template("<div class=\"dropdown-body\">" +
+                    "<span class=\"k-state-default\"><p>#: data.Code #</p></span>" +
+                    "<span class=\"k-state-default\"><p>#: data.Name # </p></span>" +
+                    "</div>")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("SearchCommoditiesByName", "CommoditiesApi").Data(@<text>
+
+                        function(e) {
+                        return {
+                        searchText: $("#CommodityName").data("kendoAutoComplete").value()
+                        };}
+
+                    </text>);//Send parameter to controller search action
+                })
+                .ServerFiltering(true);
+            })
+            .Events(e =>
+            {
+                e.Select("commodity_Select");
+                e.DataBound("commodity_DataBound");
+            })
+            .HtmlAttributes(new { @class = "input-class1" })
+        )
+
+        @Html.ValidationMessageFor(model => model.CommodityName, "", new { @class = "text-danger" })
+
+        <input id="CommodityNameTemp" name="CommodityNameTemp" value="@Model.CommodityName" type="hidden" class="k-textbox" />
+    </div>
+</div>
+
+<div class="div-row">
+    @Html.LabelFor(model => model.CommodityCode, htmlAttributes: new { @class = "control-label1" })
+    <div class="div-input">
+        @Html.Kendo().MaskedTextBoxFor(model => model.CommodityCode).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
+    </div>
+    <div class="div-validation-message">
+        @Html.ValidationMessageFor(model => model.CommodityCode, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<script type="text/javascript">
+    commodity_Select = function (e) {        
+        var dataItem = this.dataItem(e.item.index());
+        $("#CommodityID").val(dataItem.CommodityID);
+        $("#CommodityNameTemp").val(dataItem.Name);
+        $("#CommodityCode").val(dataItem.Code);
+    }
+
+
+    $("#CommodityName").focusout(function () {
+        $("#CommodityName").val($("#CommodityNameTemp").val());
+    });
+
+    commodity_DataBound = function (e) {
+        $(".k-animation-container:has(#CommodityName-list)").css("width", "382");
+        $("#CommodityName-list").css("width", "382");
+        //$("#CommodityName-list").css("height", $(".k-animation-container:has(#CommodityName-list)").height());
+        $("#CommodityName-list").css("height", $("#CommodityName-list").height() + 1);
+    }
+</script>
+
+<link href="@Url.Content("~/Content/CustomCss/GeneralCommoditiesAutoComplete.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/CustomCss/CommoditiesAutoComplete.css")" rel="stylesheet" type="text/css" />

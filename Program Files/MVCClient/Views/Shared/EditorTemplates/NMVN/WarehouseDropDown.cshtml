@@ -1,0 +1,14 @@
+﻿@model string
+
+@(Html.Kendo()
+    .DropDownListFor(m => m)
+        .Name("WarehouseName")
+        .DataTextField("Name")
+        .DataValueField("Name")
+        .BindTo((System.Collections.IEnumerable)ViewData["Warehouses"])
+        .OptionLabel(" ")
+        .Events(e =>
+        {
+            e.Select("gridEditorWarehouseSelect");
+        })         
+)

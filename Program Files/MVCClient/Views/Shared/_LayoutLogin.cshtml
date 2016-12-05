@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hệ thống quản lý Cửa hàng Bán xe và Dịch vụ</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
+    @Scripts.Render("~/bundles/jquery")
+
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.silver.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.415/kendo.dataviz.silver.min.css")" rel="stylesheet" type="text/css" />
+    @*<link href="@Url.Content("~/Content/kendo/console.css")" rel="stylesheet" type="text/css" />*@
+    @Styles.Render("~/Content/css")
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/console.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    @{
+        var culture = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+    }
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.415/cultures/kendo.culture." + culture + ".min.js")"></script>
+    <script type="text/javascript">
+        //set current culture script
+        kendo.culture("@culture");
+    </script>
+
+</head>
+
+
+<body>
+    <div id="header">
+        <h1>
+            <a href="~/Home/Index/0">Cửa hàng Bán xe và Dịch vụ do Honda Ủy nhiệm</a>
+        </h1>
+        <ul id="navlist">
+            @Html.Partial("_LoginPartial")
+        </ul>
+
+    </div>  
+
+    <div id="main" class="container body-content">
+        @RenderBody()
+        <hr />
+        <div id="footer">
+            <p>&copy; @DateTime.Now.Year - NMVN Informatics Co., Ltd.</p>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

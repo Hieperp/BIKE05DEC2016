@@ -1,0 +1,32 @@
+﻿@model MVCDTO.StockTasks.InventoryAdjustmentPrimitiveDTO
+
+
+@Html.HiddenFor(model => model.InventoryAdjustmentID)
+@Html.HiddenFor(model => model.TotalQuantity)
+@Html.HiddenFor(model => model.TotalAmount)
+@Html.HiddenFor(model => model.TotalVATAmount)
+@Html.HiddenFor(model => model.TotalGrossAmount)
+
+@Html.HiddenFor(model => model.SubmitTypeOption)
+
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+        @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group1">
+    @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+    <div class="div-input">
+        @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@Html.Partial("~/Views/Helpers/Commons/_EmployeeAutoComplete.cshtml")
+
+
+
