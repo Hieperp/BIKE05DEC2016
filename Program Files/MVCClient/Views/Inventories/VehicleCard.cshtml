@@ -1,4 +1,5 @@
 ﻿@using MvcReportViewer;
 
+@model MVCClient.ViewModels.Helpers.PrintViewModel
 
-@Html.MvcReportViewerFluent("/TotalBikePortals/VehicleCard").Attributes(new { Height = 500, Width = 1150, style = "border: none" })
+@Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/VehicleCard").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName }).Attributes(new { Height = 500, Width = 1150, style = "border: none" })

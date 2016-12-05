@@ -2,4 +2,6 @@
 
 @{Layout = null;}
 
-@Html.MvcReportViewerFluent("/TotalBikePortals/SalesInvoiceJournal").Attributes(new { Height = 670, Width = 1270, style = "border: 1px solid #00688B" }).ControlSettings(new ControlSettings() { PromptAreaCollapsed = true })
+@model MVCClient.ViewModels.Helpers.PrintViewModel
+
+@Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/SalesInvoiceJournal").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName }).Attributes(new { Height = 670, Width = 1270, style = "border: 1px solid #00688B" }).ControlSettings(new ControlSettings() { PromptAreaCollapsed = true })

@@ -1,4 +1,4 @@
 ﻿@using MvcReportViewer;
 @model MVCClient.ViewModels.Helpers.PrintViewModel
 
-@Html.MvcReportViewerFluent("/TotalBikePortals/PartAdjustmentSheet").ReportParameters(new { InventoryAdjustmentID = @Model.Id }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false })
+@Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/PartAdjustmentSheet").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName,  InventoryAdjustmentID = @Model.Id }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false })

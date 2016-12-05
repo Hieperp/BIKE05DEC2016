@@ -3,12 +3,12 @@
 
 @if (@Model.PrintOptionID == 1 || @Model.PrintOptionID == 3)
 {
-    @Html.MvcReportViewerFluent("/TotalBikePortals/VehicleTransferSheet").ReportParameters(new { SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
-    @Html.MvcReportViewerFluent("/TotalBikePortals/VehicleTransferDetailSheet").ReportParameters(new { SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });    
+    @Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/VehicleTransferSheet").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName,  SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
+    @Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/VehicleTransferDetailSheet").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName,  SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
 }
 
 @if (@Model.PrintOptionID == 2 || @Model.PrintOptionID == 3)
 {
-    @Html.MvcReportViewerFluent("/TotalBikePortals/PartTransferSheet").ReportParameters(new { SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
-    @Html.MvcReportViewerFluent("/TotalBikePortals/PartTransferDetailSheet").ReportParameters(new { SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });    
+    @Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/PartTransferSheet").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName,  SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
+    @Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/PartTransferDetailSheet").ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName,  SwitchSQLID = 2, StockTransferID = @Model.Id, PrintCopyID = 0 }).Attributes(new { Height = 1100, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false });
 }
