@@ -464,8 +464,8 @@ namespace MVCClient.Controllers
         #endregion GetViewModel
 
 
-
-
+        
+        [OnResultExecutingFilterAttribute]
         public ActionResult Print(int? id)
         {
             return View(InitPrintViewModel(id));
