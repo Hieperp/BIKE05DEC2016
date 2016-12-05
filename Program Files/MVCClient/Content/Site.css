@@ -803,3 +803,37 @@ a[class^='info-bar'] {
 .isBonus {
     color: darkcyan;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Remove panelbar borders http://www.telerik.com/forums/styling-a-panelbar */
+ul.k-panelbar,
+ul.k-panelbar .k-group,
+ul.k-panelbar .k-content,
+ul.k-panelbar .k-link {
+    border-width: 0;
+    border-radius: 4px;
+}
+
+
+.k-panelbar .k-content /*.k-header*/ {
+    background-color: #FBF9EF; /*the same with body background-color*/
+}
+
+
+.k-grid-edit-row .k-callout, .k-grid-edit-row .k-callout-n {
+    left: 5px;
+}
