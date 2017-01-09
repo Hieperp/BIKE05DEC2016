@@ -85,6 +85,8 @@
                                         "<div> #= ChassisCode #</div>" +
                                         "<div class = 'multiline-grid'> #= EngineCode #</div>" +
                                         "<div class = 'multiline-grid'> #= ColorCode #</div>" +
+                                        "<div class = 'isWarrantyClaim'> #= (IsWarrantyClaim == true) ? '[Khiếu nại bảo hành]' : '' #</div>" +
+                                        "<div class = 'isBonus'> #= (IsBonus == true) ? '[Quà tặng]' : '' #</div>" +
                                         "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
 
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
@@ -151,6 +153,11 @@
                             columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
 
+                            columns.Bound(p => p.IsBonus).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= (IsBonus == null)? '' : IsBonus #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].IsBonus' value='#= (IsBonus == null) ? '' : IsBonus #' />");
+                            columns.Bound(p => p.IsWarrantyClaim).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= (IsWarrantyClaim == null)? '' : IsWarrantyClaim #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].IsWarrantyClaim' value='#= (IsWarrantyClaim == null) ? '' : IsWarrantyClaim #' />");
+                            
                             columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
                         })
                         .Filterable()
