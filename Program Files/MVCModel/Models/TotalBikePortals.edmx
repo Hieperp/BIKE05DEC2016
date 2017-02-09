@@ -5255,7 +5255,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Type="String" Name="VATInvoiceNo" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="VATInvoiceDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="PurchaseOrderReference" Nullable="true" MaxLength="10" />
-          <Property Type="DateTime" Name="PurchaseOrderEntryDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="PurchaseOrderEntryDate" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="PurchaseOrderIndex">
           <Property Type="Int32" Name="PurchaseOrderID" Nullable="false" />

@@ -26,6 +26,6 @@ namespace MVCModel.Models
         public string VATInvoiceNo { get; set; }
         public Nullable<System.DateTime> VATInvoiceDate { get; set; }
         public string PurchaseOrderReference { get; set; }
-        public System.DateTime PurchaseOrderEntryDate { get; set; }
+        public Nullable<System.DateTime> PurchaseOrderEntryDate { get; set; }
     }
 }
