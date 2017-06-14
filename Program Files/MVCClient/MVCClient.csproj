@@ -1707,6 +1707,7 @@
     <Content Include="Views\PartTransferOrders\Approve.cshtml" />
     <Content Include="Views\Helpers\Commons\_ApproveConfirm.cshtml" />
     <Content Include="Views\VehicleTransferOrders\Approve.cshtml" />
+    <Content Include="Views\Home\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

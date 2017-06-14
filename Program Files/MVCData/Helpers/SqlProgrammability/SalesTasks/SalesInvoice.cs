@@ -31,7 +31,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         private void SalesInvoiceJournal()
         {
             string queryString = " @LocationID int, @SalesInvoiceTypeID int, @FromDate DateTime, @ToDate DateTime, @WithAccountInvoice bit, @IncludePromotionID int " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
@@ -132,13 +132,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
 
             if (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.AllInvoice)
-                queryString = queryString + "               IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice + ", GoodsReceiptDetails.UnitPrice, (IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.PartsInvoice + ", WarehouseBalancePrice.UnitPrice, 0))) AS CostPrice " + "\r\n";
+                queryString = queryString + "               IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice + ", GoodsReceiptDetails.UnitPrice, (IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.PartsInvoice + ", ISNULL(WarehouseBalancePrice.UnitPrice, 0), 0))) AS CostPrice " + "\r\n";
             else
                 if (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice)
                     queryString = queryString + "           GoodsReceiptDetails.UnitPrice AS CostPrice " + "\r\n";
                 else
                     if (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.PartsInvoice)
-                        queryString = queryString + "       WarehouseBalancePrice.UnitPrice AS CostPrice " + "\r\n";
+                        queryString = queryString + "       ISNULL(WarehouseBalancePrice.UnitPrice, 0) AS CostPrice " + "\r\n";
                     else //salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.ServicesInvoice
                         queryString = queryString + "       0 AS CostPrice " + "\r\n";
 
@@ -174,7 +174,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
                     queryString = queryString + "           INNER JOIN GoodsReceiptDetails ON SalesInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID " + "\r\n";
                 else
                     if (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.PartsInvoice)
-                        queryString = queryString + "       INNER JOIN WarehouseBalancePrice ON SalesInvoiceDetails.CommodityID = WarehouseBalancePrice.CommodityID AND MONTH(SalesInvoiceDetails.EntryDate) = MONTH(WarehouseBalancePrice.EntryDate) AND YEAR(SalesInvoiceDetails.EntryDate) = YEAR(WarehouseBalancePrice.EntryDate) " + "\r\n";
+                        queryString = queryString + "       LEFT JOIN WarehouseBalancePrice ON SalesInvoiceDetails.CommodityID = WarehouseBalancePrice.CommodityID AND MONTH(SalesInvoiceDetails.EntryDate) = MONTH(WarehouseBalancePrice.EntryDate) AND YEAR(SalesInvoiceDetails.EntryDate) = YEAR(WarehouseBalancePrice.EntryDate) " + "\r\n";
 
 
             queryString = queryString + "   END " + "\r\n";
