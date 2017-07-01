@@ -241,7 +241,47 @@ namespace MVCDTO.SalesTasks
         public string NextMaintenance { get; set; }
 
         [Display(Name = "Sửa chữa lớn")]
-        public bool IsMajorRepair { get; set; }        
+        public bool IsMajorRepair { get; set; }
+
+        [Display(Name = "Khách hàng lấy lại phụ tùng cũ")]
+        public bool FailingPartReturned { get; set; }
+
+        [Display(Name = "Thời gian trả xe dự kiến")]
+        public Nullable<System.DateTime> EstimatedCompletionDate { get; set; }
+        [Display(Name = "Thời gian trả xe thực tế")]
+        public Nullable<System.DateTime> CompletionDate { get; set; }
+
+        [Display(Name = "Thời gian kiểm tra lần tới")]
+        public Nullable<System.DateTime> NextMaintenanceDate { get; set; }
+        [Display(Name = "Số km kiểm tra lần tới")]
+        public Nullable<int> NextMaintenanceMeters { get; set; }
+
+        [Display(Name = "Rửa xe")]
+        public int VehicleCleaning { get; set; }
+        
+        public int CheckedBrakeFluid { get; set; }
+        public int CheckedFrontBrake { get; set; }
+        public int CheckedRearBrake { get; set; }
+        public int CheckedLights { get; set; }
+        public int CheckedSwitch { get; set; }
+        public int CheckedHorn { get; set; }
+        public int CheckedFrontWheel { get; set; }
+        public int CheckedRearWheel { get; set; }
+        public int CheckedEngineOil { get; set; }
+        public int CheckedCoolant { get; set; }
+        public int CheckedChain { get; set; }
+        public int CheckedSpeedoMeter { get; set; }
+        public int CheckedBrakeCord { get; set; }
+        public int CheckedGearOil { get; set; }
+        public int CheckedCuroa { get; set; }
+        public int CheckedBattery { get; set; }
+        public int CheckedAirFilter { get; set; }
+        public int CheckedGearChain { get; set; }
+        public int CheckedClutch { get; set; }
+        public int CheckedCarbonBrushes { get; set; }
+        public int CheckedThrottle { get; set; }
+        public int CheckedSparkPlug { get; set; }
+
     }
 
     public class ServicesInvoiceDTO : ServicesInvoicePrimitiveDTO, IBaseDetailEntity<ServicesInvoiceDetailDTO>

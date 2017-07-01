@@ -38,10 +38,26 @@
 
 
                 <div class="form-group1">
+                    @Html.LabelFor(model => model.EstimatedCompletionDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DateTimePickerFor(model => model.EstimatedCompletionDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.EstimatedCompletionDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
                     @Html.LabelFor(model => model.RespondedDate, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
                         @Html.Kendo().DateTimePickerFor(model => model.RespondedDate).HtmlAttributes(new { @class = "input-class" })
                         @Html.ValidationMessageFor(model => model.RespondedDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.CompletionDate, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DateTimePickerFor(model => model.CompletionDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.CompletionDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -58,6 +74,14 @@
                     <div class="div-input">
                         @Html.CheckBoxFor(model => model.IsMajorRepair, new { @style = "margin-top: 12px; margin-right: 3px;" })
                         @Html.ValidationMessageFor(model => model.IsMajorRepair, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.FailingPartReturned, htmlAttributes: new { @style = "margin-top: 10px;" })
+                    <div class="div-input">
+                        @Html.CheckBoxFor(model => model.FailingPartReturned, new { @style = "margin-top: 12px; margin-right: 3px;" })
+                        @Html.ValidationMessageFor(model => model.FailingPartReturned, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -261,6 +285,26 @@
                                 @Html.ValidationMessageFor(model => model.NextMaintenance, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
+
+                        <div class="div-row">
+                            @Html.LabelFor(model => model.NextMaintenanceDate, htmlAttributes: new { @class = "control-label1" })
+                            <div class="div-input">
+                                @Html.Kendo().DatePickerFor(model => model.NextMaintenanceDate).HtmlAttributes(new { @class = "input-class2" })
+                                @Html.ValidationMessageFor(model => model.NextMaintenanceDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="div-row">
+                            @Html.LabelFor(model => model.NextMaintenanceMeters, htmlAttributes: new { @class = "control-label1" })
+                            <div class="div-input">
+                                @Html.Kendo().NumericTextBoxFor(model => model.NextMaintenanceMeters).Format("{0:n0}").Decimals(0).HtmlAttributes(new { @class = "input-class2" })
+                                @Html.ValidationMessageFor(model => model.NextMaintenanceMeters, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>

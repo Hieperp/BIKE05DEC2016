@@ -54,7 +54,6 @@ namespace MVCModel.Models
         public virtual DbSet<PurchaseInvoiceDetail> PurchaseInvoiceDetails { get; set; }
         public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public virtual DbSet<QuotationDetail> QuotationDetails { get; set; }
-        public virtual DbSet<AccessControl> AccessControls { get; set; }
         public virtual DbSet<TransferOrder> TransferOrders { get; set; }
         public virtual DbSet<StockTransferType> StockTransferTypes { get; set; }
         public virtual DbSet<ModuleDetail> ModuleDetails { get; set; }
@@ -63,7 +62,6 @@ namespace MVCModel.Models
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Quotation> Quotations { get; set; }
-        public virtual DbSet<SalesInvoice> SalesInvoices { get; set; }
         public virtual DbSet<AccountInvoiceDetail> AccountInvoiceDetails { get; set; }
         public virtual DbSet<AccountInvoice> AccountInvoices { get; set; }
         public virtual DbSet<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
@@ -71,6 +69,8 @@ namespace MVCModel.Models
         public virtual DbSet<InventoryAdjustment> InventoryAdjustments { get; set; }
         public virtual DbSet<InventoryAdjustmentType> InventoryAdjustmentTypes { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
+        public virtual DbSet<SalesInvoice> SalesInvoices { get; set; }
+        public virtual DbSet<AccessControl> AccessControls { get; set; }
     
         public virtual ObjectResult<PurchaseInvoiceViewDetail> GetPurchaseInvoiceViewDetails(Nullable<int> purchaseInvoiceID, Nullable<int> purchaseOrderID, Nullable<int> supplierID, Nullable<bool> isReadonly)
         {

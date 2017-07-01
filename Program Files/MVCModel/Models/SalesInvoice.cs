@@ -16,8 +16,8 @@ namespace MVCModel.Models
     {
         public SalesInvoice()
         {
-            this.SalesInvoices1 = new HashSet<SalesInvoice>();
             this.SalesInvoiceDetails = new HashSet<SalesInvoiceDetail>();
+            this.SalesInvoices1 = new HashSet<SalesInvoice>();
         }
     
         public int SalesInvoiceID { get; set; }
@@ -30,9 +30,16 @@ namespace MVCModel.Models
         public Nullable<int> ServiceInvoiceID { get; set; }
         public Nullable<int> QuotationID { get; set; }
         public int ReceiptID { get; set; }
+        public Nullable<int> PromotionID { get; set; }
+        public string PromotionVouchers { get; set; }
+        public Nullable<int> ReceptionistID { get; set; }
         public int EmployeeID { get; set; }
         public int ServiceLineID { get; set; }
+        public Nullable<System.DateTime> RespondedDate { get; set; }
+        public Nullable<System.DateTime> EstimatedCompletionDate { get; set; }
+        public Nullable<System.DateTime> CompletionDate { get; set; }
         public Nullable<int> CurrentMeters { get; set; }
+        public Nullable<int> VehicleCleaning { get; set; }
         public int UserID { get; set; }
         public int PreparedPersonID { get; set; }
         public int OrganizationalUnitID { get; set; }
@@ -50,9 +57,35 @@ namespace MVCModel.Models
         public string Damages { get; set; }
         public string Causes { get; set; }
         public string Solutions { get; set; }
+        public string NextMaintenance { get; set; }
+        public Nullable<System.DateTime> NextMaintenanceDate { get; set; }
+        public Nullable<int> NextMaintenanceMeters { get; set; }
         public string Description { get; set; }
         public string Remarks { get; set; }
         public Nullable<bool> IsMajorRepair { get; set; }
+        public Nullable<bool> FailingPartReturned { get; set; }
+        public Nullable<int> CheckedBrakeFluid { get; set; }
+        public Nullable<int> CheckedFrontBrake { get; set; }
+        public Nullable<int> CheckedRearBrake { get; set; }
+        public Nullable<int> CheckedLights { get; set; }
+        public Nullable<int> CheckedSwitch { get; set; }
+        public Nullable<int> CheckedHorn { get; set; }
+        public Nullable<int> CheckedFrontWheel { get; set; }
+        public Nullable<int> CheckedRearWheel { get; set; }
+        public Nullable<int> CheckedEngineOil { get; set; }
+        public Nullable<int> CheckedCoolant { get; set; }
+        public Nullable<int> CheckedChain { get; set; }
+        public Nullable<int> CheckedSpeedoMeter { get; set; }
+        public Nullable<int> CheckedBrakeCord { get; set; }
+        public Nullable<int> CheckedGearOil { get; set; }
+        public Nullable<int> CheckedCuroa { get; set; }
+        public Nullable<int> CheckedBattery { get; set; }
+        public Nullable<int> CheckedAirFilter { get; set; }
+        public Nullable<int> CheckedGearChain { get; set; }
+        public Nullable<int> CheckedClutch { get; set; }
+        public Nullable<int> CheckedCarbonBrushes { get; set; }
+        public Nullable<int> CheckedThrottle { get; set; }
+        public Nullable<int> CheckedSparkPlug { get; set; }
         public bool IsFinished { get; set; }
         public bool IsAutoReceipt { get; set; }
         public System.DateTime CreatedDate { get; set; }
@@ -62,23 +95,18 @@ namespace MVCModel.Models
         public bool InActive { get; set; }
         public bool InActivePartial { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
-        public Nullable<int> PromotionID { get; set; }
-        public string PromotionVouchers { get; set; }
-        public Nullable<int> ReceptionistID { get; set; }
-        public Nullable<System.DateTime> RespondedDate { get; set; }
-        public string NextMaintenance { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Employee Employee1 { get; set; }
         public virtual Location Location { get; set; }
         public virtual PaymentTerm PaymentTerm { get; set; }
+        public virtual Promotion Promotion { get; set; }
         public virtual Quotation Quotation { get; set; }
+        public virtual ICollection<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
         public virtual SalesInvoiceType SalesInvoiceType { get; set; }
         public virtual ServiceContract ServiceContract { get; set; }
         public virtual ICollection<SalesInvoice> SalesInvoices1 { get; set; }
         public virtual SalesInvoice SalesInvoice1 { get; set; }
-        public virtual ICollection<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
-        public virtual Promotion Promotion { get; set; }
-        public virtual Employee Employee1 { get; set; }
     }
 }

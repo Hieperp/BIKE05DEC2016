@@ -46,6 +46,9 @@ namespace MVCClient.ViewModels.SalesTasks
         public IEnumerable<SelectListItem> PreparedPersonDropDown { get; set; }
         public IEnumerable<SelectListItem> ApproverDropDown { get; set; }
 
+        public IEnumerable<SelectListItem> VehicleCleaningDropDown { get; set; }
+        public IEnumerable<SelectListItem> CheckedListDropDown { get; set; }
+
         public override bool PrintAfterClosedSubmit { get { return true; } }
     }
 

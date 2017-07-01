@@ -55,7 +55,7 @@ namespace MVCModel.Models
         public virtual Commodity Commodity { get; set; }
         public virtual GoodsReceiptDetail GoodsReceiptDetail { get; set; }
         public virtual QuotationDetail QuotationDetail { get; set; }
-        public virtual SalesInvoice SalesInvoice { get; set; }
         public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
+        public virtual SalesInvoice SalesInvoice { get; set; }
     }
 }
