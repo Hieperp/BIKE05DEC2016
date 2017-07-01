@@ -70,6 +70,14 @@
                 </div>
 
                 <div class="form-group1">
+                    @Html.LabelFor(model => model.VehicleCleaning, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().DropDownListFor(m => m.VehicleCleaning).BindTo(Model.VehicleCleaningDropDown).HtmlAttributes(new { @class = "input-class" })
+                        @Html.ValidationMessageFor(model => model.VehicleCleaning, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group1">
                     @Html.LabelFor(model => model.IsMajorRepair, htmlAttributes: new { @style = "margin-top: 10px;" })
                     <div class="div-input">
                         @Html.CheckBoxFor(model => model.IsMajorRepair, new { @style = "margin-top: 12px; margin-right: 3px;" })
@@ -250,10 +258,327 @@
                         )
                     )
 
+                    
+                    
+                    <div class="panel-div">
+                        @(Html.Kendo().PanelBar()
+                            .Name("OperatorCheckedPanelBar")
+                            .Items(items =>
+                            {
+                                items.Add()
+                                    .Text("Kiểm tra phụ tùng tại quầy tiếp nhận")
+                                    .Selected(true)
+                                    .Expanded(false)
+                                    .Content(@<text>
+                                        <div class="div-panel-left">
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedBrakeFluid, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedBrakeFluid).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedBrakeFluid, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
 
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedFrontBrake, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedFrontBrake).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedFrontBrake, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedRearBrake, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedRearBrake).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedRearBrake, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedLights, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedLights).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedLights, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedSwitch, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedSwitch).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedSwitch, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedHorn, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedHorn).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedHorn, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="div-panel-right">
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedFrontWheel, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedFrontWheel).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedFrontWheel, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedRearWheel, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedRearWheel).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedRearWheel, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedEngineOil, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedEngineOil).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedEngineOil, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedCoolant, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedCoolant).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedCoolant, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedChain, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedChain).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedChain, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedSpeedoMeter, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedSpeedoMeter).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedSpeedoMeter, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </text>).HtmlAttributes(new { @class = "panel-class" });
+                            })
+                        )
+                    </div>
+
+
+                    <div style="clear: both;"></div>
+
+                    <div class="panel-div">
+                        @(Html.Kendo().PanelBar()
+                            .Name("TechnicalCheckedPanelBar")
+                            .Items(items =>
+                            {
+                                items.Add()
+                                    .Text("Kiểm tra phụ tùng tại xưởng dịch vụ")
+                                    .Selected(true)
+                                    .Expanded(false)
+                                    .Content(@<text>
+                                        <div class="div-panel-left">
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedBrakeCord, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedBrakeCord).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedBrakeCord, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedGearOil, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedGearOil).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedGearOil, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedCuroa, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedCuroa).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedCuroa, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedBattery, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedBattery).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedBattery, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedAirFilter, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedAirFilter).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedAirFilter, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div class="div-panel-right">
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedGearChain, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedGearChain).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedGearChain, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedClutch, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedClutch).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedClutch, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedCarbonBrushes, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedCarbonBrushes).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedCarbonBrushes, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedThrottle, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedThrottle).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedThrottle, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="div-row">
+                                                <div class="form-group1">
+                                                    @Html.LabelFor(model => model.CheckedSparkPlug, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().DropDownListFor(m => m.CheckedSparkPlug).BindTo(Model.CheckedListDropDown).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.CheckedSparkPlug, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </text>).HtmlAttributes(new { @class = "panel-class" });
+                            })
+                        )
+                    </div>
+
+                    <div style="clear: both;"></div>
                     @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionB.cshtml")
 
-                    <div class="panel-div" style="margin-left: 1px;"> @*margin-left: 1px; this to make the left of its items the same with item inside PanelBar which border = 1px*@
+
+
+
+                    <div class="panel-div" style="margin-left: 1px;">
+                        @*margin-left: 1px; this to make the left of its items the same with item inside PanelBar which border = 1px*@
                         <div class="div-row">
                             @Html.LabelFor(model => model.Damages, htmlAttributes: new { @class = "control-label1" })
                             <div class="div-input">

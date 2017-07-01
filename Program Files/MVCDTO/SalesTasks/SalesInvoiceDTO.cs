@@ -259,29 +259,50 @@ namespace MVCDTO.SalesTasks
         [Display(Name = "Rửa xe")]
         public int VehicleCleaning { get; set; }
         
+        [Display(Name = "Dầu phanh")]
         public int CheckedBrakeFluid { get; set; }
+        [Display(Name = "Phanh trước")]
         public int CheckedFrontBrake { get; set; }
+        [Display(Name = "Phanh sau")]
         public int CheckedRearBrake { get; set; }
+        [Display(Name = "Bóng đèn")]
         public int CheckedLights { get; set; }
+        [Display(Name = "Công tắt")]
         public int CheckedSwitch { get; set; }
+        [Display(Name = "Còi")]
         public int CheckedHorn { get; set; }
+        [Display(Name = "Lốp trước")]
         public int CheckedFrontWheel { get; set; }
+        [Display(Name = "Lốp sau")]
         public int CheckedRearWheel { get; set; }
+        [Display(Name = "Dầu máy")]
         public int CheckedEngineOil { get; set; }
+        [Display(Name = "Nước làm mát")]
         public int CheckedCoolant { get; set; }
+        [Display(Name = "Xích")]
         public int CheckedChain { get; set; }
+        [Display(Name = "Công tơ mét")]
         public int CheckedSpeedoMeter { get; set; }
+        [Display(Name = "Dây phanh")]
         public int CheckedBrakeCord { get; set; }
+        [Display(Name = "Dầu số")]
         public int CheckedGearOil { get; set; }
+        [Display(Name = "Dây đai")]
         public int CheckedCuroa { get; set; }
+        [Display(Name = "Ắc quy")]
         public int CheckedBattery { get; set; }
+        [Display(Name = "Lọc gió")]
         public int CheckedAirFilter { get; set; }
+        [Display(Name = "Nhông xích")]
         public int CheckedGearChain { get; set; }
+        [Display(Name = "Côn")]
         public int CheckedClutch { get; set; }
+        [Display(Name = "Chổi than")]
         public int CheckedCarbonBrushes { get; set; }
+        [Display(Name = "Họng ga")]
         public int CheckedThrottle { get; set; }
+        [Display(Name = "Bugi")]
         public int CheckedSparkPlug { get; set; }
-
     }
 
     public class ServicesInvoiceDTO : ServicesInvoicePrimitiveDTO, IBaseDetailEntity<ServicesInvoiceDetailDTO>
