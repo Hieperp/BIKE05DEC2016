@@ -228,7 +228,7 @@ namespace MVCService.SalesTasks
             if (dto.IsFinished && dto.RespondedDate == null) invalidMessage.Append(" Vui lòng nhập ngày giờ bắt đầu sửa chữa;");
             if (dto.IsFinished && dto.EstimatedCompletionDate == null) invalidMessage.Append(" Vui lòng nhập ngày giờ trả xe dự kiến;");
             if (dto.IsFinished && dto.CompletionDate == null) invalidMessage.Append(" Vui lòng nhập ngày giờ trả xe thực tế;");
-            if (dto.IsFinished && dto.NextMaintenanceDate == null) invalidMessage.Append(" Vui lòng nhập ngày kiểm tra lần tới;");
+            //if (dto.IsFinished && dto.NextMaintenanceDate == null) invalidMessage.Append(" Vui lòng nhập ngày kiểm tra lần tới;");
             if (dto.IsFinished && dto.NextMaintenanceMeters == null) invalidMessage.Append(" Vui lòng nhập số km kiểm tra lần tới;");
 
 
