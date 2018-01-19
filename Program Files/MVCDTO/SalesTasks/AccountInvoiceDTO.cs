@@ -45,6 +45,9 @@ namespace MVCDTO.SalesTasks
         [Required(ErrorMessage = "Vui lòng Ngày hóa đơn")]
         public Nullable<System.DateTime> VATInvoiceDate { get; set; }
 
+        [Display(Name = "Phương thức thanh toán")]
+        public int PaymentTermID { get; set; }
+
         public override void PerformPresaveRule()
         {
             base.PerformPresaveRule();

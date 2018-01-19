@@ -232,16 +232,16 @@
                                     .Content(@<text>
                                         <div class="div-panel-left">
                                             <div class="div-row"> 
-                                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label1" })
-                                                    <div class="div-input">
-                                                        @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class1" })
-                                                    </div>
-                                                    <div class="div-validation-message">
-                                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                                    </div>
+                                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label1" })
+                                                <div class="div-input">
+                                                    @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class1" })
                                                 </div>
+                                                <div class="div-validation-message">
+                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
 
-                                            <div class="div-row">
+                                            @*<div class="div-row">
                                                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
                                                 <div class="div-input">
                                                     @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
@@ -249,8 +249,8 @@
                                                 <div class="div-validation-message">
                                                     @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                                                 </div>
-                                            </div>
-
+                                            </div>*@
+                                            @Html.Partial("~/Views/Helpers/Commons/_PaymentTermDropDown.cshtml")
                                         </div>
                                         <div class="div-panel-right">
                                             @Html.Partial("~/Views/Helpers/Commons/_PreparedPersonDropDown.cshtml")

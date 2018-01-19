@@ -40,6 +40,7 @@
           <Property Name="EntryDate" Type="datetime" Nullable="false" />
           <Property Name="Reference" Type="nvarchar" MaxLength="10" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="PaymentTermID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="PreparedPersonID" Type="int" Nullable="false" />
           <Property Name="OrganizationalUnitID" Type="int" Nullable="false" />
@@ -5497,6 +5498,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <NavigationProperty Name="AccountInvoiceDetails" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoice" ToRole="AccountInvoiceDetail" />
           <NavigationProperty Name="Customer" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="AccountInvoice" ToRole="Customer" />
           <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="AccountInvoice" ToRole="Location" />
+          <Property Name="PaymentTermID" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
           <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
@@ -7662,6 +7664,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <EntitySetMapping Name="AccountInvoices">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
               <MappingFragment StoreEntitySet="AccountInvoices">
+                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
                 <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
                 <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
                 <ScalarProperty Name="InActive" ColumnName="InActive" />

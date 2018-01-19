@@ -24,6 +24,8 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             this.AccountInvoicePostSaveValidate();
 
             this.AccountInvoiceInitReference();
+
+            this.AccountInvoiceSheet();
         }
 
         private void GetAccountInvoiceIndexes()
@@ -179,6 +181,35 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         {
             SimpleInitReference simpleInitReference = new SimpleInitReference("AccountInvoices", "AccountInvoiceID", "Reference", ModelSettingManager.ReferenceLength, ModelSettingManager.ReferencePrefix(GlobalEnums.NmvnTaskID.AccountInvoice));
             this.totalBikePortalsEntities.CreateTrigger("AccountInvoiceInitReference", simpleInitReference.CreateQuery());
+        }
+
+
+        private void AccountInvoiceSheet()
+        {
+            string queryString = " @AccountInvoiceID int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       DECLARE         @LocalAccountInvoiceID int    SET @LocalAccountInvoiceID = @AccountInvoiceID" + "\r\n";
+
+            queryString = queryString + "       SELECT          AccountInvoices.AccountInvoiceID, AccountInvoices.EntryDate, AccountInvoices.Reference, AccountInvoices.VATInvoiceNo, AccountInvoices.VATInvoiceDate, AccountInvoices.VATInvoiceSeries, " + "\r\n";
+            queryString = queryString + "                       Customers.CustomerID, Customers.Name AS CustomerName, Customers.OfficialName AS CustomerOfficialName, Customers.VATCode, Customers.AddressNo, EntireTerritories.EntireName AS EntireTerritoryEntireName, PaymentTerms.Name AS PaymentTermName, " + "\r\n";
+            queryString = queryString + "                       AccountInvoiceCollections.SalesInvoiceDetailID, ISNULL(AccountInvoiceCollections.IsBonus, CAST(0 AS bit)) AS IsBonus, Commodities.CommodityID, Commodities.Code, Commodities.Name, Commodities.SalesUnit, AccountInvoiceCollections.LineDescription AS LineDescription, AccountInvoiceCollections.ChassisCode, AccountInvoiceCollections.EngineCode, AccountInvoiceCollections.ColorCodeName, " + "\r\n";
+            queryString = queryString + "                       AccountInvoiceCollections.Quantity, AccountInvoiceCollections.UnitPrice, AccountInvoiceCollections.VATPercent, AccountInvoiceCollections.Amount, AccountInvoiceCollections.VATAmount, AccountInvoiceCollections.GrossAmount, " + "\r\n";
+            queryString = queryString + "                       AccountInvoices.TotalQuantity, AccountInvoices.TotalAmount, AccountInvoices.TotalVATAmount, AccountInvoices.TotalGrossAmount, dbo.SayVND(AccountInvoices.TotalGrossAmount) AS TotalGrossAmountInWords, AccountInvoices.Description " + "\r\n";
+
+            queryString = queryString + "       FROM            (SELECT SalesInvoiceDetails.AccountInvoiceID, SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.CommodityID, N'' AS LineDescription, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.IsBonus, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, ISNULL(ColorCodes.Name, GoodsReceiptDetails.ColorCode) AS ColorCodeName FROM SalesInvoiceDetails LEFT JOIN GoodsReceiptDetails ON SalesInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID LEFT JOIN ColorCodes ON GoodsReceiptDetails.ColorCode = ColorCodes.Code WHERE SalesInvoiceDetails.AccountInvoiceID = @LocalAccountInvoiceID) AS AccountInvoiceCollections " + "\r\n";
+
+            queryString = queryString + "                       INNER JOIN AccountInvoices ON AccountInvoiceCollections.AccountInvoiceID = AccountInvoices.AccountInvoiceID " + "\r\n";
+            queryString = queryString + "                       INNER JOIN Customers ON AccountInvoices.CustomerID = Customers.CustomerID " + "\r\n";
+            queryString = queryString + "                       INNER JOIN EntireTerritories ON Customers.TerritoryID = EntireTerritories.TerritoryID " + "\r\n";
+            queryString = queryString + "                       INNER JOIN PaymentTerms ON 1 = PaymentTerms.PaymentTermID " + "\r\n"; //AccountInvoices.PaymentTermID
+            queryString = queryString + "                       LEFT JOIN Commodities ON AccountInvoiceCollections.CommodityID = Commodities.CommodityID " + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("AccountInvoiceSheet", queryString);
         }
     }
 }

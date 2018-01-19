@@ -100,6 +100,8 @@ namespace MVCService.SalesTasks
                     accountInvoiceDTO.VATInvoiceSeries = vehiclesInvoiceDTO.VATInvoiceSeries;
                     accountInvoiceDTO.VATInvoiceDate = vehiclesInvoiceDTO.VATInvoiceDate;
 
+                    accountInvoiceDTO.PaymentTermID = vehiclesInvoiceDTO.PaymentTermID;
+
                     accountInvoiceDTO.PreparedPersonID = vehiclesInvoiceDTO.PreparedPersonID;
                     accountInvoiceDTO.ApproverID = vehiclesInvoiceDTO.ApproverID;
 

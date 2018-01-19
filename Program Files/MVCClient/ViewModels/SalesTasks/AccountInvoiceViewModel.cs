@@ -6,8 +6,9 @@ using MVCClient.ViewModels.Helpers;
 
 namespace MVCClient.ViewModels.SalesTasks
 {
-    public class AccountInvoiceViewModel : AccountInvoiceDTO, IViewDetailViewModel<AccountInvoiceDetailDTO>, ICustomerAutoCompleteViewModel, IPreparedPersonDropDownViewModel, IApproverDropDownViewModel
+    public class AccountInvoiceViewModel : AccountInvoiceDTO, IViewDetailViewModel<AccountInvoiceDetailDTO>, ICustomerAutoCompleteViewModel, IPaymentTermDropDownViewModel, IPreparedPersonDropDownViewModel, IApproverDropDownViewModel
     {
+        public IEnumerable<SelectListItem> PaymentTermDropDown { get; set; }
         public IEnumerable<SelectListItem> PreparedPersonDropDown { get; set; }
         public IEnumerable<SelectListItem> ApproverDropDown { get; set; }
     }
