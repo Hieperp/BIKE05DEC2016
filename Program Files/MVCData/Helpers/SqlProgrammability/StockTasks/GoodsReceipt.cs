@@ -61,17 +61,17 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
         private void GoodsReceiptGetPurchaseInvoices()
         {
             string queryString = " @LocationID int, @GoodsReceiptID int, @PurchaseInvoiceReference nvarchar(60) " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "       SELECT         " + (int)GlobalEnums.GoodsReceiptTypeID.PurchaseInvoice + " AS GoodsReceiptTypeID, PurchaseInvoices.PurchaseInvoiceID AS VoucherID, PurchaseInvoices.EntryDate, PurchaseInvoices.Reference, PurchaseInvoices.VATInvoiceNo, PurchaseInvoices.VATInvoiceDate, Customers.Name AS CustomerName, PurchaseInvoices.AttentionName, Customers.Telephone, PurchaseInvoices.Description, PurchaseInvoices.Remarks " + "\r\n";
-            queryString = queryString + "       FROM            PurchaseInvoices INNER JOIN Customers ON (@PurchaseInvoiceReference = '' OR PurchaseInvoices.Reference LIKE '%' + @PurchaseInvoiceReference + '%' OR PurchaseInvoices.VATInvoiceNo LIKE '%' + @PurchaseInvoiceReference + '%') AND PurchaseInvoices.LocationID = @LocationID AND PurchaseInvoices.SupplierID = Customers.CustomerID INNER JOIN EntireTerritories ON Customers.TerritoryID = EntireTerritories.TerritoryID " + "\r\n";
-
+            queryString = queryString + "       FROM            PurchaseInvoices INNER JOIN Customers ON PurchaseInvoices.LocationID = @LocationID AND PurchaseInvoices.SupplierID = Customers.CustomerID INNER JOIN EntireTerritories ON Customers.TerritoryID = EntireTerritories.TerritoryID " + "\r\n";
+            //(@PurchaseInvoiceReference = '' OR PurchaseInvoices.Reference LIKE '%' + @PurchaseInvoiceReference + '%' OR PurchaseInvoices.VATInvoiceNo LIKE '%' + @PurchaseInvoiceReference + '%') AND 
             queryString = queryString + "       WHERE           PurchaseInvoices.PurchaseInvoiceID IN  " + "\r\n";
 
             queryString = queryString + "                      (SELECT PurchaseInvoiceID FROM PurchaseInvoiceDetails WHERE ROUND(Quantity - QuantityReceipt, 0) > 0 " + "\r\n";
-            queryString = queryString + "                       UNION ALL " + "\r\n";
-            queryString = queryString + "                       SELECT VoucherID FROM GoodsReceipts WHERE GoodsReceiptTypeID = " + (int)GlobalEnums.GoodsReceiptTypeID.PurchaseInvoice + " AND GoodsReceiptID = @GoodsReceiptID)  " + "\r\n";
-
+            queryString = queryString + "                       )  " + "\r\n";
+            //////UNION ALL " + "\r\n";
+            //////queryString = queryString + "                       SELECT VoucherID FROM GoodsReceipts WHERE GoodsReceiptTypeID = " + (int)GlobalEnums.GoodsReceiptTypeID.PurchaseInvoice + " AND GoodsReceiptID = @GoodsReceiptID
             this.totalBikePortalsEntities.CreateStoredProcedure("GoodsReceiptGetPurchaseInvoices", queryString);
         }
 
