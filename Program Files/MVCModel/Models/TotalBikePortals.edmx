@@ -5080,13 +5080,15 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
         </ComplexType>
         <ComplexType Name="VehiclesInvoiceIndex">
           <Property Type="Int32" Name="SalesInvoiceID" Nullable="false" />
-          <Property Type="DateTime" Name="EntryDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="EntryDate" Nullable="true" />
           <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="VATInvoiceNo" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="CustomerDescription" Nullable="false" MaxLength="305" />
           <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="200" />
           <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="IsFinished" Nullable="false" />
+          <Property Type="Int32" Name="AccountInvoiceID" Nullable="true" />
         </ComplexType>
         <ComplexType Name="PartsInvoiceIndex">
           <Property Type="Int32" Name="SalesInvoiceID" Nullable="false" />
@@ -7310,6 +7312,8 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
                 <ScalarProperty Name="CustomerDescription" ColumnName="CustomerDescription" />
                 <ScalarProperty Name="CommodityName" ColumnName="CommodityName" />
                 <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="IsFinished" ColumnName="IsFinished" />
+                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

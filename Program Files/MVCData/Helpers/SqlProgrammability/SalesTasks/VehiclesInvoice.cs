@@ -40,7 +40,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      SalesInvoices.SalesInvoiceID, CAST(SalesInvoices.EntryDate AS DATE) AS EntryDate, SalesInvoices.Reference, SalesInvoices.VATInvoiceNo, Locations.Code AS LocationCode, Customers.Name + ',    ' + Customers.AddressNo AS CustomerDescription, Commodities.Name AS CommodityName, SalesInvoiceDetails.GrossAmount, SalesInvoices.IsFinished " + "\r\n";
+            queryString = queryString + "       SELECT      SalesInvoices.SalesInvoiceID, CAST(SalesInvoices.EntryDate AS DATE) AS EntryDate, SalesInvoices.Reference, SalesInvoices.VATInvoiceNo, Locations.Code AS LocationCode, Customers.Name + ',    ' + Customers.AddressNo AS CustomerDescription, Commodities.Name AS CommodityName, SalesInvoiceDetails.GrossAmount, SalesInvoices.IsFinished, SalesInvoiceDetails.AccountInvoiceID " + "\r\n";
             queryString = queryString + "       FROM        SalesInvoices INNER JOIN" + "\r\n";
             queryString = queryString + "                   Locations ON SalesInvoices.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice + " AND SalesInvoices.EntryDate >= @FromDate AND SalesInvoices.EntryDate <= @ToDate AND SalesInvoices.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehiclesInvoice + " AND AccessControls.AccessLevel > 0) AND Locations.LocationID = SalesInvoices.LocationID INNER JOIN " + "\r\n";
             queryString = queryString + "                   Customers ON SalesInvoices.CustomerID = Customers.CustomerID LEFT JOIN" + "\r\n";
@@ -250,11 +250,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
         private void VehiclesInvoiceEditable()
         {
-            string[] queryArray = new string[3];
+            string[] queryArray = new string[2];
 
-            queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 ";
-            queryArray[1] = " SELECT TOP 1 @FoundEntity = ServiceContractID FROM ServiceContracts WHERE SalesInvoiceDetailID IN (SELECT SalesInvoiceDetailID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID) ";
-            queryArray[2] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";
+            //queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 ";
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = ServiceContractID FROM ServiceContracts WHERE SalesInvoiceDetailID IN (SELECT SalesInvoiceDetailID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID) ";
+            queryArray[1] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("VehiclesInvoiceEditable", queryArray);
         }

@@ -14,12 +14,14 @@ namespace MVCModel.Models
     public partial class VehiclesInvoiceIndex
     {
         public int SalesInvoiceID { get; set; }
-        public System.DateTime EntryDate { get; set; }
+        public Nullable<System.DateTime> EntryDate { get; set; }
         public string Reference { get; set; }
         public string VATInvoiceNo { get; set; }
         public string LocationCode { get; set; }
         public string CustomerDescription { get; set; }
         public string CommodityName { get; set; }
         public Nullable<decimal> GrossAmount { get; set; }
+        public bool IsFinished { get; set; }
+        public Nullable<int> AccountInvoiceID { get; set; }
     }
 }
