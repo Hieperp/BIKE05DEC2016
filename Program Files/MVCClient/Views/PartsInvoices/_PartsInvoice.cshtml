@@ -4,7 +4,7 @@
 @model MVCClient.ViewModels.SalesTasks.PartsInvoiceViewModel
 
 <div id="div-form">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "MainForm" }))
     {
         @Html.AntiForgeryToken()
 
@@ -252,6 +252,12 @@
                 {
                     <button formaction="@Url.Action("Print", "PartsInvoices", new { id = @Model.SalesInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In HĐ bán lẻ </button>
                 }
+
+                @if (Model.SalesInvoiceID > 0 && !Model.Approvable && !Model.UnApprovable && Model.ServiceInvoiceID == null && Model.Approved)
+                {
+                    <button type="button" class="k-button custom-button" onclick="location.href='@Url.Action("Approve", "PartsInvoices", new { id = @Model.SalesInvoiceID })'"> <img src="~/Content/Images/New/@(!@Model.Approved ? "Actions-ok-icon32.png" : "Delete32m.png")" /> @(!Model.Approved ? "Duyệt phiếu" : "Hủy duyệt phiếu này") </button>
+                }
+                
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>

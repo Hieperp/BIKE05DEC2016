@@ -1361,5 +1361,49 @@ namespace MVCModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("TransferOrderApproved", entityIDParameter);
         }
+    
+        public virtual ObjectResult<string> PartsInvoiceApproved(Nullable<int> entityID)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("PartsInvoiceApproved", entityIDParameter);
+        }
+    
+        public virtual ObjectResult<string> ServicesInvoiceApproved(Nullable<int> entityID)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ServicesInvoiceApproved", entityIDParameter);
+        }
+    
+        public virtual int PartsInvoiceToggleApproved(Nullable<int> entityID, Nullable<bool> approved)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            var approvedParameter = approved.HasValue ?
+                new ObjectParameter("Approved", approved) :
+                new ObjectParameter("Approved", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PartsInvoiceToggleApproved", entityIDParameter, approvedParameter);
+        }
+    
+        public virtual int ServicesInvoiceToggleApproved(Nullable<int> entityID, Nullable<bool> approved)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            var approvedParameter = approved.HasValue ?
+                new ObjectParameter("Approved", approved) :
+                new ObjectParameter("Approved", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ServicesInvoiceToggleApproved", entityIDParameter, approvedParameter);
+        }
     }
 }

@@ -49,7 +49,7 @@
 
                     <div id="vehiclesinvoice-background" class="vehiclesinvoice-background" style="float: right; text-align: center; display: none">
                         <div class="div-in-background">
-                                <a id="MinReference" style="color: #0026ff;" href="#" target="_blank"> </a>
+                            <a id="MinReference" style="color: #0026ff;" href="#" target="_blank"> </a>
                             <div id="TotalPartsAmount"></div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                                 .ClientTemplate("#= (IsBonus == null)? '' : IsBonus #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].IsBonus' value='#= (IsBonus == null) ? '' : IsBonus #' />");
                             columns.Bound(p => p.IsWarrantyClaim).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= (IsWarrantyClaim == null)? '' : IsWarrantyClaim #" + "<input type='hidden' name='VehiclesInvoiceViewDetails[#= index(data) #].IsWarrantyClaim' value='#= (IsWarrantyClaim == null) ? '' : IsWarrantyClaim #' />");
-                            
+
                             columns.Command(command => { command.Destroy().Text("<span class='command' ></span>"); }).Width(50);
                         })
                         .Filterable()
@@ -194,26 +194,26 @@
                         {
                             events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
                         })
-                        .DataSource(dataSource => dataSource
-                            .Ajax()
-                            .Batch(true)
-                            .ServerOperation(false)
-                            .Model(model =>
-                            {
-                                model.Id(x => x.SalesInvoiceDetailID);
-                                model.Field(m => m.SalesInvoiceDetailID).DefaultValue(0);
-                                model.Field(m => m.SalesInvoiceID).DefaultValue(@Model.SalesInvoiceID);
-                            })
-                            .Events(events =>
-                            {
-                                events.Error("kendGrid_ErrorHandler");
-                            })
-                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
-                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
-                            .Aggregates(a => a.Add(x => x.Amount).Sum())
-                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
-                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
-                            )
+                                                                                        .DataSource(dataSource => dataSource
+                                                                                            .Ajax()
+                                                                                            .Batch(true)
+                                                                                            .ServerOperation(false)
+                                                                                            .Model(model =>
+                                                                                            {
+                                                                                                model.Id(x => x.SalesInvoiceDetailID);
+                                                                                                model.Field(m => m.SalesInvoiceDetailID).DefaultValue(0);
+                                                                                                model.Field(m => m.SalesInvoiceID).DefaultValue(@Model.SalesInvoiceID);
+                                                                                            })
+                                                                                            .Events(events =>
+                                                                                            {
+                                                                                                events.Error("kendGrid_ErrorHandler");
+                                                                                            })
+                                                                                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                                                                                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
+                                                                                            .Aggregates(a => a.Add(x => x.Amount).Sum())
+                                                                                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
+                                                                                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
+                                                                                            )
                     )
 
                     @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionB.cshtml")
@@ -221,18 +221,23 @@
                 </div>
 
             </div>
-            
+
 
             <div class="div-button">
                 @if (Model.Editable)
                 {
                     <button id="submitButton" type="submit" onclick="$('#IsFinished').val(false);" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="Lưu phiếu" /> Lưu </button>
-                    <button id="closedSubmitButton_NMVN" type="submit" onclick="$('#IsFinished').val(false);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn </button>
-                    <button id="closedSubmitButton" type="submit" onclick="$('#IsFinished').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/payment-icon.png" alt="SaveFinish" /> Hoàn tất </button>                                        
+                    @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#IsFinished').val(false);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn </button>*@
+                    <button id="closedSubmitButton" type="submit" onclick="$('#IsFinished').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/payment-icon.png" alt="SaveFinish" /> Hoàn tất </button>
                 }
                 else
                 {
                     <button formaction="@Url.Action("Print", "VehiclesInvoices", new {id = @Model.SalesInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn </button>
+
+                    if (Model.FIRSTAccountInvoiceID != null) {
+                        <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Delete", "AccountInvoices", new { id = @Model.FIRSTAccountInvoiceID })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xóa hóa đơn </button> }
+                    if (Model.FIRSTServiceContractID != null) {
+                        <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Delete", "ServiceContracts", new { id = @Model.FIRSTServiceContractID })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xóa hồ sơ </button>}
                 }
             </div>
 
@@ -264,13 +269,13 @@
                     $("#vehiclesinvoice-background").css("display", "inline-block");
                     if (result.NoInvoice > 0) {
                         var myRoute = "@Url.Action("Edit", "PartsInvoices", new { id = "_id_" })".replace("_id_", result.MinSalesInvoiceID);
-                        
+
                         $("#MinReference").html(result.MinReference);
                         $("#TotalPartsAmount").html("#:" + kendo.format('{0:n0}', result.TotalQuantity) + " $:" + kendo.format('{0:n0}', result.TotalPartsAmount));
                     }
                     else {
                         var myRoute = "@Url.Action("Promotion", "PartsInvoices", new { id = "_id_" })".replace("_id_", $("#SalesInvoiceID").val());
-                        
+
                         $("#MinReference").html("Quà tặng...");
                         $("#TotalPartsAmount").html("");
                     }

@@ -34,5 +34,6 @@ namespace MVCModel.Models
         public decimal ListedPrice { get; set; }
         public decimal GrossPrice { get; set; }
         public Nullable<bool> IsBonus { get; set; }
+        public Nullable<int> AccountInvoiceID { get; set; }
     }
 }

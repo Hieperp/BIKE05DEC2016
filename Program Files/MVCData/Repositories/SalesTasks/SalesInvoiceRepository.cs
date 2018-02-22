@@ -41,7 +41,7 @@ namespace MVCData.Repositories.SalesTasks
         public VehiclesInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
             : base(totalBikePortalsEntities, "VehiclesInvoiceEditable", null, "VehiclesInvoiceDeletable")
         {
-            return;
+            //return;
             Helpers.SqlProgrammability.SalesTasks.SalesInvoice si = new Helpers.SqlProgrammability.SalesTasks.SalesInvoice(totalBikePortalsEntities);
             si.RestoreProcedure();
 
@@ -170,7 +170,7 @@ namespace MVCData.Repositories.SalesTasks
     public class PartsInvoiceRepository : SalesInvoiceRepository, IPartsInvoiceRepository
     {
         public PartsInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
-            : base(totalBikePortalsEntities, "PartsInvoiceEditable")
+            : base(totalBikePortalsEntities, "PartsInvoiceEditable", "PartsInvoiceApproved")
         {
         }
     }
@@ -185,7 +185,7 @@ namespace MVCData.Repositories.SalesTasks
     public class ServicesInvoiceRepository : SalesInvoiceRepository, IServicesInvoiceRepository
     {
         public ServicesInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
-            : base(totalBikePortalsEntities, "ServicesInvoiceEditable", null, "ServicesInvoiceDeletable")
+            : base(totalBikePortalsEntities, "ServicesInvoiceEditable", "ServicesInvoiceApproved", "ServicesInvoiceDeletable")
         {
         }
 

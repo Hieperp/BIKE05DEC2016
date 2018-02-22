@@ -154,7 +154,7 @@ namespace MVCService.SalesTasks
 
 
         public PartsInvoiceService(IPartsInvoiceRepository partsInvoiceRepository, IInventoryRepository inventoryRepository, IPartsInvoiceHelperService partsInvoiceHelperService)
-            : base(partsInvoiceRepository, "PartsInvoicePostSaveValidate", "PartsInvoiceSaveRelative", null, "GetPartsInvoiceViewDetails")
+            : base(partsInvoiceRepository, "PartsInvoicePostSaveValidate", "PartsInvoiceSaveRelative", "PartsInvoiceToggleApproved", "GetPartsInvoiceViewDetails")
         {
             this.inventoryRepository = inventoryRepository;
             this.partsInvoiceHelperService = partsInvoiceHelperService;
@@ -221,7 +221,7 @@ namespace MVCService.SalesTasks
     public class ServicesInvoiceService : GenericWithDetailService<SalesInvoice, SalesInvoiceDetail, ServicesInvoiceDTO, ServicesInvoicePrimitiveDTO, ServicesInvoiceDetailDTO>, IServicesInvoiceService
     {
         public ServicesInvoiceService(IServicesInvoiceRepository ServicesInvoiceRepository)
-            : base(ServicesInvoiceRepository, "ServicesInvoicePostSaveValidate")
+            : base(ServicesInvoiceRepository, "ServicesInvoicePostSaveValidate", null, "ServicesInvoiceToggleApproved")
         {
         }
 

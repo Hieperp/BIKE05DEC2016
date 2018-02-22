@@ -17,6 +17,7 @@ namespace MVCDTO.SalesTasks
         public int CustomerID { get; set; }
         public int SalesInvoiceTypeID { get; set; }
         public Nullable<int> ServiceContractID { get; set; }
+        public Nullable<int> AccountInvoiceID { get; set; }
 
         public Nullable<int> QuotationDetailID { get; set; }
 
@@ -26,6 +27,8 @@ namespace MVCDTO.SalesTasks
 
         public Nullable<bool> IsBonus { get; set; }
         public Nullable<bool> IsWarrantyClaim { get; set; }
+
+        public bool IsFinished { get; set; }
     }
 
 
@@ -70,6 +73,9 @@ namespace MVCDTO.SalesTasks
 
         [UIHint("NMVN/CommoditiesInGoodsReceiptsAutoComplete")]
         public override string CommodityName { get; set; }
+
+
+        public Nullable<int> FIRSTServiceContractID { get; set; }
     }
 
 

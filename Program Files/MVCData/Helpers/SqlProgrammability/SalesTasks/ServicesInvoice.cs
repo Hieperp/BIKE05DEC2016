@@ -20,8 +20,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             this.ServicesInvoicePostSaveValidate();
 
+            this.ServicesInvoiceApproved();
             this.ServicesInvoiceEditable();
             this.ServicesInvoiceDeletable();
+
+            this.ServicesInvoiceToggleApproved();
 
             this.SearchServiceInvoices();
             this.SalesInvoicePrint();
@@ -87,14 +90,21 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
 
 
+        private void ServicesInvoiceApproved()
+        {
+            string[] queryArray = new string[1];
+
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 ";
+
+            this.totalBikePortalsEntities.CreateProcedureToCheckExisting("ServicesInvoiceApproved", queryArray);
+        }
 
 
         private void ServicesInvoiceEditable()
         {
-            string[] queryArray = new string[2];
-
-            queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 ";
-            queryArray[1] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";
+            string[] queryArray = new string[1];
+            
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("ServicesInvoiceEditable", queryArray);
         }
@@ -110,7 +120,26 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
 
 
+        private void ServicesInvoiceToggleApproved()
+        {
+            string queryString = " @EntityID int, @Approved bit " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
 
+            queryString = queryString + "       UPDATE      SalesInvoices  SET IsFinished = @Approved, Approved = @Approved, ApprovedDate = GetDate() WHERE SalesInvoiceID = @EntityID AND Approved = ~@Approved" + "\r\n";
+
+            queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               UPDATE          SalesInvoiceDetails  SET IsFinished = @Approved WHERE SalesInvoiceID = @EntityID ; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại hoặc đã ' + iif(@Approved = 0, 'hủy', '')  + ' duyệt' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("ServicesInvoiceToggleApproved", queryString);
+        }
 
 
 

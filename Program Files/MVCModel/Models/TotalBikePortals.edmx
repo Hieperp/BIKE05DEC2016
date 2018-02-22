@@ -648,6 +648,7 @@
           <Property Name="IsBonus" Type="bit" />
           <Property Name="IsWarrantyClaim" Type="bit" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsFinished" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SalesInvoices">
           <Key>
@@ -2174,6 +2175,9 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Parameter Name="EntityID" Type="int" Mode="In" />
           <Parameter Name="SaveRelativeOption" Type="int" Mode="In" />
         </Function>
+        <Function Name="PartsInvoiceApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+        </Function>
         <Function Name="PartsInvoiceEditable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
@@ -2183,6 +2187,10 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
         <Function Name="PartsInvoiceSaveRelative" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
           <Parameter Name="SaveRelativeOption" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PartsInvoiceToggleApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+          <Parameter Name="Approved" Type="bit" Mode="In" />
         </Function>
         <Function Name="PartTransferPostSaveValidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
@@ -2258,6 +2266,9 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
         <Function Name="ServicesContractDeletable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
+        <Function Name="ServicesInvoiceApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+        </Function>
         <Function Name="ServicesInvoiceDeletable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
@@ -2266,6 +2277,10 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
         </Function>
         <Function Name="ServicesInvoicePostSaveValidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ServicesInvoiceToggleApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+          <Parameter Name="Approved" Type="bit" Mode="In" />
         </Function>
         <Function Name="StockTransferEditable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
@@ -3445,6 +3460,20 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
             <End Role="SalesInvoice1" EntitySet="SalesInvoices" />
           </AssociationSet>
           <EntitySet Name="AccessControls" EntityType="TotalBikePortalsModel.AccessControl" />
+          <FunctionImport Name="PartsInvoiceApproved" ReturnType="Collection(String)">
+          <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ServicesInvoiceApproved" ReturnType="Collection(String)">
+          <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PartsInvoiceToggleApproved">
+            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+            <Parameter Name="Approved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="ServicesInvoiceToggleApproved">
+            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+            <Parameter Name="Approved" Mode="In" Type="Boolean" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
           <Property Type="Int32" Name="PurchaseOrderID" Nullable="false" />
@@ -3563,6 +3592,8 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Boolean" Name="IsBonus" Nullable="true" />
+          <Property Type="Int32" Name="AccountInvoiceID" Nullable="true" />
+          <Property Type="Int32" Name="FIRSTServiceContractID" Nullable="true" />
         </ComplexType>
         <ComplexType Name="CommoditiesInGoodsReceipt">
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="false" />
@@ -3602,6 +3633,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Boolean" Name="IsBonus" Nullable="true" />
+          <Property Type="Int32" Name="AccountInvoiceID" Nullable="true" />
         </ComplexType>
         <ComplexType Name="ServiceContractGetVehiclesInvoice">
           <Property Type="Int32" Name="SalesInvoiceDetailID" Nullable="false" />
@@ -5612,6 +5644,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Name="PromotionID" Type="Int32" />
           <Property Name="EmployeeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SalesInvoice" Relationship="TotalBikePortalsModel.FK_SalesInvoiceDetails_SalesInvoices" FromRole="SalesInvoiceDetail" ToRole="SalesInvoice" />
+          <Property Name="IsFinished" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_AccountInvoiceDetails_SalesInvoiceDetails">
           <End Type="TotalBikePortalsModel.SalesInvoiceDetail" Role="SalesInvoiceDetail" Multiplicity="1" />
@@ -6309,6 +6342,8 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
                 <ScalarProperty Name="ListedPrice" ColumnName="ListedPrice" />
                 <ScalarProperty Name="GrossPrice" ColumnName="GrossPrice" />
                 <ScalarProperty Name="IsBonus" ColumnName="IsBonus" />
+                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
+                <ScalarProperty Name="FIRSTServiceContractID" ColumnName="FIRSTServiceContractID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -6359,6 +6394,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
                 <ScalarProperty Name="ListedPrice" ColumnName="ListedPrice" />
                 <ScalarProperty Name="GrossPrice" ColumnName="GrossPrice" />
                 <ScalarProperty Name="IsBonus" ColumnName="IsBonus" />
+                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7744,6 +7780,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <EntitySetMapping Name="SalesInvoiceDetails">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.SalesInvoiceDetail">
               <MappingFragment StoreEntitySet="SalesInvoiceDetails">
+                <ScalarProperty Name="IsFinished" ColumnName="IsFinished" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="PromotionID" ColumnName="PromotionID" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
@@ -8101,6 +8138,10 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PartsInvoiceApproved" FunctionName="TotalBikePortalsModel.Store.PartsInvoiceApproved" />
+          <FunctionImportMapping FunctionImportName="ServicesInvoiceApproved" FunctionName="TotalBikePortalsModel.Store.ServicesInvoiceApproved" />
+          <FunctionImportMapping FunctionImportName="PartsInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.PartsInvoiceToggleApproved" />
+          <FunctionImportMapping FunctionImportName="ServicesInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.ServicesInvoiceToggleApproved" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

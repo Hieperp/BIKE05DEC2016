@@ -27,8 +27,10 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             this.PartsInvoiceSaveRelative();
             this.PartsInvoicePostSaveValidate();
 
+            this.PartsInvoiceApproved();
             this.PartsInvoiceEditable();
 
+            this.PartsInvoiceToggleApproved();
         }
 
 
@@ -41,7 +43,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      SalesInvoices.SalesInvoiceID, CAST(SalesInvoices.EntryDate AS DATE) AS EntryDate, SalesInvoices.Reference, Locations.Code AS LocationCode, Customers.Name + ',    ' + Customers.AddressNo AS CustomerDescription, Commodities.Name AS CommodityName, ServiceContracts.LicensePlate, SalesInvoices.ServiceInvoiceID, ServiceInvoices.EntryDate AS ServiceDate, ServiceInvoices.Reference AS ServiceReference, SalesInvoices.TotalGrossAmount, ISNULL(ServiceInvoices.IsFinished, 1) AS IsFinished " + "\r\n";
+            queryString = queryString + "       SELECT      SalesInvoices.SalesInvoiceID, CAST(SalesInvoices.EntryDate AS DATE) AS EntryDate, SalesInvoices.Reference, Locations.Code AS LocationCode, Customers.Name + ',    ' + Customers.AddressNo AS CustomerDescription, Commodities.Name AS CommodityName, ServiceContracts.LicensePlate, SalesInvoices.ServiceInvoiceID, ServiceInvoices.EntryDate AS ServiceDate, ServiceInvoices.Reference AS ServiceReference, SalesInvoices.TotalGrossAmount, ISNULL(ServiceInvoices.IsFinished, SalesInvoices.IsFinished) AS IsFinished " + "\r\n";
             queryString = queryString + "       FROM        SalesInvoices INNER JOIN" + "\r\n";
             queryString = queryString + "                   Locations ON SalesInvoices.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.PartsInvoice + " AND SalesInvoices.EntryDate >= @FromDate AND SalesInvoices.EntryDate <= @ToDate AND SalesInvoices.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartsInvoice + " AND AccessControls.AccessLevel > 0) AND Locations.LocationID = SalesInvoices.LocationID INNER JOIN " + "\r\n";
             queryString = queryString + "                   Customers ON SalesInvoices.CustomerID = Customers.CustomerID LEFT JOIN" + "\r\n";
@@ -244,7 +246,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "       " + inventories.GET_WarehouseJournal_BUILD_SQL("@WarehouseJournalTable", "@EntryDate", "@EntryDate", "@WarehouseIDList", "@CommodityIDList", "0", "0") + "\r\n";
 
-            queryString = queryString + "       SELECT      SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.SalesInvoiceID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, SalesInvoiceDetails.CommodityTypeID, Warehouses.WarehouseID, Warehouses.Code AS WarehouseCode, " + "\r\n";
+            queryString = queryString + "       SELECT      SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.SalesInvoiceID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, SalesInvoiceDetails.CommodityTypeID, Warehouses.WarehouseID, Warehouses.Code AS WarehouseCode, SalesInvoiceDetails.AccountInvoiceID, " + "\r\n";
             queryString = queryString + "                   ROUND(ISNULL(CommoditiesAvailable.QuantityAvailable, 0) + SalesInvoiceDetails.Quantity, 0) AS QuantityAvailable, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.ListedPrice, SalesInvoiceDetails.DiscountPercent, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.GrossPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.IsBonus, SalesInvoiceDetails.IsWarrantyClaim, SalesInvoiceDetails.Remarks " + "\r\n";
             queryString = queryString + "       FROM        SalesInvoiceDetails INNER JOIN" + "\r\n";
             queryString = queryString + "                   Commodities ON SalesInvoiceDetails.SalesInvoiceID = @SalesInvoiceID AND SalesInvoiceDetails.CommodityID = Commodities.CommodityID INNER JOIN" + "\r\n";
@@ -284,6 +286,14 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
 
 
+        private void PartsInvoiceApproved()
+        {
+            string[] queryArray = new string[1];
+
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 AND ServiceInvoiceID IS NULL ";
+
+            this.totalBikePortalsEntities.CreateProcedureToCheckExisting("PartsInvoiceApproved", queryArray);
+        }
 
         private void PartsInvoiceEditable()
         {
@@ -292,15 +302,36 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryArray[0] = "                 DECLARE @ServiceInvoiceID Int, @IsFinished Bit " + "\r\n";
             queryArray[0] = queryArray[0] + " SELECT TOP 1 @ServiceInvoiceID = ServiceInvoiceID, @IsFinished = IsFinished FROM SalesInvoices WHERE SalesInvoiceID = @EntityID " + "\r\n";
             queryArray[0] = queryArray[0] + " IF NOT @ServiceInvoiceID IS NULL" + "\r\n";
-            queryArray[0] = queryArray[0] + "       SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @ServiceInvoiceID AND IsFinished = 1 " + "\r\n";
-            queryArray[0] = queryArray[0] + " ELSE IF @IsFinished = 1 " + "\r\n";
-            queryArray[0] = queryArray[0] + "       SELECT @FoundEntity = @EntityID " + "\r\n";
+            queryArray[0] = queryArray[0] + "       SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @ServiceInvoiceID AND IsFinished = 1 AND SalesInvoiceTypeID <> " + (int)GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice + "\r\n"; //DATE 12FEB2018: CHANGE TWO POINT (1) + (2) TO IGNORE LOCK EDITABLE BY CHECK IsFinished FOR VehiclesInvoice [(1): class VehiclesInvoice + (2): class PartsInvoice]: (2)--AND SalesInvoiceTypeID <> " + (int)GlobalEnums.SalesInvoiceTypeID.VehiclesInvoice + "
+            //queryArray[0] = queryArray[0] + " ELSE IF @IsFinished = 1 " + "\r\n";
+            //queryArray[0] = queryArray[0] + "       SELECT @FoundEntity = @EntityID " + "\r\n";
 
             queryArray[1] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("PartsInvoiceEditable", queryArray);
         }
 
+
+        private void PartsInvoiceToggleApproved()
+        {
+            string queryString = " @EntityID int, @Approved bit " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       UPDATE      SalesInvoices  SET IsFinished = @Approved, Approved = @Approved, ApprovedDate = GetDate() WHERE SalesInvoiceID = @EntityID AND Approved = ~@Approved" + "\r\n";
+
+            queryString = queryString + "       IF @@ROWCOUNT = 1 " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               UPDATE          SalesInvoiceDetails  SET IsFinished = @Approved WHERE SalesInvoiceID = @EntityID ; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               DECLARE     @msg NVARCHAR(300) = N'Dữ liệu không tồn tại hoặc đã ' + iif(@Approved = 0, 'hủy', '')  + ' duyệt' ; " + "\r\n";
+            queryString = queryString + "               THROW       61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("PartsInvoiceToggleApproved", queryString);
+        }
 
         #endregion
     }

@@ -778,6 +778,7 @@
     <Content Include="Scripts\Controllers\Root\PartAdjustments\Delete.js" />
     <Content Include="Scripts\Controllers\Root\PartAdjustments\Edit.js" />
     <Content Include="Scripts\Controllers\Root\PartAdjustments\Index.js" />
+    <Content Include="Scripts\Controllers\Root\PartsInvoices\Approve.js" />
     <Content Include="Scripts\Controllers\Root\PartsInvoices\Promotion.js" />
     <Content Include="Scripts\Controllers\Root\PartsInvoices\Delete.js" />
     <Content Include="Scripts\Controllers\Root\PartTransferOrders\Approve.js" />
@@ -814,6 +815,7 @@
     <Content Include="Scripts\Controllers\Root\ServiceContracts\Delete.js" />
     <Content Include="Scripts\Controllers\Root\ServiceContracts\Edit.js" />
     <Content Include="Scripts\Controllers\Root\ServiceContracts\Index.js" />
+    <Content Include="Scripts\Controllers\Root\ServicesInvoices\Approve.js" />
     <Content Include="Scripts\Controllers\Root\ServicesInvoices\CreateWizard.js" />
     <Content Include="Scripts\Controllers\Root\ServicesInvoices\Delete.js" />
     <Content Include="Scripts\Controllers\Root\ServicesInvoices\Edit.js" />
@@ -1705,8 +1707,10 @@
     <Content Include="Views\AccountInvoices\PrintDetail.cshtml" />
     <Content Include="Views\PurchaseInvoices\Alter.cshtml" />
     <Content Include="Views\PartTransferOrders\Approve.cshtml" />
-    <Content Include="Views\Helpers\Commons\_ApproveConfirm.cshtml" />
+    <Content Include="Views\Helpers\Commons\_ApproveConfirmed.cshtml" />
     <Content Include="Views\VehicleTransferOrders\Approve.cshtml" />
+    <Content Include="Views\PartsInvoices\Approve.cshtml" />
+    <Content Include="Views\ServicesInvoices\Approve.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

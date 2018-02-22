@@ -183,7 +183,8 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "    BEGIN " + "\r\n";
 
             queryString = queryString + "       SELECT      SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.SalesInvoiceID, SalesInvoiceDetails.GoodsReceiptDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, SalesInvoiceDetails.CommodityTypeID, Warehouses.WarehouseID, Warehouses.Code AS WarehouseCode, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
-            queryString = queryString + "                   ROUND(GoodsReceiptDetails.Quantity - GoodsReceiptDetails.QuantityIssue + SalesInvoiceDetails.Quantity, 0) AS QuantityAvailable, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.ListedPrice, SalesInvoiceDetails.DiscountPercent, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.GrossPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.IsBonus, SalesInvoiceDetails.IsWarrantyClaim, SalesInvoiceDetails.Remarks" + "\r\n";
+            queryString = queryString + "                   ROUND(GoodsReceiptDetails.Quantity - GoodsReceiptDetails.QuantityIssue + SalesInvoiceDetails.Quantity, 0) AS QuantityAvailable, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.ListedPrice, SalesInvoiceDetails.DiscountPercent, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.GrossPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.IsBonus, SalesInvoiceDetails.IsWarrantyClaim, SalesInvoiceDetails.Remarks, " + "\r\n";
+            queryString = queryString + "                   SalesInvoiceDetails.AccountInvoiceID, (SELECT TOP 1 ServiceContractID FROM ServiceContracts WHERE SalesInvoiceDetailID IN (SELECT SalesInvoiceDetailID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @SalesInvoiceID)) AS FIRSTServiceContractID " + "\r\n";            
             queryString = queryString + "       FROM        SalesInvoiceDetails INNER JOIN" + "\r\n";
             queryString = queryString + "                   GoodsReceiptDetails ON SalesInvoiceDetails.SalesInvoiceID = @SalesInvoiceID AND SalesInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID INNER JOIN" + "\r\n";
             queryString = queryString + "                   Commodities ON GoodsReceiptDetails.CommodityID = Commodities.CommodityID INNER JOIN" + "\r\n";
@@ -252,6 +253,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         {
             string[] queryArray = new string[2];
 
+            ////DATE 12FEB2018: CHANGE TWO POINT (1) + (2) TO IGNORE LOCK EDITABLE BY CHECK IsFinished FOR VehiclesInvoice [(1): class VehiclesInvoice + (2): class PartsInvoice]: (1)--REMOVE THIS CHECK
             //queryArray[0] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoices WHERE SalesInvoiceID = @EntityID AND IsFinished = 1 ";
             queryArray[0] = " SELECT TOP 1 @FoundEntity = ServiceContractID FROM ServiceContracts WHERE SalesInvoiceDetailID IN (SELECT SalesInvoiceDetailID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID) ";
             queryArray[1] = " SELECT TOP 1 @FoundEntity = SalesInvoiceID FROM SalesInvoiceDetails WHERE SalesInvoiceID = @EntityID AND NOT AccountInvoiceID IS NULL ";

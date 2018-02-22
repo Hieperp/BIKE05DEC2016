@@ -57,11 +57,12 @@ namespace MVCDTO.SalesTasks
 
 
         public bool IsFinished { get; set; }
+        public override bool Approved { get { return this.IsFinished; } }
 
         public override void PerformPresaveRule()
         {
             base.PerformPresaveRule();
-            this.DtoDetails().ToList().ForEach(e => { e.SalesInvoiceTypeID = this.SalesInvoiceTypeID; e.CustomerID = this.CustomerID; e.PromotionID = this.PromotionID; e.EmployeeID = this.EmployeeID; });
+            this.DtoDetails().ToList().ForEach(e => { e.SalesInvoiceTypeID = this.SalesInvoiceTypeID; e.CustomerID = this.CustomerID; e.PromotionID = this.PromotionID; e.EmployeeID = this.EmployeeID; e.IsFinished = this.IsFinished; });
         }
 
     }
@@ -151,6 +152,11 @@ namespace MVCDTO.SalesTasks
         public ICollection<VehiclesInvoiceDetailDTO> GetDetails() { return this.VehiclesInvoiceViewDetails; }
 
         protected override IEnumerable<SalesInvoiceDetailDTO> DtoDetails() { return this.VehiclesInvoiceViewDetails; }
+
+
+
+        public Nullable<int> FIRSTServiceContractID { get { return this.ViewDetails.FirstOrDefault() != null ? this.ViewDetails.FirstOrDefault().FIRSTServiceContractID : null; } }
+        public Nullable<int> FIRSTAccountInvoiceID { get { return this.ViewDetails.Where(w => w.AccountInvoiceID != null).FirstOrDefault() != null ? this.ViewDetails.Where(w => w.AccountInvoiceID != null).FirstOrDefault().AccountInvoiceID : null; } }
     }
 
 
@@ -258,7 +264,7 @@ namespace MVCDTO.SalesTasks
 
         [Display(Name = "Rửa xe")]
         public int VehicleCleaning { get; set; }
-        
+
         [Display(Name = "Dầu phanh")]
         public int CheckedBrakeFluid { get; set; }
         [Display(Name = "Phanh trước")]
