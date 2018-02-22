@@ -14,16 +14,18 @@ namespace MVCClient
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Route2Para",
+                url: "{controller}/{action}/{id}/{pgid}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, pgid = UrlParameter.Optional }
+            );
+            
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.MapRoute(
-                name: "Route2Para",
-                url: "{controller}/{action}/{id}/{pgid}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, pgid = UrlParameter.Optional }
-            );
+
         }
     }
 }

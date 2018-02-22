@@ -1373,7 +1373,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\VehiclesInvoices\Print.cshtml">
+    <Content Include="Views\VehiclesInvoices\PrintInvoice.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config">
@@ -1713,8 +1713,6 @@
     <Content Include="Views\VehicleTransferOrders\Approve.cshtml" />
     <Content Include="Views\PartsInvoices\Approve.cshtml" />
     <Content Include="Views\ServicesInvoices\Approve.cshtml" />
-    <Content Include="Views\VehiclesInvoices\PrintSummary.cshtml" />
-    <Content Include="Views\VehiclesInvoices\PrintDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

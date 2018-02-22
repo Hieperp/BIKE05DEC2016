@@ -1,4 +1,6 @@
-﻿using MVCBase.Enums;
+﻿using System.Web.Mvc;
+
+using MVCBase.Enums;
 
 using MVCModel.Models;
 
@@ -21,7 +23,15 @@ namespace MVCClient.Controllers.SalesTasks
         {
         }
 
-        protected override ViewModels.Helpers.PrintViewModel InitPrintViewModel(int? id)
+        [OnResultExecutingFilterAttribute]
+        public ActionResult PrintInvoice(int? id, int? pgid)
+        {
+            PrintViewModel printViewModel = InitPrintViewModel(id);
+            printViewModel.PrintOptionID = (int)pgid;
+            return View(printViewModel);
+        }
+
+        protected override PrintViewModel InitPrintViewModel(int? id)
         {
             PrintViewModel printViewModel = base.InitPrintViewModel(id);
             printViewModel.PrintOptionID = 1; //NOT IsFinished YET => PRINTED BY VehiclesInvoiceID
