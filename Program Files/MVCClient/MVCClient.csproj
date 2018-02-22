@@ -1373,6 +1373,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\VehiclesInvoices\Print.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1703,7 +1706,6 @@
     <Content Include="Views\Shared\EditorTemplates\NMVN\CommoditiesInWarehousesIncludeOutOfStockAutoComplete.cshtml" />
     <Content Include="Views\PartAdjustments\Print.cshtml" />
     <Content Include="Views\Helpers\Commons\_ReceptionistAutoComplete.cshtml" />
-    <Content Include="Views\VehiclesInvoices\Print.cshtml" />
     <Content Include="Views\AccountInvoices\PrintDetail.cshtml" />
     <Content Include="Views\PurchaseInvoices\Alter.cshtml" />
     <Content Include="Views\PartTransferOrders\Approve.cshtml" />
@@ -1711,6 +1713,8 @@
     <Content Include="Views\VehicleTransferOrders\Approve.cshtml" />
     <Content Include="Views\PartsInvoices\Approve.cshtml" />
     <Content Include="Views\ServicesInvoices\Approve.cshtml" />
+    <Content Include="Views\VehiclesInvoices\PrintSummary.cshtml" />
+    <Content Include="Views\VehiclesInvoices\PrintDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
