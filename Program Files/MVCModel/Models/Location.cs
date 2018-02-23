@@ -37,6 +37,7 @@ namespace MVCModel.Models
         public System.DateTime LockedDate { get; set; }
         public string AspUserID { get; set; }
         public System.DateTime EditedDate { get; set; }
+        public string Taxcode { get; set; }
     
         public virtual ICollection<Warehouse> Warehouses { get; set; }
         public virtual ICollection<OrganizationalUnit> OrganizationalUnits { get; set; }

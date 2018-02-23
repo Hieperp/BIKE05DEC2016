@@ -343,6 +343,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Telephone" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Facsimile" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Taxcode" Type="nvarchar" MaxLength="30" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
           <Property Name="LockedDate" Type="datetime" Nullable="false" />
           <Property Name="AspUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -3916,6 +3917,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="InventoryAdjustments" Relationship="TotalBikePortalsModel.FK_InventoryAdjustments_Locations" FromRole="Location" ToRole="InventoryAdjustment" />
           <NavigationProperty Name="SalesInvoices" Relationship="TotalBikePortalsModel.FK_SalesInvoices_Locations" FromRole="Location" ToRole="SalesInvoice" />
+          <Property Name="Taxcode" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           </EntityType>
         <EntityType Name="PaymentTerm">
           <Key>
@@ -6707,6 +6709,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.Location">
               <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Taxcode" ColumnName="Taxcode" />
                 <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
                 <ScalarProperty Name="AspUserID" ColumnName="AspUserID" />
                 <ScalarProperty Name="LockedDate" ColumnName="LockedDate" />
