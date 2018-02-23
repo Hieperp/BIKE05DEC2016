@@ -283,7 +283,8 @@
 
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>
-                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê </button>
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê xe </button>
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 3 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê phụ tùng </button>
 
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")

@@ -1706,7 +1706,6 @@
     <Content Include="Views\Shared\EditorTemplates\NMVN\CommoditiesInWarehousesIncludeOutOfStockAutoComplete.cshtml" />
     <Content Include="Views\PartAdjustments\Print.cshtml" />
     <Content Include="Views\Helpers\Commons\_ReceptionistAutoComplete.cshtml" />
-    <Content Include="Views\AccountInvoices\PrintDetail.cshtml" />
     <Content Include="Views\PurchaseInvoices\Alter.cshtml" />
     <Content Include="Views\PartTransferOrders\Approve.cshtml" />
     <Content Include="Views\Helpers\Commons\_ApproveConfirmed.cshtml" />
