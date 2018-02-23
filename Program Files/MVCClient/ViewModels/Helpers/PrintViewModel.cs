@@ -10,6 +10,11 @@
         public string ReportFolder { get { return "TotalBikePortals"; } }
         public string ReportPath { get; set; }
 
+        
+
+        public string ViewName { get; set; }
         public int PrintOptionID { get; set; }
+
+        public PrintViewModel() { this.ViewName = "Print"; }
     }
 }

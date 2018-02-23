@@ -1683,7 +1683,7 @@
     <Content Include="Views\AccountInvoices\Delete.cshtml" />
     <Content Include="Views\AccountInvoices\GetPendingSalesInvoices.cshtml" />
     <Content Include="Views\PartsInvoices\Print.cshtml" />
-    <Content Include="Views\AccountInvoices\Print.cshtml" />
+    <Content Include="Views\AccountInvoices\PrintInvoice.cshtml" />
     <Content Include="Views\PartTransfers\Print.cshtml" />
     <Content Include="Views\VehicleTransfers\Print.cshtml" />
     <Content Include="Views\Home\LockedDate.cshtml" />

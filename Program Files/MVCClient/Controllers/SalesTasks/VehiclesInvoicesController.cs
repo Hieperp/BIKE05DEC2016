@@ -34,6 +34,7 @@ namespace MVCClient.Controllers.SalesTasks
         protected override PrintViewModel InitPrintViewModel(int? id)
         {
             PrintViewModel printViewModel = base.InitPrintViewModel(id);
+            printViewModel.ViewName = "PrintInvoice";
             printViewModel.PrintOptionID = 1; //NOT IsFinished YET => PRINTED BY VehiclesInvoiceID
 
             SalesInvoice entity = base.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Readable);

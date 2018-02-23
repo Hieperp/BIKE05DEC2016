@@ -7,6 +7,7 @@ using MVCDTO.SalesTasks;
 
 using MVCClient.ViewModels.SalesTasks;
 using MVCClient.Builders.SalesTasks;
+using MVCClient.ViewModels.Helpers;
 
 
 namespace MVCClient.Controllers.SalesTasks
@@ -18,9 +19,19 @@ namespace MVCClient.Controllers.SalesTasks
         {
         }
 
-        public ActionResult PrintDetail(int? id)
+        [OnResultExecutingFilterAttribute]
+        public ActionResult PrintInvoice(int? id, int? pgid)
         {
-            return View(InitPrintViewModel(id));
+            PrintViewModel printViewModel = InitPrintViewModel(id);
+            printViewModel.PrintOptionID = (int)pgid;
+            return View(printViewModel);
+        }
+
+        protected override ViewModels.Helpers.PrintViewModel InitPrintViewModel(int? id)
+        {
+            PrintViewModel printViewModel = base.InitPrintViewModel(id);
+            printViewModel.ViewName = "PrintInvoice";
+            return printViewModel;
         }
 
         public virtual ActionResult GetPendingSalesInvoices()

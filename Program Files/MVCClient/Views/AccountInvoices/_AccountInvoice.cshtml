@@ -15,7 +15,7 @@
         @Html.HiddenFor(model => model.AverageDiscountPercent)
 
         @Html.HiddenFor(model => model.SubmitTypeOption)
-        
+
         <div id="popupWindow"></div>
 
         <div class="div-main">
@@ -97,9 +97,9 @@
                                 .ClientFooterTemplate("Tổng cộng:")
                                 .ClientTemplate("<div class = 'multiline-grid'> #= CommodityName #</div>" +
                                         "<div> #= CommodityCode #</div>" +
-                                        //"<div> #= ChassisCode #</div>" +
-                                        //"<div class = 'multiline-grid'> #= EngineCode #</div>" +
-                                        //"<div class = 'multiline-grid'> #= ColorCode #</div>" +
+                                //"<div> #= ChassisCode #</div>" +
+                                //"<div class = 'multiline-grid'> #= EngineCode #</div>" +
+                                //"<div class = 'multiline-grid'> #= ColorCode #</div>" +
                                         "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
 
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
@@ -113,7 +113,7 @@
                             columns.Bound(p => p.ColorCode).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= ColorCode #" + "<input type='hidden' name='AccountInvoiceViewDetails[#= index(data) #].ColorCode' value='#= ColorCode #' />");
 
-                            
+
                             columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).Width(50).HtmlAttributes(new { @class = "grid-number-column" })
                                 .Format("{0:n0}")
                                 .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
@@ -193,28 +193,28 @@
                         {
                             events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
                         })
-                        .DataSource(dataSource => dataSource
-                            .Ajax()
-                            .Batch(true)
-                            .ServerOperation(false)
-                            .Model(model =>
-                            {
-                                model.Id(x => x.AccountInvoiceDetailID);
-                                model.Field(m => m.AccountInvoiceDetailID).DefaultValue(0);
-                                model.Field(m => m.AccountInvoiceID).DefaultValue(@Model.AccountInvoiceID);
-                                model.Field(m => m.Quantity).DefaultValue(0);
-                                model.Field(m => m.DiscountPercent).DefaultValue(0);
-                            })
-                            .Events(events =>
-                            {
-                                events.Error("kendGrid_ErrorHandler");
-                            })
-                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
-                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
-                            .Aggregates(a => a.Add(x => x.Amount).Sum())
-                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
-                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
-)
+                                                        .DataSource(dataSource => dataSource
+                                                            .Ajax()
+                                                            .Batch(true)
+                                                            .ServerOperation(false)
+                                                            .Model(model =>
+                                                            {
+                                                                model.Id(x => x.AccountInvoiceDetailID);
+                                                                model.Field(m => m.AccountInvoiceDetailID).DefaultValue(0);
+                                                                model.Field(m => m.AccountInvoiceID).DefaultValue(@Model.AccountInvoiceID);
+                                                                model.Field(m => m.Quantity).DefaultValue(0);
+                                                                model.Field(m => m.DiscountPercent).DefaultValue(0);
+                                                            })
+                                                            .Events(events =>
+                                                            {
+                                                                events.Error("kendGrid_ErrorHandler");
+                                                            })
+                                                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                                                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
+                                                            .Aggregates(a => a.Add(x => x.Amount).Sum())
+                                                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
+                                                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
+                                )
                     )
 
 
@@ -231,7 +231,7 @@
                                     .Expanded(false)
                                     .Content(@<text>
                                         <div class="div-panel-left">
-                                            <div class="div-row"> 
+                                            <div class="div-row">
                                                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label1" })
                                                 <div class="div-input">
                                                     @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class1" })
@@ -242,14 +242,14 @@
                                             </div>
 
                                             @*<div class="div-row">
-                                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
-                                                <div class="div-input">
-                                                    @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
-                                                </div>
-                                                <div class="div-validation-message">
-                                                    @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>*@
+                                                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label1" })
+                                                    <div class="div-input">
+                                                        @Html.Kendo().MaskedTextBoxFor(model => model.Remarks).HtmlAttributes(new { @class = "input-class1" })
+                                                    </div>
+                                                    <div class="div-validation-message">
+                                                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>*@
                                             @Html.Partial("~/Views/Helpers/Commons/_PaymentTermDropDown.cshtml")
                                         </div>
                                         <div class="div-panel-right">
@@ -272,14 +272,19 @@
                 @if (Model.Editable)
                 {
                     @Html.HiddenFor(model => model.PrintAfterClosedSubmit)
-                    <button id="closedSubmitButton" type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu hóa đơn </button>
-                    <button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+                    <button id="submitButton" type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu hóa đơn [Lưu ý: Lưu trước khi in] </button>
+                    @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>*@
                 }
-                else
+                @*else
                 {
                     <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
                     <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
-                }
+                }*@
+
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê </button>
+
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>
