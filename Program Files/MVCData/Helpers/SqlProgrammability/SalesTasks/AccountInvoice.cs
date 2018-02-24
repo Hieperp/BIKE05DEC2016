@@ -187,7 +187,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         private void AccountInvoiceSheet()
         {
             string queryString = " @AccountInvoiceID int " + "\r\n";
-            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
@@ -195,7 +195,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "       SELECT          AccountInvoices.AccountInvoiceID, AccountInvoices.EntryDate, AccountInvoices.Reference, AccountInvoices.VATInvoiceNo, AccountInvoices.VATInvoiceDate, AccountInvoices.VATInvoiceSeries, " + "\r\n";
             queryString = queryString + "                       Customers.CustomerID, Customers.Name AS CustomerName, Customers.OfficialName AS CustomerOfficialName, Customers.VATCode, Customers.AddressNo, EntireTerritories.EntireName AS EntireTerritoryEntireName, PaymentTerms.Name AS PaymentTermName, " + "\r\n";
-            queryString = queryString + "                       AccountInvoiceCollections.SalesInvoiceDetailID, ISNULL(AccountInvoiceCollections.IsBonus, CAST(0 AS bit)) AS IsBonus, Commodities.CommodityID, Commodities.Code, Commodities.Name, Commodities.SalesUnit, AccountInvoiceCollections.LineDescription AS LineDescription, AccountInvoiceCollections.ChassisCode, AccountInvoiceCollections.EngineCode, AccountInvoiceCollections.ColorCode, AccountInvoiceCollections.ColorCodeName, " + "\r\n";
+            queryString = queryString + "                       MINGoodsReceiptDetails.MINSalesInvoiceTypeID, AccountInvoiceCollections.SalesInvoiceDetailID, ISNULL(AccountInvoiceCollections.IsBonus, CAST(0 AS bit)) AS IsBonus, Commodities.CommodityID, Commodities.Code, Commodities.Name, Commodities.SalesUnit, AccountInvoiceCollections.LineDescription AS LineDescription, AccountInvoiceCollections.ChassisCode, AccountInvoiceCollections.EngineCode, AccountInvoiceCollections.ColorCode, AccountInvoiceCollections.ColorCodeName, " + "\r\n";
             queryString = queryString + "                       AccountInvoiceCollections.Quantity, AccountInvoiceCollections.UnitPrice, AccountInvoiceCollections.VATPercent, AccountInvoiceCollections.Amount, AccountInvoiceCollections.VATAmount, AccountInvoiceCollections.GrossAmount, " + "\r\n";
             queryString = queryString + "                       AccountInvoices.TotalQuantity, AccountInvoices.TotalAmount, AccountInvoices.TotalVATAmount, AccountInvoices.TotalGrossAmount, dbo.SayVND(AccountInvoices.TotalGrossAmount) AS TotalGrossAmountInWords, AccountInvoices.Description, " + "\r\n";
             queryString = queryString + "                       Locations.OfficialName AS LocationOfficialName, Locations.Address AS LocationAddress, Locations.Taxcode AS LocationTaxcode, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile " + "\r\n";
@@ -206,6 +206,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "                       INNER JOIN Customers ON AccountInvoices.CustomerID = Customers.CustomerID " + "\r\n";
             queryString = queryString + "                       INNER JOIN EntireTerritories ON Customers.TerritoryID = EntireTerritories.TerritoryID " + "\r\n";
             queryString = queryString + "                       INNER JOIN PaymentTerms ON 1 = PaymentTerms.PaymentTermID " + "\r\n"; //AccountInvoices.PaymentTermID
+            queryString = queryString + "                       INNER JOIN (SELECT MIN(SalesInvoiceTypeID) AS MINSalesInvoiceTypeID FROM SalesInvoiceDetails WHERE AccountInvoiceID = @LocalAccountInvoiceID) MINGoodsReceiptDetails ON 1 = 1 " + "\r\n";
 
             queryString = queryString + "                       INNER JOIN Locations ON AccountInvoices.LocationID = Locations.LocationID " + "\r\n";
             
