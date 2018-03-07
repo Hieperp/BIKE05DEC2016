@@ -99,13 +99,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "       IF          (@LocalWithAccountInvoice = 0) " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
             queryString = queryString + "                   IF          (@LocalIncludePromotionID = 0) " + "\r\n";
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (0+1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (0+1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, false, 0) + "\r\n";
             queryString = queryString + "                   ELSE    IF  (@LocalIncludePromotionID = -1) " + "\r\n";
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (-1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (-1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, false, -1) + "\r\n";
             queryString = queryString + "                   ELSE    " + "\r\n"; //(@LocalIncludePromotionID = 1)
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + false.ToString().Substring(0, 1) + (1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, false, 1) + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
@@ -113,13 +113,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "           BEGIN " + "\r\n";
             queryString = queryString + "                   IF          (@LocalIncludePromotionID = 0) " + "\r\n";
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (0 + 1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (0 + 1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, true, 0) + "\r\n";
             queryString = queryString + "                   ELSE    IF  (@LocalIncludePromotionID = -1) " + "\r\n";
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (-1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (-1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, true, -1) + "\r\n";
             queryString = queryString + "                   ELSE    " + "\r\n"; //(@LocalIncludePromotionID = 1)
-            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(false) + "\r\n";
+            queryString = queryString + "                           EXEC SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + true.ToString().Substring(0, 1) + (1 + 1).ToString().Substring(0, 1) + this.BUILDParameter(true) + "\r\n";
             //queryString = queryString + "                           " + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, true, 1) + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
@@ -143,13 +143,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
                     {
                         for (int includePromotionID = 0; includePromotionID <= 2; includePromotionID++)
                         {
-                            this.totalBikePortalsEntities.CreateStoredProcedure("SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + withAccountInvoice.ToString().Substring(0, 1) + includePromotionID.ToString().Substring(0, 1), this.BUILDHeader(false) + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID-1));
+                            this.totalBikePortalsEntities.CreateStoredProcedure("SalesInvoiceJournal02" + salesInvoiceTypeID.ToString().Substring(0, 1) + locationFilter.ToString().Substring(0, 1) + withAccountInvoice.ToString().Substring(0, 1) + includePromotionID.ToString().Substring(0, 1), this.BUILDHeader(true) + this.SalesInvoiceJournalBuildDetail(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID-1));
                         }
                     }
                 }
             }
         }
-
+        //----
         private string SalesInvoiceJournalBuildDetail(GlobalEnums.SalesInvoiceTypeID salesInvoiceTypeID, bool locationFilter, bool withAccountInvoice, int includePromotionID)
         {
             string queryString = "";
@@ -157,7 +157,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             if (!withAccountInvoice && includePromotionID != 1)
             {
                 queryString = queryString + "   BEGIN " + "\r\n";
-                queryString = queryString + "       IF          (@IsHideDetail = 0) " + "\r\n";
+                queryString = queryString + "       IF          (@LocalIsHideDetail = 0) " + "\r\n";
                 queryString = queryString + "                   " + this.SalesInvoiceJournalBuildDetailHideDetail(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID, false) + "\r\n";
                 queryString = queryString + "       ELSE        " + "\r\n";
                 queryString = queryString + "                   " + this.SalesInvoiceJournalBuildDetailHideDetail(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID, true) + "\r\n";
@@ -174,7 +174,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             string queryString = "";
 
             queryString = queryString + "   BEGIN " + "\r\n";
-            queryString = queryString + "       IF          (@IsGroupByPrice = 0) " + "\r\n";
+            queryString = queryString + "       IF          (@LocalIsGroupByPrice = 0) " + "\r\n";
             queryString = queryString + "                   " + this.SalesInvoiceJournalBuildDetailHideDetailGroupByPrice(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID, isHideDetail, false) + "\r\n";
             queryString = queryString + "       ELSE        " + "\r\n";
             queryString = queryString + "                   " + this.SalesInvoiceJournalBuildDetailHideDetailGroupByPrice(salesInvoiceTypeID, locationFilter, withAccountInvoice, includePromotionID, isHideDetail, true) + "\r\n";
@@ -232,12 +232,12 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
                         queryString = queryString + "       0 AS CostPrice, 0 AS CostAmount, " + "\r\n";
 
 
-            queryString = queryString + "                   IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.ServicesInvoice + " OR NOT SalesInvoiceDetails.ServiceInvoiceID IS NULL, SalesInvoiceDetails.GrossAmount, 0) AS ServiceGrossAmount, IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.ServicesInvoice + " OR NOT SalesInvoiceDetails.ServiceInvoiceID IS NULL, 0, SalesInvoiceDetails.GrossAmount) AS NonServiceGrossAmount, @IsGroupByPrice * SalesInvoiceDetails.UnitPrice AS UnitPriceGroup, " + "\r\n"; //WHEN SalesInvoiceTypeID = GlobalEnums.SalesInvoiceTypeID.ServicesInvoice => SalesInvoiceDetails.ServiceInvoiceID IS ALWAYS NULL
+            queryString = queryString + "                   IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.ServicesInvoice + " OR NOT SalesInvoiceDetails.ServiceInvoiceID IS NULL, SalesInvoiceDetails.GrossAmount, 0) AS ServiceGrossAmount, IIF(SalesInvoiceDetails.SalesInvoiceTypeID = " + (int)GlobalEnums.SalesInvoiceTypeID.ServicesInvoice + " OR NOT SalesInvoiceDetails.ServiceInvoiceID IS NULL, 0, SalesInvoiceDetails.GrossAmount) AS NonServiceGrossAmount, @LocalIsGroupByPrice * SalesInvoiceDetails.UnitPrice AS UnitPriceGroup, " + "\r\n"; //WHEN SalesInvoiceTypeID = GlobalEnums.SalesInvoiceTypeID.ServicesInvoice => SalesInvoiceDetails.ServiceInvoiceID IS ALWAYS NULL
             queryString = queryString + "                   " + (includePromotionID <= 0 ? "VWCommodityCategories.Name1" : "Promotions.Code") + " AS Group1Name, " + (includePromotionID <= 0 ? "VWCommodityCategories.Name2" : "VWCommodityCategories.Name1") + " AS Group2Name " + "\r\n";
 
             queryString = queryString + "       FROM        " + "\r\n";
 
-            string querySalesInvoiceDetail = (includePromotionID == -1 ? "(SalesInvoiceDetails.IsBonus IS NULL OR SalesInvoiceDetails.IsBonus = 0) AND " : "") + " SalesInvoiceDetails.EntryDate >= @FromDate AND SalesInvoiceDetails.EntryDate <= @ToDate " + (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.AllInvoice ? "" : " AND SalesInvoiceDetails.SalesInvoiceTypeID = @SalesInvoiceTypeID") + (locationFilter ? " AND SalesInvoiceDetails.LocationID = @LocationID" : "") + "";
+            string querySalesInvoiceDetail = (includePromotionID == -1 ? "(SalesInvoiceDetails.IsBonus IS NULL OR SalesInvoiceDetails.IsBonus = 0) AND " : "") + " SalesInvoiceDetails.EntryDate >= @LocalFromDate AND SalesInvoiceDetails.EntryDate <= @LocalToDate " + (salesInvoiceTypeID == GlobalEnums.SalesInvoiceTypeID.AllInvoice ? "" : " AND SalesInvoiceDetails.SalesInvoiceTypeID = @LocalSalesInvoiceTypeID") + (locationFilter ? " AND SalesInvoiceDetails.LocationID = @LocalLocationID" : "") + "";
             if (!isHideDetail)
             {
                 queryString = queryString + "                   SalesInvoiceDetails " + "\r\n";
