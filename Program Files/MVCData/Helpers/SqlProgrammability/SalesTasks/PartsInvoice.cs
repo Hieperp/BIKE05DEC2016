@@ -72,8 +72,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             //HAI TRUONG HOP: GetVehicleAvailables VA GetPartAvailables: DUOC SU DUNG TRONG VehicleTransferOrder VA PartTransferOrder (TAT NHIEN, SE CON DUOC SU DUNG TRONG NHUNG TRUONG HOP KHAC KHI KHONG YEU CAU LAY getSavedData, TUY NHIEN, HIEN TAI CHUA CO SU DUNG NOI NAO KHAC)
             //TRUONG HOP CUOI CUNG: GetCommoditiesAvailables: CUNG GIONG NHU GetVehicleAvailables VA GetPartAvailables, TUY NHIEN, NO BAO GOM CA Vehicle VA PartANDConsumable (get both Vehicles and Parts/ Consumables on the same view) (HIEN TAI, GetCommoditiesAvailables: CHUA DUOC SU DUNG O CHO NAO CA, CHI DE DANH SAU NAY CAN THIET THI SU DUNG THOI)
 
-            
+
             //BO SUNG NGAY 08-JUN-2016: includeCommoditiesOutOfStock = TRUE: CHI DUY NHAT AP DUNG CHO GetCommoditiesInWarehousesIncludeOutOfStock. CAC T/H KHAC CHUA XEM XET, DO CHUA CO NHU CAU SU DUNG. NEU CO NHU CAU -> THI CO THE XEM XET LAI SQL QUERY
+
+
+            //BỔ SUNG NGÀY 24/05/2018: @LocationID = 0 KHI (NOT getSavedData && NOT includeCommoditiesOutOfStock): MỤC ĐÍCH: QUICK SEARCH
 
 
             string queryString = " @LocationID int, @EntryDate DateTime, @SearchText nvarchar(60) " + (getSavedData ? ", @SalesInvoiceID int, @StockTransferID int, @InventoryAdjustmentID int " : "") + "\r\n";
@@ -84,9 +87,9 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "       DECLARE @CommoditiesAvailable TABLE (WarehouseID int NOT NULL, CommodityID int NOT NULL, QuantityAvailable decimal(18, 2) NOT NULL)" + "\r\n";
             queryString = queryString + "       DECLARE @HasCommoditiesAvailable int SET @HasCommoditiesAvailable = 0" + "\r\n";
 
-            queryString = queryString + "       INSERT INTO @Commodities SELECT CommodityID, Code, Name, GrossPrice, CommodityTypeID, CommodityCategoryID FROM Commodities WHERE CommodityTypeID IN (" + (withCommoditiesInGoodsReceipts ? "" + (int)GlobalEnums.CommodityTypeID.Vehicles : "") + (withCommoditiesInGoodsReceipts && withCommoditiesInWarehouses ? ", " : "") + (withCommoditiesInWarehouses ? (int)GlobalEnums.CommodityTypeID.Parts + ", " + (int)GlobalEnums.CommodityTypeID.Consumables : "") + ") AND (Code LIKE '%' + @SearchText + '%' OR Name LIKE '%' + @SearchText + '%') " + "\r\n";
+            queryString = queryString + "       INSERT INTO @Commodities SELECT CommodityID, Code, Name, GrossPrice, CommodityTypeID, CommodityCategoryID FROM Commodities WHERE CommodityTypeID IN (" + (withCommoditiesInGoodsReceipts ? "" + (int)GlobalEnums.CommodityTypeID.Vehicles : "") + (withCommoditiesInGoodsReceipts && withCommoditiesInWarehouses ? ", " : "") + (withCommoditiesInWarehouses ? (int)GlobalEnums.CommodityTypeID.Parts + ", " + (int)GlobalEnums.CommodityTypeID.Consumables : "") + ") AND @SearchText <> '' AND (Code LIKE '%' + @SearchText + '%' OR Name LIKE '%' + @SearchText + '%') " + "\r\n";
 
-            
+
             queryString = queryString + "       IF (@@ROWCOUNT > 0) " + "\r\n";
             queryString = queryString + "           " + this.GetCommoditiesInWarehousesBuildSQL(withCommoditiesInGoodsReceipts, withCommoditiesInWarehouses, getSavedData, includeCommoditiesOutOfStock) + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
@@ -95,7 +98,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             this.totalBikePortalsEntities.CreateStoredProcedure(storedProcedureName, queryString);
         }
 
-        private string GetCommoditiesInWarehousesGETAvailable(bool withCommoditiesInGoodsReceipts, bool withCommoditiesInWarehouses, bool getSavedData)
+        private string GetCommoditiesInWarehousesGETAvailable(bool withCommoditiesInGoodsReceipts, bool withCommoditiesInWarehouses, bool getSavedData, bool includeCommoditiesOutOfStock)
         {
             string queryString = "";
 
@@ -104,7 +107,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
                 queryString = queryString + "               INSERT INTO     @CommoditiesAvailable (WarehouseID, CommodityID, QuantityAvailable) " + "\r\n";
                 queryString = queryString + "               SELECT          WarehouseID, CommodityID, ROUND(Quantity - QuantityIssue, 0) AS QuantityAvailable " + "\r\n";
                 queryString = queryString + "               FROM            GoodsReceiptDetails " + "\r\n";
-                queryString = queryString + "               WHERE           CommodityTypeID IN (" + (int)GlobalEnums.CommodityTypeID.Vehicles + ") AND ROUND(Quantity - QuantityIssue, 0) > 0 AND WarehouseID IN (SELECT WarehouseID FROM Warehouses WHERE LocationID = @LocationID) AND CommodityID IN (SELECT CommodityID FROM @Commodities) " + "\r\n";
+                queryString = queryString + "               WHERE           CommodityTypeID IN (" + (int)GlobalEnums.CommodityTypeID.Vehicles + ") AND ROUND(Quantity - QuantityIssue, 0) > 0 AND WarehouseID IN (SELECT WarehouseID FROM Warehouses WHERE LocationID = @LocationID" + (getSavedData || includeCommoditiesOutOfStock ? "" : " OR @LocationID = 0 ") + ") AND CommodityID IN (SELECT CommodityID FROM @Commodities) " + "\r\n";
 
                 queryString = queryString + "               SET             @HasCommoditiesAvailable = @HasCommoditiesAvailable + @@ROWCOUNT " + "\r\n";
             }
@@ -115,7 +118,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
                 SqlProgrammability.StockTasks.Inventories inventories = new StockTasks.Inventories(this.totalBikePortalsEntities);
 
                 queryString = queryString + "               DECLARE @WarehouseIDList varchar(35)        DECLARE @CommodityIDList varchar(3999) " + "\r\n";
-                queryString = queryString + "               SELECT  @WarehouseIDList = STUFF((SELECT ',' + CAST(WarehouseID as varchar) FROM Warehouses WHERE LocationID = @LocationID FOR XML PATH('')) ,1,1,'') " + "\r\n";
+                queryString = queryString + "               SELECT  @WarehouseIDList = STUFF((SELECT ',' + CAST(WarehouseID as varchar) FROM Warehouses WHERE LocationID = @LocationID" + (getSavedData || includeCommoditiesOutOfStock ? "" : " OR @LocationID = 0 ") + " FOR XML PATH('')) ,1,1,'') " + "\r\n";
                 queryString = queryString + "               SELECT  @CommodityIDList = STUFF((SELECT ',' + CAST(CommodityID as varchar) FROM @Commodities FOR XML PATH('')) ,1,1,'') " + "\r\n";
 
 
@@ -169,7 +172,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         {
             string queryString = "                  BEGIN " + "\r\n";
 
-            queryString = queryString + "               " + this.GetCommoditiesInWarehousesGETAvailable(withCommoditiesInGoodsReceipts, withCommoditiesInWarehouses, getSavedData) + "\r\n";
+            queryString = queryString + "               " + this.GetCommoditiesInWarehousesGETAvailable(withCommoditiesInGoodsReceipts, withCommoditiesInWarehouses, getSavedData, includeCommoditiesOutOfStock) + "\r\n";
 
 
             if (includeCommoditiesOutOfStock)

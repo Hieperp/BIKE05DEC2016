@@ -1,0 +1,22 @@
+﻿@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    @(Html.Kendo().TabStrip()
+        .HtmlAttributes(new { @style = "height: 466px; margin-left: 0px; margin-right: 0px;" })
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Tồn kho xe")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("~/Views/Commodities/_SearchVehicleAvailables.cshtml")
+                </text>);
+
+            tabStrip.Add().Text("Tồn kho phụ tùng")
+                .Content(@<text>
+                    @Html.Partial("~/Views/Commodities/_SearchPartAvailables.cshtml")
+                </text>);
+        })
+    )
+}

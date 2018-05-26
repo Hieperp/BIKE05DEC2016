@@ -89,6 +89,16 @@ namespace MVCClient.Api.CommonTasks
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult SearchCommoditiesInGoodsReceipts([DataSourceRequest] DataSourceRequest request, int? locationID, string searchText, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
+        {
+            if (searchText == null || searchText == "") return Json(null, JsonRequestBehavior.AllowGet);
+
+            var result = commodityRepository.GetCommoditiesInGoodsReceipts(locationID, searchText, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.GoodsReceiptDetailID, s.SupplierID, s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.ChassisCode, s.EngineCode, s.ColorCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+
+            DataSourceResult response = result.ToDataSourceResult(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public JsonResult GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
         {
@@ -113,13 +123,21 @@ namespace MVCClient.Api.CommonTasks
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public JsonResult GetPartAvailables(int? locationID, DateTime? entryDate, string searchText)
         {
             var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SearchPartAvailables([DataSourceRequest] DataSourceRequest request, int? locationID, DateTime? entryDate, string searchText)
+        {
+            if (entryDate == null) entryDate = DateTime.Now;
+            var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+
+            DataSourceResult response = result.ToDataSourceResult(request);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
 

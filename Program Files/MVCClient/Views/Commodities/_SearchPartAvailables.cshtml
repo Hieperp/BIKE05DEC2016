@@ -1,0 +1,44 @@
+﻿@using MVCModel.Models
+@using MVCClient.Configuration
+
+@(Html.Kendo().Grid<PartAvailable>()
+    .Name("gridPartAvailables")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CommodityCode).Title("Mã phụ tùng").Width(25);
+        columns.Bound(c => c.CommodityName).Title("Tên phụ tùng").Width(36);
+        columns.Bound(c => c.WarehouseCode).Title("Kho").Width(10);
+        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(16);
+    })
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập mã hoặc tên phụ tùng:</label>
+                    <input id="partAvailableSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="partAvailableSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 15))
+            .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("SearchPartAvailables", "CommoditiesApi").Data("onGetPartAvailables"))
+            .ServerOperation(true))
+            .Selectable()
+)
+
+
+
+<script type="text/javascript">
+    function onGetPartAvailables(e) {
+        return {
+            locationID: 0,
+            searchText: $("#partAvailableSearchBox").val()
+        };
+    }
+
+    function partAvailableSearchBox_KeyUp() {
+        if ($("#partAvailableSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridPartAvailables").data("kendoGrid").dataSource.read();
+        }
+    }
+</script>

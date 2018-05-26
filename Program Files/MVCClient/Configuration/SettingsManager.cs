@@ -28,6 +28,7 @@ namespace MVCClient.Configuration
         public static int PopupWidth = 1024;
         public static int PopupWidthSmall = 900;
         public static int PopupWidthMedium = 900;
+        public static int PopupWidthMini = 600;
 
         public static int PopupContentHeight = 367;
         public static int PopupContentHeightSmall = 281;

@@ -1,0 +1,52 @@
+﻿@using MVCModel.Models
+@using MVCClient.Configuration
+
+@(Html.Kendo().Grid<CommoditiesInGoodsReceipt>()
+    .Name("gridVehicleAvailables")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CommodityCode).Title("Mã xe").Width(22);
+        columns.Bound(c => c.CommodityName).Title("Loại xe").Width(36);
+        columns.Bound(c => c.WarehouseCode).Title("Kho").Width(8);
+
+        columns.Bound(c => c.ChassisCode).Title("Số khung").Width(25);
+        columns.Bound(c => c.EngineCode).Title("Số máy").Width(19);
+        columns.Bound(c => c.ColorCode).Title("Màu").Width(12);
+        
+        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(10);
+    })
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập mã xe, hoặc số khung, hoặc số máy:</label>
+                    <input id="vehicleAvailableSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="vehicleAvailableSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 15))
+            .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("SearchCommoditiesInGoodsReceipts", "CommoditiesApi").Data("onGetVehicleAvailables"))
+            .ServerOperation(true))
+            .Selectable()
+)
+
+
+
+<script type="text/javascript">
+    function onGetVehicleAvailables(e) {
+        return {
+            locationID: 0,
+            searchText: $("#vehicleAvailableSearchBox").val(),
+            salesInvoiceID: 0,
+            stockTransferID: 0,
+            inventoryAdjustmentID: 0
+        };
+    }
+
+    function vehicleAvailableSearchBox_KeyUp() {
+        if ($("#vehicleAvailableSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridVehicleAvailables").data("kendoGrid").dataSource.read();
+        }
+    }
+</script>

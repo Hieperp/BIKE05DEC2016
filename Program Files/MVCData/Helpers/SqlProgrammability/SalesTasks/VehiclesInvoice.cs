@@ -63,7 +63,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + " AS " + "\r\n";
 
             queryString = queryString + "       DECLARE @WarehouseFilter TABLE (WarehouseID int NOT NULL) " + "\r\n";
-            queryString = queryString + "       INSERT INTO @WarehouseFilter SELECT WarehouseID FROM Warehouses WHERE LocationID = @LocationID " + "\r\n";
+            queryString = queryString + "       INSERT INTO @WarehouseFilter SELECT WarehouseID FROM Warehouses WHERE LocationID = @LocationID OR (@LocationID = 0 AND @SalesInvoiceID <= 0 AND @StockTransferID <= 0 AND @InventoryAdjustmentID <= 0) " + "\r\n";
             
             queryString = queryString + "       DECLARE @HasSavedData int SET @HasSavedData = 0" + "\r\n";
             queryString = queryString + "       DECLARE @SavedData TABLE (GoodsReceiptDetailID int NOT NULL, QuantityAvailable decimal(18, 2) NOT NULL)" + "\r\n";

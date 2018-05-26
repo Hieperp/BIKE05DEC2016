@@ -1,4 +1,6 @@
-﻿using MVCModel.Models;
+﻿using System.Web.Mvc;
+
+using MVCModel.Models;
 
 using MVCCore.Services.CommonTasks;
 using MVCDTO.CommonTasks;
@@ -12,7 +14,11 @@ namespace MVCClient.Controllers.SalesTasks
         public CommoditiesController(ICommodityService commodityService, ICommodityViewModelSelectListBuilder commodityViewModelSelectListBuilder)
             : base(commodityService, commodityViewModelSelectListBuilder)
         {
-        }     
+        }
 
+        public virtual ActionResult SearchAvailables()
+        {
+            return View();
+        }
     }
 }

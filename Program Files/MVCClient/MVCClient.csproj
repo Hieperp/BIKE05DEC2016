@@ -405,6 +405,9 @@
     <Content Include="Content\Images\Menu\Rules-32.png" />
     <Content Include="Content\Images\Menu\Rules-50.png" />
     <Content Include="Content\Images\Menu\Sale2-32.png" />
+    <Content Include="Content\Images\Menu\SearchBlack32.png" />
+    <Content Include="Content\Images\Menu\SearchBlue32.png" />
+    <Content Include="Content\Images\Menu\SearchOrange32.png" />
     <Content Include="Content\Images\Menu\Shipped Filled-32.png" />
     <Content Include="Content\Images\Menu\Shipped Filled-50.png" />
     <Content Include="Content\Images\Menu\Shipped-32.png" />
@@ -1712,6 +1715,9 @@
     <Content Include="Views\VehicleTransferOrders\Approve.cshtml" />
     <Content Include="Views\PartsInvoices\Approve.cshtml" />
     <Content Include="Views\ServicesInvoices\Approve.cshtml" />
+    <Content Include="Views\Commodities\SearchAvailables.cshtml" />
+    <Content Include="Views\Commodities\_SearchPartAvailables.cshtml" />
+    <Content Include="Views\Commodities\_SearchVehicleAvailables.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

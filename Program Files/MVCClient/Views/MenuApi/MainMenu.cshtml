@@ -1,9 +1,13 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using MVCClient.Configuration 
+
+@using Microsoft.AspNet.Identity
 @using MVCClient.Api.SessionTasks
 
 @model IEnumerable<MVCModel.Models.Module>
 
 <div class="MainMenu-left">
+
+    <div id="searchAvailableWindow" style="position: absolute"></div>
 
     <span id="home-button" style="float: left; margin-top: 10px; margin-left: 4px; margin-right: 4px;">
         <a href="@Url.Action("index", "Home")"><img src="~/Content/Images/New/menu/menu_xemay.png" title="Trang chủ" alt="Trang chủ" /></a>
@@ -22,6 +26,10 @@
               }
           })
         )
+    </span>
+
+    <span id="search-button" style="float: left; margin-top: 10px; margin-left: 4px; margin-right: 4px;">
+        <a href="javascript:void(0)"><img src="~/Content/Images/Menu/SearchOrange32.png" title="Kiểm tra tồn kho" alt="Kiểm tra tồn kho" onclick="searchAvailables()" /></a>
     </span>
 
     <a style="float: left; margin-top: 10px; margin-left: 4px;" href="@Url.Action("Options", "Home")"><img src="~/Content/Images/New/menu/Date-Search-02.png" title="Thay đổi ngày lọc dữ liệu" alt="Thay đổi ngày lọc dữ liệu" /></a>
@@ -121,6 +129,13 @@
             $("#up-arrow-container").css("display", "none");
             $("#down-arrow-container").css("display", "	inline-block");
         }
+    }
+
+    function searchAvailables() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var createWizardWindow = new kpopupWindow();
+            createWizardWindow.openWindow($("#searchAvailableWindow"), "@Url.Action("SearchAvailables", "Commodities")", "Kiểm tra tồn kho", "@SettingsManager.PopupWidthMedium", "@SettingsManager.PopupHeight");
+        });
     }
 
 </script>
