@@ -19,12 +19,12 @@
                 </div>
             </text>);
         })
-            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 14))
-            .DataSource(ds => ds.Ajax()
-            .Read(read => read.Action("SearchPartAvailables", "CommoditiesApi").Data("onGetPartAvailables"))
-            .ServerOperation(true)
-            .Aggregates(a => a.Add(x => x.QuantityAvailable).Sum()))
-            .Selectable()
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 13))
+        .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("SearchPartAvailables", "CommoditiesApi").Data("onGetPartAvailables"))
+        .ServerOperation(true)
+        .Aggregates(a => a.Add(x => x.QuantityAvailable).Sum()))
+        .Selectable()
 )
 
 

@@ -6,14 +6,14 @@
     .Columns(columns =>
     {
         columns.Bound(c => c.CommodityCode).Title("Mã xe").Width(22);
-        columns.Bound(c => c.CommodityName).Title("Loại xe").Width(36);
+        columns.Bound(c => c.CommodityName).Title("Loại xe").Width(33);
         columns.Bound(c => c.WarehouseCode).Title("Kho").Width(8);
 
         columns.Bound(c => c.ChassisCode).Title("Số khung").Width(25);
         columns.Bound(c => c.EngineCode).Title("Số máy").Width(19);
         columns.Bound(c => c.ColorCode).Title("Màu").Width(12);
 
-        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(10).ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
+        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(12).ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
     })
     .ToolBar(toolbar =>
         {
@@ -24,12 +24,12 @@
                 </div>
             </text>);
         })
-            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 14))
-            .DataSource(ds => ds.Ajax()
-            .Read(read => read.Action("SearchCommoditiesInGoodsReceipts", "CommoditiesApi").Data("onGetVehicleAvailables"))
-            .ServerOperation(true)
-            .Aggregates(a => a.Add(x => x.QuantityAvailable).Sum()))
-            .Selectable()
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 13))
+        .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("SearchCommoditiesInGoodsReceipts", "CommoditiesApi").Data("onGetVehicleAvailables"))
+        .ServerOperation(true)
+        .Aggregates(a => a.Add(x => x.QuantityAvailable).Sum()))
+        .Selectable()
 )
 
 

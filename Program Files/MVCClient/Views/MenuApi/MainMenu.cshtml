@@ -134,7 +134,7 @@
     function searchAvailables() {
         require(["kpopupWindow"], function (kpopupWindow) {
             var createWizardWindow = new kpopupWindow();
-            createWizardWindow.openWindow($("#searchAvailableWindow"), "@Url.Action("SearchAvailables", "Commodities")", "Kiểm tra tồn kho", "@SettingsManager.PopupWidthMedium", "@SettingsManager.PopupHeight");
+            createWizardWindow.openWindow($("#searchAvailableWindow"), "@Url.Action("SearchAvailables", "Commodities")", "Kiểm tra tồn kho", "@SettingsManager.PopupWidthMedium", "@SettingsManager.PopupHeightWithTab");
         });
     }
 
