@@ -19,7 +19,7 @@
                 </div>
             </text>);
         })
-            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 15))
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 14))
             .DataSource(ds => ds.Ajax()
             .Read(read => read.Action("SearchPartAvailables", "CommoditiesApi").Data("onGetPartAvailables"))
             .ServerOperation(true))
