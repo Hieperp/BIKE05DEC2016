@@ -8,7 +8,7 @@
         columns.Bound(c => c.CommodityCode).Title("Mã phụ tùng").Width(25);
         columns.Bound(c => c.CommodityName).Title("Tên phụ tùng").Width(36);
         columns.Bound(c => c.WarehouseCode).Title("Kho").Width(10);
-        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(16);
+        columns.Bound(p => p.QuantityAvailable).Title("Số lượng").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Width(16).ClientFooterTemplate("TC: #= kendo.format('{0:n0}', sum) #").FooterHtmlAttributes(new { @class = "grid-number-column" });
     })
     .ToolBar(toolbar =>
         {
@@ -22,7 +22,8 @@
             .Scrollable(s => s.Height(SettingsManager.PopupContentHeight + 14))
             .DataSource(ds => ds.Ajax()
             .Read(read => read.Action("SearchPartAvailables", "CommoditiesApi").Data("onGetPartAvailables"))
-            .ServerOperation(true))
+            .ServerOperation(true)
+            .Aggregates(a => a.Add(x => x.QuantityAvailable).Sum()))
             .Selectable()
 )
 
