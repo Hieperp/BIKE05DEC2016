@@ -1405,5 +1405,10 @@ namespace MVCModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ServicesInvoiceToggleApproved", entityIDParameter, approvedParameter);
         }
+    
+        public virtual int UpdateWholeWarehouseBalance()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateWholeWarehouseBalance");
+        }
     }
 }

@@ -10,4 +10,13 @@ namespace MVCClient.ViewModels.Home
         [Display(Name = "Lọc dữ liệu đến ngày")]
         public DateTime GlobalToDate { get; set; }
     }
+
+    public class UpdateBalanceViewModel
+    {
+        [Display(Name = "Tính tồn kho, bình quân giá vốn kể từ ngày:")]
+        public DateTime FromDate { get; set; }
+
+        [Display(Name = "Đánh dấu vào đây để xác nhận")]
+        public bool Confirmed { get; set; }
+    }
 }

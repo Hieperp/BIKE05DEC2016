@@ -81,5 +81,36 @@ namespace MVCClient.Controllers
             return Json(new { Success = true });
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public virtual ActionResult UpdateBalance()
+        {
+            UpdateBalanceViewModel updateBalanceViewModel = new UpdateBalanceViewModel() { FromDate = DateTime.Now, Confirmed = false };
+
+            return View(updateBalanceViewModel);
+        }
+
+
+        [HttpPost, ActionName("UpdateBalance")]
+        [Authorize(Roles = "Admin")]
+        public virtual ActionResult UpdateBalance(UpdateBalanceViewModel updateBalanceViewModel)
+        {
+            try
+            {
+                if (updateBalanceViewModel.Confirmed)
+                {
+                    this.baseRepository.ExecuteFunction("UpdateWholeWarehouseBalance", new ObjectParameter[] { });
+                    return RedirectToAction("LockedDate");
+                }
+                else
+                    return RedirectToAction("UpdateBalance");
+            }
+            catch (Exception exception)
+            {
+                ModelState.AddValidationErrors(exception);
+                return RedirectToAction("UpdateBalance");
+            }
+        }
+
     }
 }

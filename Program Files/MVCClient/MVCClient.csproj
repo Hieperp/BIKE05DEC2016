@@ -772,6 +772,7 @@
     <Content Include="Scripts\Controllers\Root\Home\Index.js" />
     <Content Include="Scripts\Controllers\Root\Home\LockedDate.js" />
     <Content Include="Scripts\Controllers\Root\Home\Options.js" />
+    <Content Include="Scripts\Controllers\Root\Home\UpdateBalance.js" />
     <Content Include="Scripts\Controllers\Root\Inventories\SalesInvoiceJournal.js" />
     <Content Include="Scripts\Controllers\Root\Inventories\VehicleCard.js" />
     <Content Include="Scripts\Controllers\Root\Inventories\VehicleJournal.js" />
@@ -1718,6 +1719,7 @@
     <Content Include="Views\Commodities\SearchAvailables.cshtml" />
     <Content Include="Views\Commodities\_SearchPartAvailables.cshtml" />
     <Content Include="Views\Commodities\_SearchVehicleAvailables.cshtml" />
+    <Content Include="Views\Home\UpdateBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

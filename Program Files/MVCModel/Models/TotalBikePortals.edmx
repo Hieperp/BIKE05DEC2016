@@ -19,6 +19,7 @@
           <Property Name="AccessLevelBACKUP" Type="int" />
           <Property Name="ApprovalPermittedBACKUP" Type="bit" />
           <Property Name="UnApprovalPermittedBACKUP" Type="bit" />
+          <Property Name="EditedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AccountInvoiceDetails">
           <Key>
@@ -2312,6 +2313,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Parameter Name="StockTransferID" Type="int" Mode="In" />
           <Parameter Name="InventoryAdjustmentID" Type="int" Mode="In" />
         </Function>
+        <Function Name="UpdateWholeWarehouseBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="VehicleAdjustmentEditable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
@@ -3475,6 +3477,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
             <Parameter Name="EntityID" Mode="In" Type="Int32" />
             <Parameter Name="Approved" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="UpdateWholeWarehouseBalance" />
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
           <Property Type="Int32" Name="PurchaseOrderID" Nullable="false" />
@@ -6198,6 +6201,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <Property Name="AccessLevelBACKUP" Type="Int32" />
           <Property Name="ApprovalPermittedBACKUP" Type="Boolean" />
           <Property Name="UnApprovalPermittedBACKUP" Type="Boolean" />
+          <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8128,6 +8132,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <EntitySetMapping Name="AccessControls">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.AccessControl">
               <MappingFragment StoreEntitySet="AccessControls">
+                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
                 <ScalarProperty Name="UnApprovalPermittedBACKUP" ColumnName="UnApprovalPermittedBACKUP" />
                 <ScalarProperty Name="ApprovalPermittedBACKUP" ColumnName="ApprovalPermittedBACKUP" />
                 <ScalarProperty Name="AccessLevelBACKUP" ColumnName="AccessLevelBACKUP" />
@@ -8145,6 +8150,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           <FunctionImportMapping FunctionImportName="ServicesInvoiceApproved" FunctionName="TotalBikePortalsModel.Store.ServicesInvoiceApproved" />
           <FunctionImportMapping FunctionImportName="PartsInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.PartsInvoiceToggleApproved" />
           <FunctionImportMapping FunctionImportName="ServicesInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.ServicesInvoiceToggleApproved" />
+          <FunctionImportMapping FunctionImportName="UpdateWholeWarehouseBalance" FunctionName="TotalBikePortalsModel.Store.UpdateWholeWarehouseBalance" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

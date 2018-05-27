@@ -1,0 +1,32 @@
+﻿@model MVCClient.ViewModels.Home.UpdateBalanceViewModel
+
+<div id="div-form">
+    @using (Html.BeginForm())
+    {
+        @*@Html.AntiForgeryToken()*@
+
+        <div class="div-main">
+
+            <div class="form-group1">
+                @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label-left" })
+                @Html.Kendo().DateTimePickerFor(m => m.FromDate).HtmlAttributes(new { @readonly = "readonly" })
+            </div>
+
+            <div class="form-group1">
+                @Html.CheckBoxFor(m => m.Confirmed)
+                @Html.LabelFor(model => model.Confirmed, htmlAttributes: new { @class = "control-label-left" })
+            </div>
+
+            <div class="div-button">
+                <button type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/Delete32m.png" alt="" /> Xác nhận xóa </button>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
