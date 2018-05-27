@@ -17,6 +17,10 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
         public void RestoreProcedure()
         {
+            this.UpdateWholeWarehouseBalance();
+
+            return;
+
             this.VWCommodityCategories();
             this.UpdateWarehouseBalance();
             this.GetOverStockItems();
@@ -28,6 +32,61 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
 
             //this.SalesInvoiceJournal(); THAY THE BOI SalesInvoiceJournal MOI!
+        }
+
+
+        public void UpdateWholeWarehouseBalance()
+        {
+            string queryString = " " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "   BEGIN " + "\r\n";
+
+            queryString = queryString + "       UPDATE       AccessControls SET AccessLevel = 1, EditedDate = GetDate() " + "\r\n"; //LOCK EDITABLE
+
+
+            queryString = queryString + "       DECLARE	@lockedDate DateTime, @eoMonthOfLockedDate DateTime, @fromDate DateTime " + "\r\n";
+
+            queryString = queryString + "       SET @lockedDate = (SELECT MIN(LockedDate) FROM Locations) " + "\r\n";
+            queryString = queryString + "       SET @eoMonthOfLockedDate = dbo.EOMONTHTIME(@lockedDate, 9999) " + "\r\n";
+            queryString = queryString + "       SET @fromDate = DATEADD(second, 1, @eoMonthOfLockedDate) " + "\r\n";
+            queryString = queryString + "       IF (@lockedDate <> @eoMonthOfLockedDate) SET @fromDate = DATEADD(month, -1, @fromDate) " + "\r\n"; //GET THE @fromDate
+
+
+            queryString = queryString + "       DELETE FROM WarehouseBalanceDetail WHERE EntryDate >= @fromDate " + "\r\n";
+            queryString = queryString + "       DELETE FROM WarehouseBalancePrice WHERE EntryDate >= @fromDate " + "\r\n";
+            queryString = queryString + "       DELETE FROM OverStockLog " + "\r\n";
+
+            queryString = queryString + "       DECLARE @ActionDate DateTime, @UpdateWarehouseBalanceOption Int, @GoodsReceiptID Int, @SalesInvoiceID Int, @StockTransferID Int, @InventoryAdjustmentID int; " + "\r\n";
+
+            queryString = queryString + "       DECLARE Action_Cursor CURSOR FOR " + "\r\n";
+            queryString = queryString + "           SELECT EntryDate AS ActionDate, 1 AS UpdateWarehouseBalanceOption, GoodsReceiptID, 0 AS SalesInvoiceID, 0 AS StockTransferID, 0 AS InventoryAdjustmentID FROM GoodsReceipts WHERE EntryDate >= @fromDate " + "\r\n";
+            queryString = queryString + "           UNION ALL " + "\r\n";
+            queryString = queryString + "           SELECT EntryDate AS ActionDate, 1 AS UpdateWarehouseBalanceOption, 0 AS GoodsReceiptID, 0 AS SalesInvoiceID, 0 AS StockTransferID, InventoryAdjustmentID FROM InventoryAdjustments WHERE EntryDate >= @fromDate " + "\r\n";
+            queryString = queryString + "           UNION ALL " + "\r\n";
+            queryString = queryString + "           SELECT EntryDate AS ActionDate, -1 AS UpdateWarehouseBalanceOption, 0 AS GoodsReceiptID, SalesInvoiceID, 0 AS StockTransferID, 0 AS InventoryAdjustmentID  FROM SalesInvoices WHERE SalesInvoiceTypeID = 20 AND EntryDate >= @fromDate  " + "\r\n";
+            queryString = queryString + "           UNION ALL " + "\r\n";
+            queryString = queryString + "           SELECT EntryDate AS ActionDate, -1 AS UpdateWarehouseBalanceOption, 0 AS GoodsReceiptID, 0 as SalesInvoiceID, StockTransferID, 0 AS InventoryAdjustmentID  FROM StockTransfers WHERE StockTransferTypeID = 20 AND EntryDate >= @fromDate  " + "\r\n";
+            queryString = queryString + "           ORDER BY ActionDate, UpdateWarehouseBalanceOption DESC " + "\r\n";
+            queryString = queryString + "       OPEN Action_Cursor; " + "\r\n";
+
+            queryString = queryString + "       FETCH NEXT FROM Action_Cursor INTO @ActionDate, @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID; " + "\r\n";
+            queryString = queryString + "       WHILE @@FETCH_STATUS = 0 " + "\r\n";
+            queryString = queryString + "           BEGIN  " + "\r\n";
+            queryString = queryString + "               EXECUTE UpdateWarehouseBalance   @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID " + "\r\n";
+            queryString = queryString + "               FETCH NEXT FROM Action_Cursor INTO @ActionDate, @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID; " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
+
+            queryString = queryString + "       CLOSE Action_Cursor; " + "\r\n";
+            queryString = queryString + "       DEALLOCATE Action_Cursor; " + "\r\n";
+
+            queryString = queryString + "       UPDATE       AccessControls SET AccessLevel = AccessLevelBACKUP, EditedDate = GetDate()  " + "\r\n"; //UNLOCK EDITABLE
+
+
+            queryString = queryString + "   END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("UpdateWholeWarehouseBalance", queryString);
         }
 
 

@@ -13,7 +13,7 @@
                     <div class="form-group1">
                         @Html.Label(location.OfficialName, htmlAttributes: new { @class = "control-label-left" })
                         <div class="div-input" style="float: right">
-                            @Html.Kendo().DateTimePicker().Name(location.LocationID.ToString()).Value(location.LockedDate).Events(e => e.Change("LockedDateChange")).HtmlAttributes(new { @class = "input-class", @LocationID = location.LocationID })
+                            @Html.Kendo().DateTimePicker().Name(location.LocationID.ToString()).Value(location.LockedDate).Format("dd/MM/yyyy HH:mm:ss").TimeFormat("HH:mm:ss").Events(e => e.Change("LockedDateChange")).HtmlAttributes(new { @class = "input-class", @LocationID = location.LocationID })
                         </div>
                     </div>
                 </div>
