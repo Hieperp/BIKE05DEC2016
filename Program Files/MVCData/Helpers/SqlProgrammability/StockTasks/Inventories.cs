@@ -38,7 +38,7 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
         public void UpdateWholeWarehouseBalance()
         {
             string queryString = " " + "\r\n";
-            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
             queryString = queryString + "   BEGIN " + "\r\n";
