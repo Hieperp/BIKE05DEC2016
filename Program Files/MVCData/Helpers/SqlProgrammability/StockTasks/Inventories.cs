@@ -58,6 +58,8 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "       DELETE FROM WarehouseBalancePrice WHERE EntryDate >= @fromDate " + "\r\n";
             queryString = queryString + "       DELETE FROM OverStockLog " + "\r\n";
 
+            queryString = queryString + "       WAITFOR DELAY '00:02:00;' " + "\r\n";
+
             queryString = queryString + "       DECLARE @ActionDate DateTime, @UpdateWarehouseBalanceOption Int, @GoodsReceiptID Int, @SalesInvoiceID Int, @StockTransferID Int, @InventoryAdjustmentID int; " + "\r\n";
 
             queryString = queryString + "       DECLARE Action_Cursor CURSOR FOR " + "\r\n";
@@ -74,12 +76,15 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "       FETCH NEXT FROM Action_Cursor INTO @ActionDate, @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID; " + "\r\n";
             queryString = queryString + "       WHILE @@FETCH_STATUS = 0 " + "\r\n";
             queryString = queryString + "           BEGIN  " + "\r\n";
+            queryString = queryString + "               WAITFOR DELAY '00:00:10;' " + "\r\n";
             queryString = queryString + "               EXECUTE UpdateWarehouseBalance   @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID " + "\r\n";
             queryString = queryString + "               FETCH NEXT FROM Action_Cursor INTO @ActionDate, @UpdateWarehouseBalanceOption, @GoodsReceiptID, @SalesInvoiceID, @StockTransferID, @InventoryAdjustmentID; " + "\r\n";
             queryString = queryString + "           END " + "\r\n";
 
             queryString = queryString + "       CLOSE Action_Cursor; " + "\r\n";
             queryString = queryString + "       DEALLOCATE Action_Cursor; " + "\r\n";
+
+            queryString = queryString + "       WAITFOR DELAY '00:02:00;' " + "\r\n";
 
             queryString = queryString + "       UPDATE       AccessControls SET AccessLevel = AccessLevelBACKUP, EditedDate = GetDate()  " + "\r\n"; //UNLOCK EDITABLE
 
