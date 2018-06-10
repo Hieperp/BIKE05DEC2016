@@ -185,13 +185,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         private void SalesInvoicePrint()
         {
             string queryString = " @SalesInvoiceID int " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
             queryString = queryString + "       DECLARE         @LocalSalesInvoiceID int    SET @LocalSalesInvoiceID = @SalesInvoiceID" + "\r\n";
 
-            queryString = queryString + "       SELECT          SalesInvoices.SalesInvoiceID, IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.EntryDate, NULL) AS EntryDate, GetDate() AS PrintedDate, SalesInvoices.EstimatedCompletionDate, SalesInvoices.CompletionDate, SalesInvoices.Reference, IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.Reference, NULL) AS SVReference, SalesInvoices.VATInvoiceNo, SalesInvoices.VATInvoiceDate, SalesInvoices.VATInvoiceSeries, " + "\r\n";
+            queryString = queryString + "       SELECT          SalesInvoices.SalesInvoiceID, IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.EntryDate, NULL) AS EntryDate, IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.CreatedDate, NULL) AS CreatedDate, GetDate() AS PrintedDate, SalesInvoices.EstimatedCompletionDate, SalesInvoices.CompletionDate, SalesInvoices.Reference, IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.Reference, NULL) AS SVReference, SalesInvoices.VATInvoiceNo, SalesInvoices.VATInvoiceDate, SalesInvoices.VATInvoiceSeries, " + "\r\n";
             queryString = queryString + "                       SalesInvoices.LocationID, Locations.OfficialName AS LocationName, Locations.Address AS LocationAddress, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile, AspNetUsers.FirstName + ' ' + AspNetUsers.LastName AS PreparedPersonName, Employees.Name AS EmployeeName, " + "\r\n";
             queryString = queryString + "                       IIF(SalesInvoices.SalesInvoiceID = @LocalSalesInvoiceID, SalesInvoices.SalesInvoiceTypeID, NULL) AS SVSalesInvoiceTypeID, SalesInvoices.SalesInvoiceTypeID, SalesInvoiceTypes.Name AS SalesInvoiceTypeName, Customers.Name AS CustomerName, Customers.Birthday, Customers.Telephone, Customers.Facsimile, Customers.AddressNo, EntireTerritories.EntireName AS EntireTerritoryEntireName, SalesInvoices.Damages, SalesInvoices.Causes, SalesInvoices.Solutions, " + "\r\n";
                                     

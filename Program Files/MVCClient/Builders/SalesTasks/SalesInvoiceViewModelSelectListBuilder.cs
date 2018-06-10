@@ -88,7 +88,7 @@ namespace MVCClient.Builders.SalesTasks
             servicesInvoiceViewModel.PreparedPersonDropDown = aspNetUserSelectListBuilder.BuildSelectListItemsForAspNetUsers(aspNetUserRepository.GetAllAspNetUsers(), servicesInvoiceViewModel.UserID);
 
             servicesInvoiceViewModel.VehicleCleaningDropDown = new List<SelectListItem>() { new SelectListItem() { Text = "Không cần rửa xe", Value = "0" }, new SelectListItem() { Text = "Trước sửa chữa", Value = "1" }, new SelectListItem() { Text = "Sau sửa chữa", Value = "2" } };
-            servicesInvoiceViewModel.CheckedListDropDown = new List<SelectListItem>() { new SelectListItem() { Text = "OK", Value = "0" }, new SelectListItem() { Text = "Điều chỉnh", Value = "1" }, new SelectListItem() { Text = "Thay thế", Value = "2" }, new SelectListItem() { Text = "Vệ sinh", Value = "3" }, new SelectListItem() { Text = "Bôi trơn", Value = "4" } };
+            servicesInvoiceViewModel.CheckedListDropDown = new List<SelectListItem>() { new SelectListItem() { Text = " ", Value = "-1" }, new SelectListItem() { Text = "OK", Value = "0" }, new SelectListItem() { Text = "Điều chỉnh", Value = "1" }, new SelectListItem() { Text = "Thay thế", Value = "2" }, new SelectListItem() { Text = "Vệ sinh", Value = "3" }, new SelectListItem() { Text = "Bôi trơn", Value = "4" } };
         }
 
     }
