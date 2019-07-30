@@ -39,9 +39,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             string queryString;
 
             queryString = " @AspUserID nvarchar(128), @FromDate DateTime, @ToDate DateTime " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "        " + "\r\n";
 
             queryString = queryString + "       SELECT      SalesInvoices.SalesInvoiceID, CAST(SalesInvoices.EntryDate AS DATE) AS EntryDate, SalesInvoices.Reference, Locations.Code AS LocationCode, Customers.Name + ',    ' + Customers.AddressNo AS CustomerDescription, Commodities.Name AS CommodityName, ServiceContracts.LicensePlate, SalesInvoices.ServiceInvoiceID, ServiceInvoices.EntryDate AS ServiceDate, ServiceInvoices.Reference AS ServiceReference, SalesInvoices.TotalGrossAmount, ISNULL(ServiceInvoices.IsFinished, SalesInvoices.IsFinished) AS IsFinished " + "\r\n";
             queryString = queryString + "       FROM        SalesInvoices INNER JOIN" + "\r\n";

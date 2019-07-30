@@ -756,6 +756,7 @@
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\HotelManager.pubxml" />
     <None Include="Properties\PublishProfiles\NMVN Office.pubxml" />
+    <None Include="Properties\PublishProfiles\Offline.pubxml" />
     <None Include="Properties\PublishProfiles\PublishTanThanh.pubxml" />
     <Content Include="RequireJS.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -789,6 +790,7 @@
     <Content Include="Scripts\Controllers\Root\PartTransferOrders\Create.js" />
     <Content Include="Scripts\Controllers\Root\PartTransferOrders\Delete.js" />
     <Content Include="Scripts\Controllers\Root\PartTransferOrders\Edit.js" />
+    <Content Include="Scripts\Controllers\Root\PartTransferOrders\ImportExcel.js" />
     <Content Include="Scripts\Controllers\Root\PartTransferOrders\Index.js" />
     <Content Include="Scripts\Controllers\Root\PartTransfers\CreateWizard.js" />
     <Content Include="Scripts\Controllers\Root\PartTransfers\Delete.js" />

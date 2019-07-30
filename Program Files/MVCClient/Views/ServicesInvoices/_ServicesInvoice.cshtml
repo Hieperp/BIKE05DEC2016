@@ -138,6 +138,9 @@
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='SalesInvoiceDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
 
+                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Width(10)
+                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='SalesInvoiceDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+                            
                             columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(50)
                                 .Format("{0:n0}")
                                 .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
@@ -178,8 +181,7 @@
                                 .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
                                 .ClientTemplate("#= kendo.format('{0:n0}', GrossAmount) #" + "<input type='hidden' name='SalesInvoiceDetails[#= index(data) #].GrossAmount' value='#= GrossAmount #' />");
 
-                            columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Hidden()
-                                .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='SalesInvoiceDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
+
 
                             columns.Bound(p => p.IsBonus).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= (IsBonus == null)? '' : IsBonus #" + "<input type='hidden' name='SalesInvoiceDetails[#= index(data) #].IsBonus' value='#= (IsBonus == null) ? '' : IsBonus #' />");

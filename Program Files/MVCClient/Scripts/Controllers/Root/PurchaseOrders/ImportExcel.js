@@ -26,7 +26,7 @@
                 var dataRow = gridDataSource.add({});
                 var excelRow = excelRowCollection.ImportSheet[i];
 
-                dataRow.set("Quantity", Math.round(excelRow["Quantity"], requireConfig.websiteOptions.rndAmount));
+                dataRow.set("Quantity", Math.round(excelRow["Quantity"], requireConfig.websiteOptions.rndQuantity));
                 dataRow.set("UnitPrice", Math.round(excelRow["UnitPrice"], requireConfig.websiteOptions.rndAmount));
 
                 dataRow.set("ChassisCode", excelRow["ChassisCode"] === undefined? "" : excelRow["ChassisCode"].trim());
