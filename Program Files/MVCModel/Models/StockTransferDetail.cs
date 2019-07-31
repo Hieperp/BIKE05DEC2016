@@ -14,6 +14,11 @@ namespace MVCModel.Models
     
     public partial class StockTransferDetail
     {
+        public StockTransferDetail()
+        {
+            this.WarehouseInvoiceDetails = new HashSet<WarehouseInvoiceDetail>();
+        }
+    
         public int StockTransferDetailID { get; set; }
         public int StockTransferID { get; set; }
         public Nullable<int> TransferOrderDetailID { get; set; }
@@ -27,11 +32,13 @@ namespace MVCModel.Models
         public int CommodityTypeID { get; set; }
         public Nullable<int> SupplierID { get; set; }
         public int LocationID { get; set; }
+        public Nullable<int> WarehouseInvoiceID { get; set; }
     
         public virtual StockTransfer StockTransfer { get; set; }
         public virtual TransferOrderDetail TransferOrderDetail { get; set; }
         public virtual Warehouse Warehouse { get; set; }
         public virtual Commodity Commodity { get; set; }
         public virtual GoodsReceiptDetail GoodsReceiptDetail { get; set; }
+        public virtual ICollection<WarehouseInvoiceDetail> WarehouseInvoiceDetails { get; set; }
     }
 }

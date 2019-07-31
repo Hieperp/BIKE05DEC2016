@@ -51,7 +51,9 @@
 
             StockTransfer = 8073,
             VehicleTransfer = 8075,
-            PartTransfer = 8076
+            PartTransfer = 8076,
+
+            WarehouseInvoice = 8088
 
         };
 
@@ -74,6 +76,7 @@
 
         public enum StockTransferTypeID
         {
+            AllStockTransfer = 1,
             VehicleTransfer = 10,
             PartTransfer = 20
         };

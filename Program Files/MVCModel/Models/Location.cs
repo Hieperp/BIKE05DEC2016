@@ -24,6 +24,7 @@ namespace MVCModel.Models
             this.AccountInvoices = new HashSet<AccountInvoice>();
             this.InventoryAdjustments = new HashSet<InventoryAdjustment>();
             this.SalesInvoices = new HashSet<SalesInvoice>();
+            this.WarehouseInvoices = new HashSet<WarehouseInvoice>();
         }
     
         public int LocationID { get; set; }
@@ -47,5 +48,6 @@ namespace MVCModel.Models
         public virtual ICollection<AccountInvoice> AccountInvoices { get; set; }
         public virtual ICollection<InventoryAdjustment> InventoryAdjustments { get; set; }
         public virtual ICollection<SalesInvoice> SalesInvoices { get; set; }
+        public virtual ICollection<WarehouseInvoice> WarehouseInvoices { get; set; }
     }
 }

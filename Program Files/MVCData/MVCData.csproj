@@ -69,6 +69,7 @@
     <Compile Include="Helpers\SqlProgrammability\StockTasks\TransferOrder.cs" />
     <Compile Include="Helpers\SqlProgrammability\StockTasks\VehicleAdjustment.cs" />
     <Compile Include="Helpers\SqlProgrammability\StockTasks\VehicleTransfer.cs" />
+    <Compile Include="Helpers\SqlProgrammability\StockTasks\WarehouseInvoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Analysis\ReportRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />

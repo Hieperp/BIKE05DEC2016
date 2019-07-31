@@ -71,6 +71,8 @@ namespace MVCModel.Models
         public virtual DbSet<Promotion> Promotions { get; set; }
         public virtual DbSet<SalesInvoice> SalesInvoices { get; set; }
         public virtual DbSet<AccessControl> AccessControls { get; set; }
+        public virtual DbSet<WarehouseInvoiceDetail> WarehouseInvoiceDetails { get; set; }
+        public virtual DbSet<WarehouseInvoice> WarehouseInvoices { get; set; }
     
         public virtual ObjectResult<PurchaseInvoiceViewDetail> GetPurchaseInvoiceViewDetails(Nullable<int> purchaseInvoiceID, Nullable<int> purchaseOrderID, Nullable<int> supplierID, Nullable<bool> isReadonly)
         {
@@ -1409,6 +1411,91 @@ namespace MVCModel.Models
         public virtual int UpdateWholeWarehouseBalance()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateWholeWarehouseBalance");
+        }
+    
+        public virtual ObjectResult<PendingStockTransfer> GetPendingStockTransfers(Nullable<int> stockTransferID, string aspUserID, Nullable<int> locationID, Nullable<int> stockTransferTypeID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> warehouseInvoiceID, string stockTransferDetailIDs)
+        {
+            var stockTransferIDParameter = stockTransferID.HasValue ?
+                new ObjectParameter("StockTransferID", stockTransferID) :
+                new ObjectParameter("StockTransferID", typeof(int));
+    
+            var aspUserIDParameter = aspUserID != null ?
+                new ObjectParameter("AspUserID", aspUserID) :
+                new ObjectParameter("AspUserID", typeof(string));
+    
+            var locationIDParameter = locationID.HasValue ?
+                new ObjectParameter("LocationID", locationID) :
+                new ObjectParameter("LocationID", typeof(int));
+    
+            var stockTransferTypeIDParameter = stockTransferTypeID.HasValue ?
+                new ObjectParameter("StockTransferTypeID", stockTransferTypeID) :
+                new ObjectParameter("StockTransferTypeID", typeof(int));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var warehouseInvoiceIDParameter = warehouseInvoiceID.HasValue ?
+                new ObjectParameter("WarehouseInvoiceID", warehouseInvoiceID) :
+                new ObjectParameter("WarehouseInvoiceID", typeof(int));
+    
+            var stockTransferDetailIDsParameter = stockTransferDetailIDs != null ?
+                new ObjectParameter("StockTransferDetailIDs", stockTransferDetailIDs) :
+                new ObjectParameter("StockTransferDetailIDs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingStockTransfer>("GetPendingStockTransfers", stockTransferIDParameter, aspUserIDParameter, locationIDParameter, stockTransferTypeIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, stockTransferDetailIDsParameter);
+        }
+    
+        public virtual ObjectResult<WarehouseInvoiceIndex> GetWarehouseInvoiceIndexes(string aspUserID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var aspUserIDParameter = aspUserID != null ?
+                new ObjectParameter("AspUserID", aspUserID) :
+                new ObjectParameter("AspUserID", typeof(string));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<WarehouseInvoiceIndex>("GetWarehouseInvoiceIndexes", aspUserIDParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual ObjectResult<WarehouseInvoiceViewDetail> GetWarehouseInvoiceViewDetails(Nullable<int> warehouseInvoiceID)
+        {
+            var warehouseInvoiceIDParameter = warehouseInvoiceID.HasValue ?
+                new ObjectParameter("WarehouseInvoiceID", warehouseInvoiceID) :
+                new ObjectParameter("WarehouseInvoiceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<WarehouseInvoiceViewDetail>("GetWarehouseInvoiceViewDetails", warehouseInvoiceIDParameter);
+        }
+    
+        public virtual ObjectResult<string> WarehouseInvoicePostSaveValidate(Nullable<int> entityID)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("WarehouseInvoicePostSaveValidate", entityIDParameter);
+        }
+    
+        public virtual int WarehouseInvoiceSaveRelative(Nullable<int> entityID, Nullable<int> saveRelativeOption)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            var saveRelativeOptionParameter = saveRelativeOption.HasValue ?
+                new ObjectParameter("SaveRelativeOption", saveRelativeOption) :
+                new ObjectParameter("SaveRelativeOption", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("WarehouseInvoiceSaveRelative", entityIDParameter, saveRelativeOptionParameter);
         }
     }
 }
