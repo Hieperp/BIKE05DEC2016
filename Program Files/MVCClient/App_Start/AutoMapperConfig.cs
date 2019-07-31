@@ -86,6 +86,13 @@ namespace MVCClient.App_Start
             Mapper.CreateMap<AccountInvoiceViewDetail, AccountInvoiceDetailDTO>();
             Mapper.CreateMap<AccountInvoiceDetailDTO, AccountInvoiceDetail>();
 
+            Mapper.CreateMap<WarehouseInvoice, WarehouseInvoiceViewModel>();
+            Mapper.CreateMap<WarehouseInvoiceViewModel, WarehouseInvoice>();
+            Mapper.CreateMap<WarehouseInvoice, WarehouseInvoiceDTO>();
+            Mapper.CreateMap<WarehouseInvoicePrimitiveDTO, WarehouseInvoice>();
+            Mapper.CreateMap<WarehouseInvoiceViewDetail, WarehouseInvoiceDetailDTO>();
+            Mapper.CreateMap<WarehouseInvoiceDetailDTO, WarehouseInvoiceDetail>();
+
             Mapper.CreateMap<Customer, CustomerViewModel>();
             Mapper.CreateMap<CustomerViewModel, Customer>();
             Mapper.CreateMap<CustomerPrimitiveDTO, Customer>();

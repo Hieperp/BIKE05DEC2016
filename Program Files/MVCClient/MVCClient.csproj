@@ -221,6 +221,7 @@
     <Compile Include="Api\StockTasks\PartAdjustmentApiController.cs" />
     <Compile Include="Api\StockTasks\StockTransfersApiController.cs" />
     <Compile Include="Api\StockTasks\TransferOrdersApiController.cs" />
+    <Compile Include="Api\StockTasks\WarehouseInvoicesApiController.cs" />
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Builders\StockTasks\ITransferOrderViewModelSelectListBuilder.cs" />
     <Compile Include="Builders\StockTasks\StockTransferViewModelSelectListBuilder.cs" />
     <Compile Include="Builders\StockTasks\TransferOrderViewModelSelectListBuilder.cs" />
+    <Compile Include="Builders\StockTasks\WarehouseInvoiceViewModelSelectListBuilder.cs" />
     <Compile Include="Configuration\RequireOptionFilter.cs" />
     <Compile Include="Configuration\SettingsManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -303,6 +305,7 @@
     <Compile Include="Controllers\StockTasks\VehicleAdjustmentsController.cs" />
     <Compile Include="Controllers\StockTasks\VehicleTransferOrdersController.cs" />
     <Compile Include="Controllers\StockTasks\VehicleTransfersController.cs" />
+    <Compile Include="Controllers\WarehouseInvoicesController.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\ModuleDetailViewModelConverter.cs" />
     <Compile Include="Converters\ModuleViewModelConverter.cs" />
@@ -363,6 +366,7 @@
     <Compile Include="ViewModels\StockTasks\InventoryAdjustmentViewModel.cs" />
     <Compile Include="ViewModels\StockTasks\StockTransferViewModel.cs" />
     <Compile Include="ViewModels\StockTasks\TransferOrderViewModel.cs" />
+    <Compile Include="ViewModels\StockTasks\WarehouseInvoiceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -872,6 +876,10 @@
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Create.js" />
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Edit.js" />
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Index.js" />
+    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Create.js" />
+    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Delete.js" />
+    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Edit.js" />
+    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Index.js" />
     <Content Include="Scripts\flash.js" />
     <Content Include="Scripts\Helpers\KendoGrid\gridHelper.js" />
     <Content Include="Scripts\Helpers\SalesTasks\accountInvoiceAddPendingSalesInvoice.js" />
@@ -882,6 +890,7 @@
     <Content Include="Scripts\Helpers\SalesTasks\serviceContractCreateWizard.js" />
     <Content Include="Scripts\Helpers\StockTasks\stockTransferAddFromTransferOrder.js" />
     <Content Include="Scripts\Helpers\StockTasks\stockTransferCreateWizard.js" />
+    <Content Include="Scripts\Helpers\StockTasks\warehouseInvoiceAddPendingStockTransfer.js" />
     <Content Include="Scripts\js-xlsx-master\cpexcel.js" />
     <Content Include="Scripts\js-xlsx-master\xlsx.Nmvn.js" />
     <Content Include="Scripts\js-xlsx-master\jszip.js" />
@@ -1722,6 +1731,13 @@
     <Content Include="Views\Commodities\_SearchPartAvailables.cshtml" />
     <Content Include="Views\Commodities\_SearchVehicleAvailables.cshtml" />
     <Content Include="Views\Home\UpdateBalance.cshtml" />
+    <Content Include="Views\WarehouseInvoices\Create.cshtml" />
+    <Content Include="Views\WarehouseInvoices\Delete.cshtml" />
+    <Content Include="Views\WarehouseInvoices\Edit.cshtml" />
+    <Content Include="Views\WarehouseInvoices\GetPendingStockTransfers.cshtml" />
+    <Content Include="Views\WarehouseInvoices\Index.cshtml" />
+    <Content Include="Views\WarehouseInvoices\PrintInvoice.cshtml" />
+    <Content Include="Views\WarehouseInvoices\_WarehouseInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

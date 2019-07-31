@@ -80,6 +80,17 @@ namespace MVCModel.Models
         public int GetID() { return this.AccountInvoiceDetailID; }
     }
 
+    public partial class WarehouseInvoice : IPrimitiveEntity, IBaseEntity, IBaseDetailEntity<WarehouseInvoiceDetail>
+    {
+        public int GetID() { return this.WarehouseInvoiceID; }
+
+        public ICollection<WarehouseInvoiceDetail> GetDetails() { return this.WarehouseInvoiceDetails; }
+    }
+
+    public partial class WarehouseInvoiceDetail : IPrimitiveEntity, IHelperEntryDate
+    {
+        public int GetID() { return this.WarehouseInvoiceDetailID; }
+    }
 
     public partial class Quotation : IPrimitiveEntity, IBaseEntity, IBaseDetailEntity<QuotationDetail>
     {
