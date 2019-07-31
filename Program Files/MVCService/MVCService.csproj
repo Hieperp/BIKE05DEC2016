@@ -71,6 +71,7 @@
     <Compile Include="StockTasks\InventoryAdjustmentService.cs" />
     <Compile Include="StockTasks\StockTransferService.cs" />
     <Compile Include="StockTasks\TransferOrderService.cs" />
+    <Compile Include="StockTasks\WarehouseInvoiceService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCBase\MVCBase.csproj">

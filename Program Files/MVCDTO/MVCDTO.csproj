@@ -101,6 +101,8 @@
     <Compile Include="StockTasks\StockTransferDTO.cs" />
     <Compile Include="StockTasks\TransferOrderDTO.cs" />
     <Compile Include="StockTasks\TransferOrderDetailDTO.cs" />
+    <Compile Include="StockTasks\WarehouseInvoiceDetailDTO.cs" />
+    <Compile Include="StockTasks\WarehouseInvoiceDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

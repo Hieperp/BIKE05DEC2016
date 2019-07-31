@@ -105,6 +105,7 @@
     <Compile Include="Repositories\StockTasks\InventoryAdjustmentRepository.cs" />
     <Compile Include="Repositories\StockTasks\StockTransferRepository.cs" />
     <Compile Include="Repositories\StockTasks\TransferOrderRepository.cs" />
+    <Compile Include="Repositories\StockTasks\WarehouseInvoiceRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

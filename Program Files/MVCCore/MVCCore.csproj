@@ -82,6 +82,7 @@
     <Compile Include="Repositories\StockTasks\IInventoryAdjustmentRepository.cs" />
     <Compile Include="Repositories\StockTasks\IStockTransferRepository.cs" />
     <Compile Include="Repositories\StockTasks\ITransferOrderRepository.cs" />
+    <Compile Include="Repositories\StockTasks\IWarehouseInvoiceRepository.cs" />
     <Compile Include="Services\CommonTasks\ICommodityService.cs" />
     <Compile Include="Services\Helpers\IHelperService.cs" />
     <Compile Include="Services\IBaseService.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Services\StockTasks\IInventoryAdjustmentService.cs" />
     <Compile Include="Services\StockTasks\IStockTransferService.cs" />
     <Compile Include="Services\StockTasks\ITransferOrderService.cs" />
+    <Compile Include="Services\StockTasks\IWarehouseInvoiceService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
