@@ -18,6 +18,9 @@ namespace MVCDTO.StockTasks
         [Range(1, 99999999999, ErrorMessage = "Lỗi bắt buộc phải có id hóa đơn bán hàng")]
         public int StockTransferDetailID { get; set; }
 
+        [UIHint("StringReadonly")]
+        public override string CommodityName { get; set; }
+
         [UIHint("DecimalReadonly")]
         public override decimal Quantity { get; set; }
         [UIHint("DecimalReadonly")]

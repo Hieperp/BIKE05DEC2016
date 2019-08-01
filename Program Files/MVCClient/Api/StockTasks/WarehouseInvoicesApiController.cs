@@ -50,9 +50,9 @@ namespace MVCClient.Api.StockTasks
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetPendingStockTransferDetails([DataSourceRequest] DataSourceRequest dataSourceRequest, int stockTransferID, int locationID, int stockTransferTypeID, DateTime entryDate, int warehouseInvoiceID, string stockTransferDetailIDs)
+        public JsonResult GetPendingStockTransferDetails([DataSourceRequest] DataSourceRequest dataSourceRequest, int stockTransferID, int locationID, int sourceWarehouseID, int warehouseID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs)
         {
-            var result = this.warehouseInvoiceAPIRepository.GetPendingStockTransferDetails(stockTransferID, User.Identity.GetUserId(), locationID, stockTransferTypeID, entryDate, entryDate.AddHours(23).AddMinutes(59).AddSeconds(59), warehouseInvoiceID, stockTransferDetailIDs);
+            var result = this.warehouseInvoiceAPIRepository.GetPendingStockTransferDetails(stockTransferID, User.Identity.GetUserId(), locationID, sourceWarehouseID, warehouseID, stockTransferTypeID, fromDate, toDate.AddHours(23).AddMinutes(59).AddSeconds(59), warehouseInvoiceID, stockTransferDetailIDs);
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
 

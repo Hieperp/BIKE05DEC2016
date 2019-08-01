@@ -39,10 +39,11 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      WarehouseInvoices.WarehouseInvoiceID, CAST(WarehouseInvoices.EntryDate AS DATE) AS EntryDate, WarehouseInvoices.Reference, WarehouseInvoices.VATInvoiceNo, Locations.Code AS LocationCode, Warehouses.Name AS WarehouseName, WarehouseInvoices.Description, WarehouseInvoices.TotalGrossAmount " + "\r\n";
+            queryString = queryString + "       SELECT      WarehouseInvoices.WarehouseInvoiceID, CAST(WarehouseInvoices.EntryDate AS DATE) AS EntryDate, WarehouseInvoices.Reference, WarehouseInvoices.VATInvoiceNo, Locations.Code AS LocationCode, Warehouses.Name AS WarehouseName, SourceWarehouses.Name AS SourceWarehouseName, WarehouseInvoices.Description, WarehouseInvoices.TotalGrossAmount " + "\r\n";
             queryString = queryString + "       FROM        WarehouseInvoices INNER JOIN" + "\r\n";
             queryString = queryString + "                   Locations ON WarehouseInvoices.EntryDate >= @FromDate AND WarehouseInvoices.EntryDate <= @ToDate AND WarehouseInvoices.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.WarehouseInvoice + " AND AccessControls.AccessLevel > 0) AND Locations.LocationID = WarehouseInvoices.LocationID INNER JOIN " + "\r\n";
-            queryString = queryString + "                   Warehouses ON WarehouseInvoices.WarehouseID = Warehouses.WarehouseID " + "\r\n";
+            queryString = queryString + "                   Warehouses ON WarehouseInvoices.WarehouseID = Warehouses.WarehouseID INNER JOIN " + "\r\n";
+            queryString = queryString + "                   Warehouses AS SourceWarehouses ON WarehouseInvoices.SourceWarehouseID = SourceWarehouses.WarehouseID " + "\r\n";
             queryString = queryString + "       " + "\r\n";
 
             queryString = queryString + "    END " + "\r\n";
@@ -60,7 +61,7 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "    BEGIN " + "\r\n";
 
             queryString = queryString + "       SELECT      WarehouseInvoiceDetails.WarehouseInvoiceDetailID, WarehouseInvoiceDetails.WarehouseInvoiceID, WarehouseInvoiceDetails.StockTransferDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
-            queryString = queryString + "                   StockTransferDetails.Quantity, 0 AS ListedPrice, 0 AS DiscountPercent, 0 AS UnitPrice, 0 AS VATPercent, 0 AS GrossPrice, 0 AS Amount, 0 AS VATAmount, 0 AS GrossAmount, WarehouseInvoiceDetails.Remarks" + "\r\n";
+            queryString = queryString + "                   StockTransferDetails.Quantity, WarehouseInvoiceDetails.ListedPrice, WarehouseInvoiceDetails.DiscountPercent, WarehouseInvoiceDetails.UnitPrice, WarehouseInvoiceDetails.VATPercent, WarehouseInvoiceDetails.GrossPrice, WarehouseInvoiceDetails.Amount, WarehouseInvoiceDetails.VATAmount, WarehouseInvoiceDetails.GrossAmount, WarehouseInvoiceDetails.Remarks" + "\r\n";
             queryString = queryString + "       FROM        WarehouseInvoiceDetails INNER JOIN" + "\r\n";
             queryString = queryString + "                   StockTransferDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @WarehouseInvoiceID AND WarehouseInvoiceDetails.StockTransferDetailID = StockTransferDetails.StockTransferDetailID INNER JOIN" + "\r\n";
             queryString = queryString + "                   Commodities ON StockTransferDetails.CommodityID = Commodities.CommodityID LEFT JOIN" + "\r\n";
@@ -98,10 +99,12 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
         {
             string queryString;
 
-            queryString = " @StockTransferID Int, @AspUserID nvarchar(128), @LocationID Int, @StockTransferTypeID Int, @FromDate DateTime, @ToDate DateTime, @WarehouseInvoiceID Int, @StockTransferDetailIDs varchar(3999) " + "\r\n";
+            queryString = " @StockTransferID Int, @AspUserID nvarchar(128), @LocationID Int, @SourceWarehouseID Int, @WarehouseID Int, @StockTransferTypeID Int, @FromDate DateTime, @ToDate DateTime, @WarehouseInvoiceID Int, @StockTransferDetailIDs varchar(3999) " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       DECLARE @PendingStockTransferDetails TABLE (StockTransferDetailID int NOT NULL, EntryDate datetime NOT NULL, CommodityID int NOT NULL, CommodityCode nvarchar(50) NOT NULL, CommodityName nvarchar(200) NOT NULL, CommodityTypeID int  NOT NULL, WarehouseName nvarchar(60) NOT NULL, ChassisCode nvarchar(60) NULL, EngineCode nvarchar(60) NULL, ColorCode nvarchar(60) NULL, Quantity decimal(18, 2) NOT NULL, ListedPrice decimal(18, 2) NOT NULL, DiscountPercent decimal(18, 5) NOT NULL, UnitPrice decimal(18, 2) NOT NULL, VATPercent decimal(18, 2) NOT NULL, GrossPrice decimal(18, 2) NOT NULL) " + "\r\n";
 
             queryString = queryString + "       IF  (@StockTransferID <> 0) " + "\r\n"; //IF @StockTransferID <> 0 THEN ALL OTHER Filter Parameters WILL BE NoNeeded. THIS CASE IS only USED TO MAKE ACCOUNTINVOICE AUTOMATICALLY FROM VEHICLEINVOICE
             queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(true, false) + "\r\n";
@@ -109,6 +112,12 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(false, false) + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
             queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(false, true) + "\r\n";
+
+
+
+            queryString = queryString + "       UPDATE PendingStockTransferDetails SET PendingStockTransferDetails.ListedPrice = WarehouseBalancePrice.UnitPrice, PendingStockTransferDetails.UnitPrice = WarehouseBalancePrice.UnitPrice, PendingStockTransferDetails.GrossPrice = ROUND(WarehouseBalancePrice.UnitPrice * (1 + PendingStockTransferDetails.VATPercent / 100), 0) FROM @PendingStockTransferDetails PendingStockTransferDetails INNER JOIN WarehouseBalancePrice ON PendingStockTransferDetails.CommodityTypeID <> 1 AND PendingStockTransferDetails.CommodityID = WarehouseBalancePrice.CommodityID AND dbo.EOMONTHTIME(PendingStockTransferDetails.EntryDate, 9999) = WarehouseBalancePrice.EntryDate " + "\r\n";
+
+            queryString = queryString + "       SELECT StockTransferDetailID, CommodityID, CommodityCode, CommodityName, CommodityTypeID, WarehouseName, ChassisCode, EngineCode, ColorCode, Quantity, ListedPrice, DiscountPercent, UnitPrice, VATPercent, GrossPrice, ROUND(Quantity * UnitPrice, 0) AS Amount, ROUND(ROUND(Quantity * GrossPrice, 0) - ROUND(Quantity * UnitPrice, 0), 0) AS VATAmount, ROUND(Quantity * GrossPrice, 0) AS GrossAmount, CAST(1 AS bit) AS IsSelected FROM @PendingStockTransferDetails " + "\r\n";
 
             queryString = queryString + "    END " + "\r\n";
 
@@ -153,10 +162,13 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
             queryString = queryString + "   BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      StockTransferDetails.StockTransferDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, Warehouses.Name AS WarehouseName, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
-            queryString = queryString + "                   StockTransferDetails.Quantity, ISNULL(GoodsReceiptDetails.UnitPrice, 0) AS ListedPrice, CAST(0 AS decimal(18, 5)) AS DiscountPercent, ISNULL(GoodsReceiptDetails.UnitPrice, 0) AS UnitPrice, ISNULL(GoodsReceiptDetails.VATPercent, 0) AS VATPercent, ISNULL(GoodsReceiptDetails.GrossPrice, 0) AS GrossPrice, ROUND(StockTransferDetails.Quantity * ISNULL(GoodsReceiptDetails.UnitPrice, 0), 0) AS Amount, ROUND(StockTransferDetails.Quantity * ISNULL(GoodsReceiptDetails.GrossPrice, 0), 0) - ROUND(StockTransferDetails.Quantity * ISNULL(GoodsReceiptDetails.UnitPrice, 0), 0) AS VATAmount, ROUND(StockTransferDetails.Quantity * ISNULL(GoodsReceiptDetails.GrossPrice, 0), 0) AS GrossAmount, CAST(1 AS bit) AS IsSelected " + "\r\n";
+            queryString = queryString + "       INSERT INTO @PendingStockTransferDetails(StockTransferDetailID, EntryDate, CommodityID, CommodityCode, CommodityName, CommodityTypeID, WarehouseName, ChassisCode, EngineCode, ColorCode, Quantity, ListedPrice, DiscountPercent, UnitPrice, VATPercent, GrossPrice) " + "\r\n";
+
+            queryString = queryString + "       SELECT      StockTransferDetails.StockTransferDetailID, StockTransferDetails.EntryDate, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, Warehouses.Name AS WarehouseName, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
+            queryString = queryString + "                   StockTransferDetails.Quantity, ISNULL(GoodsReceiptDetails.UnitPrice, 0) AS ListedPrice, CAST(0 AS decimal(18, 5)) AS DiscountPercent, ISNULL(GoodsReceiptDetails.UnitPrice, 0) AS UnitPrice, ISNULL(GoodsReceiptDetails.VATPercent, CommodityCategories.VATPercent) AS VATPercent, ISNULL(GoodsReceiptDetails.GrossPrice, 0) AS GrossPrice " + "\r\n";
             queryString = queryString + "       FROM        StockTransferDetails INNER JOIN" + "\r\n";
-            queryString = queryString + "                   Commodities ON StockTransferDetails.StockTransferID " + (isStockTransferID ? " = @StockTransferID " : " IN (SELECT StockTransferID FROM StockTransfers WHERE EntryDate >= @FromDate AND EntryDate <= @ToDate AND LocationID = @LocationID " + (isStockTransferTypeID ? " AND StockTransferTypeID = @StockTransferTypeID" : "") + " AND StockTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID IN (" + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehicleTransfer + ", " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartTransfer + ") AND AccessControls.AccessLevel >= 1))      AND (StockTransferDetails.WarehouseInvoiceID IS NULL " + (isWarehouseInvoiceID ? " OR StockTransferDetails.WarehouseInvoiceID = @WarehouseInvoiceID" : "") + ")" + (isStockTransferDetailIDs ? " AND StockTransferDetails.StockTransferDetailID NOT IN (SELECT Id FROM dbo.SplitToIntList (@StockTransferDetailIDs))" : "")) + " AND StockTransferDetails.CommodityID = Commodities.CommodityID AND Commodities.IsRegularCheckUps = 0 INNER JOIN " + "\r\n";
+            queryString = queryString + "                   Commodities ON StockTransferDetails.WarehouseID = @SourceWarehouseID AND StockTransferDetails.StockTransferID " + (isStockTransferID ? " = @StockTransferID " : " IN (SELECT StockTransferID FROM StockTransfers WHERE EntryDate >= @FromDate AND EntryDate <= @ToDate AND LocationID = @LocationID AND WarehouseID = @WarehouseID " + (isStockTransferTypeID ? " AND StockTransferTypeID = @StockTransferTypeID" : "") + " AND StockTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID IN (" + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehicleTransfer + ", " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartTransfer + ") AND AccessControls.AccessLevel >= 1))      AND (StockTransferDetails.WarehouseInvoiceID IS NULL " + (isWarehouseInvoiceID ? " OR StockTransferDetails.WarehouseInvoiceID = @WarehouseInvoiceID" : "") + ")" + (isStockTransferDetailIDs ? " AND StockTransferDetails.StockTransferDetailID NOT IN (SELECT Id FROM dbo.SplitToIntList (@StockTransferDetailIDs))" : "")) + " AND StockTransferDetails.CommodityID = Commodities.CommodityID AND Commodities.IsRegularCheckUps = 0 INNER JOIN " + "\r\n";
+            queryString = queryString + "                   CommodityCategories ON Commodities.CommodityCategoryID = CommodityCategories.CommodityCategoryID INNER JOIN" + "\r\n";
             queryString = queryString + "                   Warehouses ON StockTransferDetails.WarehouseID = Warehouses.WarehouseID LEFT JOIN " + "\r\n";
             queryString = queryString + "                   GoodsReceiptDetails ON StockTransferDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID" + "\r\n";
 

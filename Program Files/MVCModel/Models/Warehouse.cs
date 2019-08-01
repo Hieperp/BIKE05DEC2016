@@ -22,6 +22,7 @@ namespace MVCModel.Models
             this.GoodsReceiptDetails = new HashSet<GoodsReceiptDetail>();
             this.TransferOrders = new HashSet<TransferOrder>();
             this.WarehouseInvoices = new HashSet<WarehouseInvoice>();
+            this.WarehouseInvoices1 = new HashSet<WarehouseInvoice>();
         }
     
         public int WarehouseID { get; set; }
@@ -41,5 +42,6 @@ namespace MVCModel.Models
         public virtual ICollection<GoodsReceiptDetail> GoodsReceiptDetails { get; set; }
         public virtual ICollection<TransferOrder> TransferOrders { get; set; }
         public virtual ICollection<WarehouseInvoice> WarehouseInvoices { get; set; }
+        public virtual ICollection<WarehouseInvoice> WarehouseInvoices1 { get; set; }
     }
 }

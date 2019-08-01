@@ -50,5 +50,6 @@ namespace MVCModel.Models
         public virtual Location Location { get; set; }
         public virtual ICollection<WarehouseInvoiceDetail> WarehouseInvoiceDetails { get; set; }
         public virtual Warehouse Warehouse { get; set; }
+        public virtual Warehouse Warehouse1 { get; set; }
     }
 }

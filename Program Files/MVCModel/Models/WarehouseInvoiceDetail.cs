@@ -22,6 +22,16 @@ namespace MVCModel.Models
         public int StockTransferDetailID { get; set; }
         public string Remarks { get; set; }
         public int SourceWarehouseID { get; set; }
+        public int CommodityID { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal ListedPrice { get; set; }
+        public decimal DiscountPercent { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal VATPercent { get; set; }
+        public decimal GrossPrice { get; set; }
+        public decimal Amount { get; set; }
+        public decimal VATAmount { get; set; }
+        public decimal GrossAmount { get; set; }
     
         public virtual StockTransferDetail StockTransferDetail { get; set; }
         public virtual WarehouseInvoice WarehouseInvoice { get; set; }

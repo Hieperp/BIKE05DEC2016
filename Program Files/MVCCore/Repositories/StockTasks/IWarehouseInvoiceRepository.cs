@@ -14,6 +14,6 @@ namespace MVCCore.Repositories.StockTasks
     public interface IWarehouseInvoiceAPIRepository : IGenericAPIRepository
     {
         IEnumerable<PendingStockTransfer> GetPendingStockTransfers(string aspUserID, int locationID);
-        IEnumerable<PendingStockTransferDetail> GetPendingStockTransferDetails(int stockTransferID, string aspUserID, int locationID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs);
+        IEnumerable<PendingStockTransferDetail> GetPendingStockTransferDetails(int stockTransferID, string aspUserID, int locationID, int sourceWarehouseID, int warehouseID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs);
     }
 }

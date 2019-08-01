@@ -84,6 +84,8 @@ namespace MVCModel.Models
     {
         public int GetID() { return this.WarehouseInvoiceID; }
 
+        public Warehouse SourceWarehouse { get { return this.Warehouse1; } }
+
         public ICollection<WarehouseInvoiceDetail> GetDetails() { return this.WarehouseInvoiceDetails; }
     }
 

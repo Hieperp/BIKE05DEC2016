@@ -26,7 +26,8 @@
             <div class="toolbar" style="float: right;">
                 <label class="category-label" for="category">Tìm khách hàng, xe, phụ tùng, hoặc số khung, số máy:</label>
                 <input id="filterText" class="k-textbox" style="text-align: center;" onkeyup="onFilterTextKeyUp()" />
-                @Html.Kendo().DatePicker().Name("EntryDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransferDetails")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
+                @Html.Kendo().DatePicker().Name("FromDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransferDetails")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
+                @Html.Kendo().DatePicker().Name("ToDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransferDetails")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
 
                 @(Html.Kendo().DropDownList()
                     .Name("StockTransferTypeID")
@@ -55,8 +56,11 @@
                 return {
                     stockTransferID: 0,
                     locationID: window.parent.requireConfig.pageOptions.LocationID,
+                    sourceWarehouseID: window.parent.$("#SourceWarehouseID").val(),
+                    warehouseID: window.parent.$("#WarehouseID").val(),
                     stockTransferTypeID: $("#StockTransferTypeID").val(),
-                    entryDate: $("#EntryDate").val(),
+                    fromDate: $("#FromDate").val(),                    
+                    toDate: $("#ToDate").val(),
                     warehouseInvoiceID: window.parent.$("#WarehouseInvoiceID").val(),                    
                     stockTransferDetailIDs : warehouseInvoiceJSON.map(function(elem){return elem.StockTransferDetailID;}).join(",")
             };}

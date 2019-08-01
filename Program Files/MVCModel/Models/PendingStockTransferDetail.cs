@@ -24,7 +24,7 @@ namespace MVCModel.Models
         public string ColorCode { get; set; }
         public decimal Quantity { get; set; }
         public decimal ListedPrice { get; set; }
-        public Nullable<decimal> DiscountPercent { get; set; }
+        public decimal DiscountPercent { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal VATPercent { get; set; }
         public decimal GrossPrice { get; set; }

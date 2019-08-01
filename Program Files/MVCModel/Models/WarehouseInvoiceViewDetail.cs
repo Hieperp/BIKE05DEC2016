@@ -24,14 +24,14 @@ namespace MVCModel.Models
         public string EngineCode { get; set; }
         public string ColorCode { get; set; }
         public decimal Quantity { get; set; }
-        public int ListedPrice { get; set; }
-        public int DiscountPercent { get; set; }
-        public int UnitPrice { get; set; }
-        public int VATPercent { get; set; }
-        public int GrossPrice { get; set; }
-        public int Amount { get; set; }
-        public int VATAmount { get; set; }
-        public int GrossAmount { get; set; }
+        public decimal ListedPrice { get; set; }
+        public decimal DiscountPercent { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal VATPercent { get; set; }
+        public decimal GrossPrice { get; set; }
+        public decimal Amount { get; set; }
+        public decimal VATAmount { get; set; }
+        public decimal GrossAmount { get; set; }
         public string Remarks { get; set; }
     }
 }

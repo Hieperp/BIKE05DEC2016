@@ -32,10 +32,10 @@ namespace MVCData.Repositories.StockTasks
             return pendingStockTransfers;
         }
 
-        public IEnumerable<PendingStockTransferDetail> GetPendingStockTransferDetails(int stockTransferID, string aspUserID, int locationID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs)
+        public IEnumerable<PendingStockTransferDetail> GetPendingStockTransferDetails(int stockTransferID, string aspUserID, int locationID, int sourceWarehouseID, int warehouseID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs)
         {
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;
-            IEnumerable<PendingStockTransferDetail> pendingStockTransfers = base.TotalBikePortalsEntities.GetPendingStockTransferDetails(stockTransferID, aspUserID, locationID, stockTransferTypeID, fromDate, toDate, warehouseInvoiceID, stockTransferDetailIDs).ToList();
+            IEnumerable<PendingStockTransferDetail> pendingStockTransfers = base.TotalBikePortalsEntities.GetPendingStockTransferDetails(stockTransferID, aspUserID, locationID, sourceWarehouseID, warehouseID, stockTransferTypeID, fromDate, toDate, warehouseInvoiceID, stockTransferDetailIDs).ToList();
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = true;
 
             return pendingStockTransfers;

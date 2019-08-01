@@ -1474,7 +1474,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("WarehouseInvoiceSaveRelative", entityIDParameter, saveRelativeOptionParameter);
         }
     
-        public virtual ObjectResult<PendingStockTransferDetail> GetPendingStockTransferDetails(Nullable<int> stockTransferID, string aspUserID, Nullable<int> locationID, Nullable<int> stockTransferTypeID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> warehouseInvoiceID, string stockTransferDetailIDs)
+        public virtual ObjectResult<PendingStockTransferDetail> GetPendingStockTransferDetails(Nullable<int> stockTransferID, string aspUserID, Nullable<int> locationID, Nullable<int> sourceWarehouseID, Nullable<int> warehouseID, Nullable<int> stockTransferTypeID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> warehouseInvoiceID, string stockTransferDetailIDs)
         {
             var stockTransferIDParameter = stockTransferID.HasValue ?
                 new ObjectParameter("StockTransferID", stockTransferID) :
@@ -1487,6 +1487,14 @@ namespace MVCModel.Models
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
                 new ObjectParameter("LocationID", typeof(int));
+    
+            var sourceWarehouseIDParameter = sourceWarehouseID.HasValue ?
+                new ObjectParameter("SourceWarehouseID", sourceWarehouseID) :
+                new ObjectParameter("SourceWarehouseID", typeof(int));
+    
+            var warehouseIDParameter = warehouseID.HasValue ?
+                new ObjectParameter("WarehouseID", warehouseID) :
+                new ObjectParameter("WarehouseID", typeof(int));
     
             var stockTransferTypeIDParameter = stockTransferTypeID.HasValue ?
                 new ObjectParameter("StockTransferTypeID", stockTransferTypeID) :
@@ -1508,7 +1516,7 @@ namespace MVCModel.Models
                 new ObjectParameter("StockTransferDetailIDs", stockTransferDetailIDs) :
                 new ObjectParameter("StockTransferDetailIDs", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingStockTransferDetail>("GetPendingStockTransferDetails", stockTransferIDParameter, aspUserIDParameter, locationIDParameter, stockTransferTypeIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, stockTransferDetailIDsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingStockTransferDetail>("GetPendingStockTransferDetails", stockTransferIDParameter, aspUserIDParameter, locationIDParameter, sourceWarehouseIDParameter, warehouseIDParameter, stockTransferTypeIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, stockTransferDetailIDsParameter);
         }
     }
 }
