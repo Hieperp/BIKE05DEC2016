@@ -876,7 +876,7 @@
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Create.js" />
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Edit.js" />
     <Content Include="Scripts\Controllers\Root\VehiclesInvoices\Index.js" />
-    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Create.js" />
+    <Content Include="Scripts\Controllers\Root\WarehouseInvoices\CreateWizard.js" />
     <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Delete.js" />
     <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Edit.js" />
     <Content Include="Scripts\Controllers\Root\WarehouseInvoices\Index.js" />
@@ -1731,7 +1731,7 @@
     <Content Include="Views\Commodities\_SearchPartAvailables.cshtml" />
     <Content Include="Views\Commodities\_SearchVehicleAvailables.cshtml" />
     <Content Include="Views\Home\UpdateBalance.cshtml" />
-    <Content Include="Views\WarehouseInvoices\Create.cshtml" />
+    <Content Include="Views\WarehouseInvoices\CreateWizard.cshtml" />
     <Content Include="Views\WarehouseInvoices\Delete.cshtml" />
     <Content Include="Views\WarehouseInvoices\Edit.cshtml" />
     <Content Include="Views\WarehouseInvoices\GetPendingStockTransferDetails.cshtml" />

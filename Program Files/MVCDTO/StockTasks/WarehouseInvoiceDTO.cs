@@ -22,12 +22,15 @@ namespace MVCDTO.StockTasks
 
         public int SourceWarehouseID { get; set; }
         [Display(Name = "Khách hàng")]
-        public string SourceWarehouseCode { get; set; }
+        public string SourceWarehouseName { get; set; }
 
         public int WarehouseID { get; set; }
         [Display(Name = "Khách hàng")]
-        public string WarehouseCode { get; set; }
-        
+        public string WarehouseName { get; set; }
+        public string WarehouseLocationTelephone { get; set; }
+        public string WarehouseLocationFacsimile { get; set; }
+        public string WarehouseLocationName { get; set; }
+        public string WarehouseLocationAddress { get; set; }
 
         [Display(Name = "Số hóa đơn")]
         [Required(ErrorMessage = "Vui lòng nhập Số hóa đơn")]

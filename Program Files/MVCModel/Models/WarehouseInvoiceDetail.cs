@@ -21,6 +21,7 @@ namespace MVCModel.Models
         public int WarehouseID { get; set; }
         public int StockTransferDetailID { get; set; }
         public string Remarks { get; set; }
+        public int SourceWarehouseID { get; set; }
     
         public virtual StockTransferDetail StockTransferDetail { get; set; }
         public virtual WarehouseInvoice WarehouseInvoice { get; set; }

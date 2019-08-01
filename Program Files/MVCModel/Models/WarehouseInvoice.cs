@@ -45,6 +45,7 @@ namespace MVCModel.Models
         public bool InActive { get; set; }
         public bool InActivePartial { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
+        public int SourceWarehouseID { get; set; }
     
         public virtual Location Location { get; set; }
         public virtual ICollection<WarehouseInvoiceDetail> WarehouseInvoiceDetails { get; set; }

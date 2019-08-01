@@ -14,8 +14,12 @@ namespace MVCModel.Models
     public partial class PendingStockTransfer
     {
         public int SourceWarehouseID { get; set; }
-        public string SourceWarehouseCode { get; set; }
         public int WarehouseID { get; set; }
-        public string WarehouseCode { get; set; }
+        public string SourceWarehouseName { get; set; }
+        public string WarehouseName { get; set; }
+        public string WarehouseLocationTelephone { get; set; }
+        public string WarehouseLocationFacsimile { get; set; }
+        public string WarehouseLocationName { get; set; }
+        public string WarehouseLocationAddress { get; set; }
     }
 }

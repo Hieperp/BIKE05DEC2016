@@ -15,7 +15,7 @@ namespace MVCClient.Controllers.StockTasks
     public class WarehouseInvoicesController : GenericViewDetailController<WarehouseInvoice, WarehouseInvoiceDetail, WarehouseInvoiceViewDetail, WarehouseInvoiceDTO, WarehouseInvoicePrimitiveDTO, WarehouseInvoiceDetailDTO, WarehouseInvoiceViewModel>
     {
         public WarehouseInvoicesController(IWarehouseInvoiceService warehouseInvoiceService, IWarehouseInvoiceViewModelSelectListBuilder warehouseInvoiceViewModelSelectListBuilder)
-            : base(warehouseInvoiceService, warehouseInvoiceViewModelSelectListBuilder)
+            : base(warehouseInvoiceService, warehouseInvoiceViewModelSelectListBuilder, true)
         {
         }
 

@@ -1,0 +1,117 @@
+﻿@using MVCModel.Models;
+@using MVCClient.Configuration;
+
+@model MVCDTO.StockTasks.WarehouseInvoiceDTO
+
+@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    @Html.HiddenFor(model => model.SourceWarehouseID)
+    @Html.HiddenFor(model => model.SourceWarehouseName)
+
+    @Html.HiddenFor(model => model.WarehouseID)
+    @Html.HiddenFor(model => model.WarehouseName)
+    @Html.HiddenFor(model => model.WarehouseLocationTelephone)
+    @Html.HiddenFor(model => model.WarehouseLocationFacsimile)
+    @Html.HiddenFor(model => model.WarehouseLocationName)
+    @Html.HiddenFor(model => model.WarehouseLocationAddress)
+
+    @(Html.Kendo().Grid<PendingStockTransfer>()
+        .Name("gridStockTransfers")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.SourceWarehouseName).DisplayNameTitle().Width(80);
+            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập lệnh điều hàng</label>
+                    <input id="stockTransferSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="stockTransferSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+        .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
+        .DataSource(ds => ds.Ajax()
+        .Read(read => read.Action("GetPendingStockTransfers", "WarehouseInvoiceApi").Data("onAdditionalGetPendingStockTransfers"))
+        .ServerOperation(true))
+        .Selectable()
+    )
+
+    <div class="background-bar" style="height: 45px;">
+        <div class="popup-button-bar">
+            <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "WarehouseInvoices")" formtarget="_top" style="display:none" />
+
+            <input id="okButton" type="button" value="Tiếp tục" class="k-button" onclick="okButton_Click()" />
+            <input id="cancelButton" type="button" value="Thoát" class="k-button" onclick="cancelButton_Click()" />
+        </div>
+    </div>
+}
+
+
+<script src="@Url.Content("~/Scripts/Helpers/StockTasks/stockTransferCreateWizard.js")"></script>
+
+
+<script type="text/javascript">
+    function onAdditionalGetPendingStockTransfers(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID
+        };
+    }
+
+    function stockTransferSearchBox_KeyUp() {
+        if ($("#stockTransferSearchBox").val().length === 0 || $("#stockTransferSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridStockTransfers").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#gridStockTransfers").dblclick(function (e) {
+        okButton_Click();
+    })
+
+
+    function okButton_Click() {
+        handleOKEvent($("#gridStockTransfers").data("kendoGrid"));
+    }
+
+    function cancelButton_Click() {
+        window.parent.$("#myWindow").data("kendoWindow").close();
+    }
+
+    function handleOKEvent(selectedGrid) {
+        if (selectedGrid === undefined)
+            _setParentInput();
+        else {
+            var selectedDataItem = selectedGrid.dataItem(selectedGrid.select());
+            if (selectedDataItem === undefined)
+                return false;
+
+            _setParentInput(selectedDataItem);
+        }
+        $("#submitCreateWizard").trigger("click");
+
+
+        function _setParentInput(selectedDataItem) {
+            $("#SourceWarehouseID").val(selectedDataItem === undefined ? null : selectedDataItem.SourceWarehouseID);
+            $("#SourceWarehouseName").val(selectedDataItem === undefined ? null : selectedDataItem.SourceWarehouseName);
+
+            $("#WarehouseID").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseID);
+            $("#WarehouseName").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseName);
+            $("#WarehouseLocationTelephone").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseLocationTelephone);
+            $("#WarehouseLocationFacsimile").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseLocationFacsimile);
+            $("#WarehouseLocationName").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseLocationName);
+            $("#WarehouseLocationAddress").val(selectedDataItem === undefined ? null : selectedDataItem.WarehouseLocationAddress);
+        }
+    }
+
+</script>
+
+
+
+
+<script type="text/javascript">
+</script>

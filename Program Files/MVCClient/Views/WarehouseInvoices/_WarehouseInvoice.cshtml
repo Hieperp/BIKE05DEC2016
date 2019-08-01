@@ -41,7 +41,7 @@
                     @Html.LabelFor(model => model.VATInvoiceNo, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
                         @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceNo).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.VATInvoiceNo, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(model => model.VATInvoiceNo, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
                     @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
                         @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
@@ -57,18 +57,27 @@
                     @Html.LabelFor(model => model.VATInvoiceSeries, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
                         @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceSeries).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.VATInvoiceSeries, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(model => model.VATInvoiceSeries, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
             </div>
 
             <div class="div-right">
-                @*<div class="contract-separator">
+                <div class="contract-separator">
                     <div id="warehouse-div" class="warehouse-background">
-                        @Html.Partial("~/Views/Helpers/Commons/_WarehouseAutoComplete.cshtml")
+                        @Html.Partial("~/Views/Helpers/Commons/_WarehouseMaskedTextBox.cshtml")
+
+                        <div class="div-row3 warehouse-lmargin" style="padding-top: 34px;">
+                            <div class="div-row3">
+                                <div class="div-input" style="margin-left: 0px;">
+                                    @Html.HiddenFor(model => model.SourceWarehouseID)
+                                    @Html.Kendo().MaskedTextBoxFor(model => model.SourceWarehouseName).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>*@
+                </div>
 
 
                 <div>
@@ -193,28 +202,28 @@
                         {
                             events.DataBinding(@<text> function(e) {rowNumber = 0;} </text>);
                         })
-                                                        .DataSource(dataSource => dataSource
-                                                            .Ajax()
-                                                            .Batch(true)
-                                                            .ServerOperation(false)
-                                                            .Model(model =>
-                                                            {
-                                                                model.Id(x => x.WarehouseInvoiceDetailID);
-                                                                model.Field(m => m.WarehouseInvoiceDetailID).DefaultValue(0);
-                                                                model.Field(m => m.WarehouseInvoiceID).DefaultValue(@Model.WarehouseInvoiceID);
-                                                                model.Field(m => m.Quantity).DefaultValue(0);
-                                                                model.Field(m => m.DiscountPercent).DefaultValue(0);
-                                                            })
-                                                            .Events(events =>
-                                                            {
-                                                                events.Error("kendGrid_ErrorHandler");
-                                                            })
-                                                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
-                                                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
-                                                            .Aggregates(a => a.Add(x => x.Amount).Sum())
-                                                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
-                                                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
-                                )
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Batch(true)
+                            .ServerOperation(false)
+                            .Model(model =>
+                            {
+                                model.Id(x => x.WarehouseInvoiceDetailID);
+                                model.Field(m => m.WarehouseInvoiceDetailID).DefaultValue(0);
+                                model.Field(m => m.WarehouseInvoiceID).DefaultValue(@Model.WarehouseInvoiceID);
+                                model.Field(m => m.Quantity).DefaultValue(0);
+                                model.Field(m => m.DiscountPercent).DefaultValue(0);
+                            })
+                            .Events(events =>
+                            {
+                                events.Error("kendGrid_ErrorHandler");
+                            })
+                            .Aggregates(a => a.Add(x => x.Quantity).Sum())
+                            .Aggregates(a => a.Add(x => x.DiscountPercent).Average())
+                            .Aggregates(a => a.Add(x => x.Amount).Sum())
+                            .Aggregates(a => a.Add(x => x.VATAmount).Sum())
+                            .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
+                        )
                     )
 
 
@@ -272,7 +281,7 @@
                 @if (Model.Editable)
                 {
                     @Html.HiddenFor(model => model.PrintAfterClosedSubmit)
-                    <button id="submitButton" type="submit" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu hóa đơn [Lưu ý: Lưu trước khi in] </button>
+                    <button id="submitButton" type="submit" formaction="@Url.Action("Edit", "WarehouseInvoices")" class="k-button custom-button"> <img src="~/Content/Images/New/save-icon.png" alt="" /> Lưu hóa đơn [Lưu ý: Lưu trước khi in] </button>
                     @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>*@
                 }
                 @*else
