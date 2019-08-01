@@ -305,7 +305,7 @@
     <Compile Include="Controllers\StockTasks\VehicleAdjustmentsController.cs" />
     <Compile Include="Controllers\StockTasks\VehicleTransferOrdersController.cs" />
     <Compile Include="Controllers\StockTasks\VehicleTransfersController.cs" />
-    <Compile Include="Controllers\WarehouseInvoicesController.cs" />
+    <Compile Include="Controllers\StockTasks\WarehouseInvoicesController.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\ModuleDetailViewModelConverter.cs" />
     <Compile Include="Converters\ModuleViewModelConverter.cs" />

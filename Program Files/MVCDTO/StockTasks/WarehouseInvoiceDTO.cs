@@ -20,20 +20,14 @@ namespace MVCDTO.StockTasks
 
         public int WarehouseInvoiceID { get; set; }
 
+        public int SourceWarehouseID { get; set; }
+        [Display(Name = "Khách hàng")]
+        public string SourceWarehouseCode { get; set; }
+
         public int WarehouseID { get; set; }
         [Display(Name = "Khách hàng")]
-        [Required(ErrorMessage = "Vui lòng nhập tên khách hàng")]
-        public string WarehouseName { get; set; }
-        [Display(Name = "Ngày sinh")]
-        public Nullable<System.DateTime> WarehouseBirthday { get; set; }
-        [Display(Name = "Mã số thuế")]
-        public string WarehouseVATCode { get; set; }
-        [Display(Name = "Điện thoại")]
-        public string WarehouseTelephone { get; set; }
-        [Display(Name = "Địa chỉ")]
-        public string WarehouseAddressNo { get; set; }
-        [Display(Name = "Khu vực")]
-        public string WarehouseEntireTerritoryEntireName { get; set; }
+        public string WarehouseCode { get; set; }
+        
 
         [Display(Name = "Số hóa đơn")]
         [Required(ErrorMessage = "Vui lòng nhập Số hóa đơn")]

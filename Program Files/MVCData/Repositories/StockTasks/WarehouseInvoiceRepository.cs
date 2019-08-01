@@ -22,6 +22,16 @@ namespace MVCData.Repositories.StockTasks
             : base(totalBikePortalsEntities, "GetWarehouseInvoiceIndexes")
         {
         }
+        
+        public IEnumerable<PendingStockTransfer> GetPendingStockTransfers(string aspUserID, int locationID)
+        {
+            this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;
+            IEnumerable<PendingStockTransfer> pendingStockTransfers = base.TotalBikePortalsEntities.GetPendingStockTransfers(aspUserID, locationID).ToList();
+            this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = true;
+
+            return pendingStockTransfers;
+        }
+
         public IEnumerable<PendingStockTransferDetail> GetPendingStockTransferDetails(int stockTransferID, string aspUserID, int locationID, int stockTransferTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string stockTransferDetailIDs)
         {
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;
