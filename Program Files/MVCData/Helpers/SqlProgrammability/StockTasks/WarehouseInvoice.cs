@@ -18,7 +18,9 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             this.GetWarehouseInvoiceIndexes();
 
             this.GetWarehouseInvoiceViewDetails();
+
             this.GetPendingStockTransfers();
+            this.GetPendingStockTransferDetails();
 
             this.WarehouseInvoiceSaveRelative();
             this.WarehouseInvoicePostSaveValidate();
@@ -74,44 +76,65 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
         {
             string queryString;
 
-            queryString = " @StockTransferID Int, @AspUserID nvarchar(128), @LocationID Int, @StockTransferTypeID Int, @FromDate DateTime, @ToDate DateTime, @WarehouseInvoiceID Int, @StockTransferDetailIDs varchar(3999) " + "\r\n";
-            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = " @AspUserID nvarchar(128), @LocationID Int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       IF  (@StockTransferID <> 0) " + "\r\n"; //IF @StockTransferID <> 0 THEN ALL OTHER Filter Parameters WILL BE NoNeeded. THIS CASE IS only USED TO MAKE ACCOUNTINVOICE AUTOMATICALLY FROM VEHICLEINVOICE
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQL(true, false) + "\r\n";
-            queryString = queryString + "       ELSE IF  (@StockTransferTypeID = " + (int)GlobalEnums.StockTransferTypeID.AllStockTransfer + ") " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQL(false, false) + "\r\n";
-            queryString = queryString + "       ELSE " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQL(false, true) + "\r\n";
+            queryString = queryString + "       SELECT      DISTINCT StockTransferDetails.WarehouseID AS SourceWarehouseID, SourceWarehouses.Code AS SourceWarehouseCode, StockTransfers.WarehouseID, Warehouses.Code AS WarehouseCode " + "\r\n";
+            queryString = queryString + "       FROM        StockTransfers " + "\r\n";
+            queryString = queryString + "                   INNER JOIN StockTransferDetails ON StockTransfers.StockTransferID = StockTransferDetails.StockTransferID AND StockTransferDetails.WarehouseInvoiceID IS NULL    AND StockTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID IN (" + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehicleTransfer + ", " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartTransfer + ") AND AccessControls.AccessLevel >= 1)      " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Warehouses ON StockTransfers.WarehouseID = Warehouses.WarehouseID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Warehouses AS SourceWarehouses ON StockTransferDetails.WarehouseID = SourceWarehouses.WarehouseID " + "\r\n";
+            queryString = queryString + "       ORDER BY    SourceWarehouses.Code, Warehouses.Code " + "\r\n";
 
             queryString = queryString + "    END " + "\r\n";
 
             this.totalBikePortalsEntities.CreateStoredProcedure("GetPendingStockTransfers", queryString);
         }
 
-        private string GetPendingStockTransfersBuildSQL(bool isStockTransferID, bool isStockTransferTypeID)
+        private void GetPendingStockTransferDetails()
+        {
+            string queryString;
+
+            queryString = " @StockTransferID Int, @AspUserID nvarchar(128), @LocationID Int, @StockTransferTypeID Int, @FromDate DateTime, @ToDate DateTime, @WarehouseInvoiceID Int, @StockTransferDetailIDs varchar(3999) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       IF  (@StockTransferID <> 0) " + "\r\n"; //IF @StockTransferID <> 0 THEN ALL OTHER Filter Parameters WILL BE NoNeeded. THIS CASE IS only USED TO MAKE ACCOUNTINVOICE AUTOMATICALLY FROM VEHICLEINVOICE
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(true, false) + "\r\n";
+            queryString = queryString + "       ELSE IF  (@StockTransferTypeID = " + (int)GlobalEnums.StockTransferTypeID.AllStockTransfer + ") " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(false, false) + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQL(false, true) + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("GetPendingStockTransferDetails", queryString);
+        }
+
+        private string GetPendingStockTransferDetailsBuildSQL(bool isStockTransferID, bool isStockTransferTypeID)
         {
             string queryString = "";
             queryString = queryString + "   BEGIN " + "\r\n";
             queryString = queryString + "       IF  (@WarehouseInvoiceID <> 0) " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQLA(isStockTransferID, isStockTransferTypeID, true) + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQLA(isStockTransferID, isStockTransferTypeID, true) + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQLA(isStockTransferID, isStockTransferTypeID, false) + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQLA(isStockTransferID, isStockTransferTypeID, false) + "\r\n";
             queryString = queryString + "   END " + "\r\n";
 
             return queryString;
         }
 
-        private string GetPendingStockTransfersBuildSQLA(bool isStockTransferID, bool isStockTransferTypeID, bool isWarehouseInvoiceID)
+        private string GetPendingStockTransferDetailsBuildSQLA(bool isStockTransferID, bool isStockTransferTypeID, bool isWarehouseInvoiceID)
         {
             string queryString = "";
             queryString = queryString + "   BEGIN " + "\r\n";
             queryString = queryString + "       IF  (@StockTransferDetailIDs <> '') " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQLB(isStockTransferID, isStockTransferTypeID, isWarehouseInvoiceID, true) + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQLB(isStockTransferID, isStockTransferTypeID, isWarehouseInvoiceID, true) + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n";
-            queryString = queryString + "           " + this.GetPendingStockTransfersBuildSQLB(isStockTransferID, isStockTransferTypeID, isWarehouseInvoiceID, false) + "\r\n";
+            queryString = queryString + "           " + this.GetPendingStockTransferDetailsBuildSQLB(isStockTransferID, isStockTransferTypeID, isWarehouseInvoiceID, false) + "\r\n";
             queryString = queryString + "   END " + "\r\n";
 
             return queryString;
@@ -123,7 +146,7 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
         /// <param name="isWarehouseInvoiceID"></param>
         /// <param name="isStockTransferDetailIDs"></param>
         /// <returns></returns>
-        private string GetPendingStockTransfersBuildSQLB(bool isStockTransferID, bool isStockTransferTypeID, bool isWarehouseInvoiceID, bool isStockTransferDetailIDs)
+        private string GetPendingStockTransferDetailsBuildSQLB(bool isStockTransferID, bool isStockTransferTypeID, bool isWarehouseInvoiceID, bool isStockTransferDetailIDs)
         {
             string queryString = "";
 
@@ -132,7 +155,7 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "       SELECT      StockTransferDetails.StockTransferDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, Warehouses.Name AS WarehouseName, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
             queryString = queryString + "                   StockTransferDetails.Quantity, 0 AS ListedPrice, 0 AS DiscountPercent, 0 AS UnitPrice, 0 AS VATPercent, 0 AS GrossPrice, 0 AS Amount, 0 AS VATAmount, 0 AS GrossAmount, CAST(1 AS bit) AS IsSelected " + "\r\n";
             queryString = queryString + "       FROM        StockTransferDetails INNER JOIN" + "\r\n";
-            queryString = queryString + "                   Commodities ON StockTransferDetails.StockTransferID " + (isStockTransferID ? " = @StockTransferID " : " IN (SELECT StockTransfers.StockTransferID FROM StockTransfers WHERE StockTransfers.EntryDate >= @FromDate AND StockTransfers.EntryDate <= @ToDate AND StockTransfers.LocationID = @LocationID " + (isStockTransferTypeID ? " AND StockTransfers.StockTransferTypeID = @StockTransferTypeID" : "") + " AND StockTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID IN (" + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehicleTransfer + ", " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartTransfer + ") AND AccessControls.AccessLevel >= 1))      AND (StockTransferDetails.WarehouseInvoiceID IS NULL " + (isWarehouseInvoiceID ? " OR StockTransferDetails.WarehouseInvoiceID = @WarehouseInvoiceID" : "") + ")" + (isStockTransferDetailIDs ? " AND StockTransferDetails.StockTransferDetailID NOT IN (SELECT Id FROM dbo.SplitToIntList (@StockTransferDetailIDs))" : "")) + " AND StockTransferDetails.CommodityID = Commodities.CommodityID AND Commodities.IsRegularCheckUps = 0 INNER JOIN " + "\r\n";
+            queryString = queryString + "                   Commodities ON StockTransferDetails.StockTransferID " + (isStockTransferID ? " = @StockTransferID " : " IN (SELECT StockTransferID FROM StockTransfers WHERE EntryDate >= @FromDate AND EntryDate <= @ToDate AND LocationID = @LocationID " + (isStockTransferTypeID ? " AND StockTransferTypeID = @StockTransferTypeID" : "") + " AND StockTransfers.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID IN (" + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.VehicleTransfer + ", " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.PartTransfer + ") AND AccessControls.AccessLevel >= 1))      AND (StockTransferDetails.WarehouseInvoiceID IS NULL " + (isWarehouseInvoiceID ? " OR StockTransferDetails.WarehouseInvoiceID = @WarehouseInvoiceID" : "") + ")" + (isStockTransferDetailIDs ? " AND StockTransferDetails.StockTransferDetailID NOT IN (SELECT Id FROM dbo.SplitToIntList (@StockTransferDetailIDs))" : "")) + " AND StockTransferDetails.CommodityID = Commodities.CommodityID AND Commodities.IsRegularCheckUps = 0 INNER JOIN " + "\r\n";
             queryString = queryString + "                   Warehouses ON StockTransferDetails.WarehouseID = Warehouses.WarehouseID LEFT JOIN " + "\r\n";
             queryString = queryString + "                   GoodsReceiptDetails ON StockTransferDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID" + "\r\n";
 

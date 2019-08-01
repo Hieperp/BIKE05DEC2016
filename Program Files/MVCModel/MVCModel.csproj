@@ -212,6 +212,9 @@
     <Compile Include="Models\PendingStockTransfer.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PendingStockTransferDetail.cs">
+      <DependentUpon>TotalBikePortals.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PendingVehicleTransferOrder.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>
