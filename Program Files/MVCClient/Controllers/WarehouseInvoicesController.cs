@@ -34,7 +34,7 @@ namespace MVCClient.Controllers.StockTasks
             return printViewModel;
         }
 
-        public virtual ActionResult GetPendingStockTransfers()
+        public virtual ActionResult GetPendingStockTransferDetails()
         {
             return View();
         }

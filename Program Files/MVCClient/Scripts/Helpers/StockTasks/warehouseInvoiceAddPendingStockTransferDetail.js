@@ -2,13 +2,13 @@
     window.parent.$("#myWindow").data("kendoWindow").close();
 }
 
-function handleOKEvent(warehouseInvoiceGridDataSource, pendingStockTransferGridDataSource) {
-    if (warehouseInvoiceGridDataSource != undefined && pendingStockTransferGridDataSource != undefined) {
-        var pendingStockTransferGridDataItems = pendingStockTransferGridDataSource.view();
+function handleOKEvent(warehouseInvoiceGridDataSource, pendingStockTransferDetailGridDataSource) {
+    if (warehouseInvoiceGridDataSource != undefined && pendingStockTransferDetailGridDataSource != undefined) {
+        var pendingStockTransferDetailGridDataItems = pendingStockTransferDetailGridDataSource.view();
         var warehouseInvoiceJSON = warehouseInvoiceGridDataSource.data().toJSON();
-        for (var i = 0; i < pendingStockTransferGridDataItems.length; i++) {
-            if (pendingStockTransferGridDataItems[i].IsSelected === true)
-                _setParentInput(warehouseInvoiceJSON, pendingStockTransferGridDataItems[i]);
+        for (var i = 0; i < pendingStockTransferDetailGridDataItems.length; i++) {
+            if (pendingStockTransferDetailGridDataItems[i].IsSelected === true)
+                _setParentInput(warehouseInvoiceJSON, pendingStockTransferDetailGridDataItems[i]);
         }
         warehouseInvoiceGridDataSource.data(warehouseInvoiceJSON);
 

@@ -4,8 +4,8 @@
 @{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
 
 
-@(Html.Kendo().Grid<PendingStockTransfer>()
-    .Name("gridPendingStockTransfers")
+@(Html.Kendo().Grid<PendingStockTransferDetail>()
+    .Name("gridPendingStockTransferDetails")
     .Columns(columns =>
     {
         columns.Bound(c => c.WarehouseName).Title("Khách hàng").Width(15);
@@ -26,7 +26,7 @@
             <div class="toolbar" style="float: right;">
                 <label class="category-label" for="category">Tìm khách hàng, xe, phụ tùng, hoặc số khung, số máy:</label>
                 <input id="filterText" class="k-textbox" style="text-align: center;" onkeyup="onFilterTextKeyUp()" />
-                @Html.Kendo().DatePicker().Name("EntryDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransfers")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
+                @Html.Kendo().DatePicker().Name("EntryDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransferDetails")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
 
                 @(Html.Kendo().DropDownList()
                     .Name("StockTransferTypeID")
@@ -40,7 +40,7 @@
                             new SelectListItem { Text = "Phụ tùng", Value = "20"},
                             new SelectListItem { Text = "Dịch vụ", Value = "30"}
                       })
-                    .Events(e => e.Change("reReadPendingStockTransfers"))
+                    .Events(e => e.Change("reReadPendingStockTransferDetails"))
                 )
 
             </div>
@@ -48,7 +48,7 @@
     })
     .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
     .DataSource(ds => ds.Ajax()
-    .Read(read => read.Action("GetPendingStockTransfers", "WarehouseInvoiceApi").Data(@<text>
+    .Read(read => read.Action("GetPendingStockTransferDetails", "WarehouseInvoiceApi").Data(@<text>
             function(e) {
 
                 var warehouseInvoiceJSON = window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource.data().toJSON();
@@ -75,16 +75,16 @@
     </div>
 </div>
 
-<script src="@Url.Content("~/Scripts/Helpers/StockTasks/warehouseInvoiceAddPendingStockTransfer.js")"></script>
+<script src="@Url.Content("~/Scripts/Helpers/StockTasks/warehouseInvoiceAddPendingStockTransferDetail.js")"></script>
 
 <script type="text/javascript">
     function okButton_Click() {
-        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridPendingStockTransfers").data("kendoGrid").dataSource);
+        handleOKEvent(window.parent.$("#kendoGridDetails").data("kendoGrid").dataSource, $("#gridPendingStockTransferDetails").data("kendoGrid").dataSource);
     }
 
-    $('#gridPendingStockTransfers').on('click', '.IsSelected', function () {
+    $('#gridPendingStockTransferDetails').on('click', '.IsSelected', function () {
         var checked = $(this).is(':checked');
-        var grid = $('#gridPendingStockTransfers').data().kendoGrid;
+        var grid = $('#gridPendingStockTransferDetails').data().kendoGrid;
         var dataItem = grid.dataItem($(this).closest('tr'));
         dataItem.set('IsSelected', checked);
     })
@@ -93,10 +93,10 @@
 
 
 <script>
-    function reReadPendingStockTransfers() { $("#gridPendingStockTransfers").data("kendoGrid").dataSource.read() }
+    function reReadPendingStockTransferDetails() { $("#gridPendingStockTransferDetails").data("kendoGrid").dataSource.read() }
 
     function onFilterTextKeyUp() {
-        var filterText = $("#filterText").val(), gridDetails = $("#gridPendingStockTransfers").data("kendoGrid");
+        var filterText = $("#filterText").val(), gridDetails = $("#gridPendingStockTransferDetails").data("kendoGrid");
 
         if (filterText && filterText.length >= "@SettingsManager.AutoCompleteMinLenght") {
 

@@ -890,7 +890,7 @@
     <Content Include="Scripts\Helpers\SalesTasks\serviceContractCreateWizard.js" />
     <Content Include="Scripts\Helpers\StockTasks\stockTransferAddFromTransferOrder.js" />
     <Content Include="Scripts\Helpers\StockTasks\stockTransferCreateWizard.js" />
-    <Content Include="Scripts\Helpers\StockTasks\warehouseInvoiceAddPendingStockTransfer.js" />
+    <Content Include="Scripts\Helpers\StockTasks\warehouseInvoiceAddPendingStockTransferDetail.js" />
     <Content Include="Scripts\js-xlsx-master\cpexcel.js" />
     <Content Include="Scripts\js-xlsx-master\xlsx.Nmvn.js" />
     <Content Include="Scripts\js-xlsx-master\jszip.js" />
@@ -1734,7 +1734,7 @@
     <Content Include="Views\WarehouseInvoices\Create.cshtml" />
     <Content Include="Views\WarehouseInvoices\Delete.cshtml" />
     <Content Include="Views\WarehouseInvoices\Edit.cshtml" />
-    <Content Include="Views\WarehouseInvoices\GetPendingStockTransfers.cshtml" />
+    <Content Include="Views\WarehouseInvoices\GetPendingStockTransferDetails.cshtml" />
     <Content Include="Views\WarehouseInvoices\Index.cshtml" />
     <Content Include="Views\WarehouseInvoices\PrintInvoice.cshtml" />
     <Content Include="Views\WarehouseInvoices\_WarehouseInvoice.cshtml" />

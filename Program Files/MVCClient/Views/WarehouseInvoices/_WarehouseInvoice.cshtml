@@ -165,7 +165,7 @@
                         {
                             if (Model.Editable)
                             {
-                                toolbar.Custom().Text("Chọn phiếu bán hàng").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransfers()" });
+                                toolbar.Custom().Text("Chọn phiếu bán hàng").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransferDetails()" });
                             }
                             else
                             {//Add a functionless button for display purpose only
@@ -299,10 +299,10 @@
 
 <script type="text/javascript">
 
-    function GetPendingStockTransfers() {
+    function GetPendingStockTransferDetails() {
         require(["kpopupWindow"], function (kpopupWindow) {
             var createWizardWindow = new kpopupWindow();
-            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingStockTransfers", "WarehouseInvoices")", "Chọn phiếu bán hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingStockTransferDetails", "WarehouseInvoices")", "Chọn phiếu bán hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
         });
     }
 
