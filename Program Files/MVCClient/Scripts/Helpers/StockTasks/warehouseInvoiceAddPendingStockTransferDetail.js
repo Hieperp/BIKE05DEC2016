@@ -10,9 +10,16 @@ function handleOKEvent(warehouseInvoiceGridDataSource, pendingStockTransferDetai
             if (pendingStockTransferDetailGridDataItems[i].IsSelected === true)
                 _setParentInput(warehouseInvoiceJSON, pendingStockTransferDetailGridDataItems[i]);
         }
+
+        warehouseInvoiceJSON.push(new Object()); //Add a temporary empty row
+
         warehouseInvoiceGridDataSource.data(warehouseInvoiceJSON);
 
-        var dataRowTest = warehouseInvoiceGridDataSource.add({}); //To calculate total
+        //////var dataRowTest = warehouseInvoiceGridDataSource.add({}); //To calculate total
+
+        var rawData = warehouseInvoiceGridDataSource.data()
+        warehouseInvoiceGridDataSource.remove(rawData[rawData.length - 1]); //Remove the last row: this is the temporary empty row
+
         //warehouseInvoiceGridDataSource.trigger("change");
 
         cancelButton_Click();

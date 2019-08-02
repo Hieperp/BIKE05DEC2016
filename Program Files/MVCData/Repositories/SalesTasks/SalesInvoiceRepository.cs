@@ -41,6 +41,8 @@ namespace MVCData.Repositories.SalesTasks
         public VehiclesInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
             : base(totalBikePortalsEntities, "VehiclesInvoiceEditable", null, "VehiclesInvoiceDeletable")
         {
+            //return;
+            //return;
             Helpers.SqlProgrammability.StockTasks.WarehouseInvoice warehouseInvoice = new Helpers.SqlProgrammability.StockTasks.WarehouseInvoice(totalBikePortalsEntities);
             warehouseInvoice.RestoreProcedure();
 

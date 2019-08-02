@@ -100,9 +100,9 @@
 
                             columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
-                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false)
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Width(136)
                                 .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
-                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(306)
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(218)
                                 .ClientFooterTemplate("Tổng cộng:")
                                 .ClientTemplate("#= CommodityName #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
                                                      
@@ -131,7 +131,7 @@
                                .ClientFooterTemplate("#= kendo.format('{0:n1}%', average) #")
                                .ClientTemplate("#= kendo.format('{0:n1}%', DiscountPercent) #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].DiscountPercent' value='#= DiscountPercent #' />");
 
-                            columns.Bound(p => p.UnitPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
+                            columns.Bound(p => p.UnitPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(80)
                                 .Format("{0:n0}")
                                .ClientTemplate("#= kendo.format('{0:n0}', UnitPrice) #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].UnitPrice' value='#= UnitPrice #' />");
 
@@ -169,7 +169,7 @@
                         {
                             if (Model.Editable)
                             {
-                                toolbar.Custom().Text("Chọn phiếu bán hàng").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransferDetails()" });
+                                toolbar.Custom().Text("Chọn phiếu chuyển kho").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransferDetails()" });
                             }
                             else
                             {//Add a functionless button for display purpose only
