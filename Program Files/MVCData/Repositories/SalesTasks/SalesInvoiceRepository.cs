@@ -46,8 +46,8 @@ namespace MVCData.Repositories.SalesTasks
             Helpers.SqlProgrammability.StockTasks.WarehouseInvoice warehouseInvoice = new Helpers.SqlProgrammability.StockTasks.WarehouseInvoice(totalBikePortalsEntities);
             warehouseInvoice.RestoreProcedure();
 
-            return;
-            return;
+            //return;
+            //return;
 
             Helpers.SqlProgrammability.StockTasks.Inventories m = new Helpers.SqlProgrammability.StockTasks.Inventories(totalBikePortalsEntities);
             m.RestoreProcedure();
@@ -55,7 +55,7 @@ namespace MVCData.Repositories.SalesTasks
             Helpers.SqlProgrammability.SalesTasks.AccountInvoice vat = new Helpers.SqlProgrammability.SalesTasks.AccountInvoice(totalBikePortalsEntities);
             vat.RestoreProcedure();
 
-            //return;
+            return;
             Helpers.SqlProgrammability.SalesTasks.SalesInvoice si = new Helpers.SqlProgrammability.SalesTasks.SalesInvoice(totalBikePortalsEntities);
             si.RestoreProcedure();
 
