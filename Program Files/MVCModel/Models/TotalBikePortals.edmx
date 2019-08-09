@@ -1991,6 +1991,18 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WarehouseInvoiceDetails_StockTransfers">
+          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1" />
+          <End Role="WarehouseInvoiceDetails" Type="Self.WarehouseInvoiceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransfers">
+              <PropertyRef Name="StockTransferID" />
+            </Principal>
+            <Dependent Role="WarehouseInvoiceDetails">
+              <PropertyRef Name="StockTransferID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WarehouseInvoiceDetails_WarehouseInvoices">
           <End Role="WarehouseInvoices" Type="Self.WarehouseInvoices" Multiplicity="1" />
           <End Role="WarehouseInvoiceDetails" Type="Self.WarehouseInvoiceDetails" Multiplicity="*" />
@@ -2870,6 +2882,10 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
             <End Role="WarehouseInvoiceDetails" EntitySet="WarehouseInvoiceDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_WarehouseInvoiceDetails_StockTransfers" Association="Self.FK_WarehouseInvoiceDetails_StockTransfers">
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
+            <End Role="WarehouseInvoiceDetails" EntitySet="WarehouseInvoiceDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_WarehouseInvoiceDetails_WarehouseInvoices" Association="Self.FK_WarehouseInvoiceDetails_WarehouseInvoices">
             <End Role="WarehouseInvoices" EntitySet="WarehouseInvoices" />
             <End Role="WarehouseInvoiceDetails" EntitySet="WarehouseInvoiceDetails" />
@@ -3712,6 +3728,10 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <End Role="Warehouse" EntitySet="Warehouses" />
             <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
           </AssociationSet>
+          <AssociationSet Name="FK_WarehouseInvoiceDetails_StockTransfers" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers">
+            <End Role="StockTransfer" EntitySet="StockTransfers" />
+            <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
           <Property Type="Int32" Name="PurchaseOrderID" Nullable="false" />
@@ -4364,6 +4384,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="Warehouse" Relationship="TotalBikePortalsModel.FK_StockTransfers_Warehouses" FromRole="StockTransfer" ToRole="Warehouse" />
           <NavigationProperty Name="TransferOrder" Relationship="TotalBikePortalsModel.FK_StockTransfers_TransferOrders" FromRole="StockTransfer" ToRole="TransferOrder" />
           <NavigationProperty Name="StockTransferType" Relationship="TotalBikePortalsModel.FK_StockTransfers_StockTransferTypes" FromRole="StockTransfer" ToRole="StockTransferType" />
+          <NavigationProperty Name="WarehouseInvoiceDetails" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" FromRole="StockTransfer" ToRole="WarehouseInvoiceDetail" />
         </EntityType>
         <EntityType Name="TransferOrderDetail">
           <Key>
@@ -6467,6 +6488,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="VATAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="GrossAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="StockTransferID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StockTransfer" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" FromRole="WarehouseInvoiceDetail" ToRole="StockTransfer" />
         </EntityType>
         <EntityType Name="WarehouseInvoice">
           <Key>
@@ -6631,6 +6653,18 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Principal>
             <Dependent Role="WarehouseInvoice">
               <PropertyRef Name="SourceWarehouseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseInvoiceDetails_StockTransfers">
+          <End Type="TotalBikePortalsModel.StockTransfer" Role="StockTransfer" Multiplicity="1" />
+          <End Type="TotalBikePortalsModel.WarehouseInvoiceDetail" Role="WarehouseInvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransfer">
+              <PropertyRef Name="StockTransferID" />
+            </Principal>
+            <Dependent Role="WarehouseInvoiceDetail">
+              <PropertyRef Name="StockTransferID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

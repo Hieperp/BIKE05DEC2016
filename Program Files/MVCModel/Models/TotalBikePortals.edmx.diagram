@@ -134,6 +134,7 @@
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1" />
+        <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
