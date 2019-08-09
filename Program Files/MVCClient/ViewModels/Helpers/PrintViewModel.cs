@@ -13,7 +13,9 @@
         
 
         public string ViewName { get; set; }
-        public int PrintOptionID { get; set; }
+
+        public int ViewOptionID { get; set; }
+        public int PrintOptionID { get; set; }        
 
         public PrintViewModel() { this.ViewName = "Print"; }
     }

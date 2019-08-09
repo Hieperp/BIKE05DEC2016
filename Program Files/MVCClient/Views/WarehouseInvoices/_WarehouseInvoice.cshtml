@@ -38,6 +38,22 @@
                 </div>
 
                 <div class="form-group1">
+                    @Html.LabelFor(model => model.TransferOrderNo, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.TransferOrderNo).HtmlAttributes(new { @class = "input-class" })
+                        @*@Html.ValidationMessageFor(model => model.TransferOrderNo, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group1">
+                    @Html.LabelFor(model => model.TransferOrderCode, htmlAttributes: new { @class = "control-label-left" })
+                    <div class="div-input">
+                        @Html.Kendo().MaskedTextBoxFor(model => model.TransferOrderCode).HtmlAttributes(new { @class = "input-class" })
+                        @*@Html.ValidationMessageFor(model => model.TransferOrderCode, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+                <div class="form-group1">
                     @Html.LabelFor(model => model.VATInvoiceNo, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
                         @Html.Kendo().MaskedTextBoxFor(model => model.VATInvoiceNo).HtmlAttributes(new { @class = "input-class" })
@@ -94,6 +110,8 @@
                                .ClientTemplate("#= WarehouseInvoiceID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].WarehouseInvoiceID' value='#= WarehouseInvoiceID #' />");
 
 
+                            columns.Bound(p => p.StockTransferID).DisplayNameTitle().Filterable(false).Hidden()
+                                .ClientTemplate("#= StockTransferID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferID' value='#= StockTransferID #' />");                            
                             columns.Bound(p => p.StockTransferDetailID).DisplayNameTitle().Filterable(false).Hidden()
                                .ClientTemplate("#= StockTransferDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferDetailID' value='#= StockTransferDetailID #' />");
 

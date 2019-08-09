@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
+
+using MVCBase.Enums;
 using MVCModel.Models;
 
 using MVCCore.Services.StockTasks;
@@ -24,6 +27,11 @@ namespace MVCClient.Controllers.StockTasks
         {
             PrintViewModel printViewModel = InitPrintViewModel(id);
             printViewModel.PrintOptionID = (int)pgid;
+
+            WarehouseInvoice entity = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Readable);
+            if (entity == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            printViewModel.ViewOptionID = (entity.Warehouse.LocationID == 9 || entity.Warehouse1.LocationID == 9) ? 9 : entity.Warehouse.LocationID;
+
             return View(printViewModel);
         }
 

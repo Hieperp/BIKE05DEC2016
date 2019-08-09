@@ -32,5 +32,6 @@ namespace MVCModel.Models
         public Nullable<decimal> VATAmount { get; set; }
         public Nullable<decimal> GrossAmount { get; set; }
         public Nullable<bool> IsSelected { get; set; }
+        public int StockTransferID { get; set; }
     }
 }

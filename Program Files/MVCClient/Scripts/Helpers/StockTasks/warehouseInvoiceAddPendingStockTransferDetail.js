@@ -50,6 +50,7 @@ function handleOKEvent(warehouseInvoiceGridDataSource, pendingStockTransferDetai
         dataRow.LocationID = null;
         dataRow.Remarks = null;
 
+        dataRow.StockTransferID = transferOrderGridDataItem.StockTransferID;
         dataRow.StockTransferDetailID = transferOrderGridDataItem.StockTransferDetailID;
 
         dataRow.WarehouseID = transferOrderGridDataItem.WarehouseID;

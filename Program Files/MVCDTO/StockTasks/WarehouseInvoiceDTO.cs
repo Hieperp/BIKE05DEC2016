@@ -32,6 +32,13 @@ namespace MVCDTO.StockTasks
         public string WarehouseLocationName { get; set; }
         public string WarehouseLocationAddress { get; set; }
 
+        
+        [Display(Name = "Số LĐH về cty")]
+        [Required(ErrorMessage = "Vui lòng nhập Số lệnh điều động")]
+        public string TransferOrderNo { get; set; }
+        [Display(Name = "Số LĐH xuất chi nhánh")]
+        [Required(ErrorMessage = "Vui lòng nhập Số lệnh điều động")]
+        public string TransferOrderCode { get; set; }
         [Display(Name = "Số hóa đơn")]
         [Required(ErrorMessage = "Vui lòng nhập Số hóa đơn")]
         public string VATInvoiceNo { get; set; }

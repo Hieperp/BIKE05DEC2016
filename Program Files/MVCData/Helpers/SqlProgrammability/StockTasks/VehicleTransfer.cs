@@ -161,9 +161,11 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
         private void StockTransferEditable()
         {
-            string[] queryArray = new string[1];
+            string[] queryArray = new string[2];
 
-            queryArray[0] = " SELECT TOP 1 @FoundEntity = VoucherID FROM GoodsReceipts WHERE GoodsReceiptTypeID = " + (int)GlobalEnums.GoodsReceiptTypeID.StockTransfer + " AND VoucherID = @EntityID ";
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = StockTransferID FROM WarehouseInvoiceDetails WHERE StockTransferID = @EntityID ";
+            queryArray[1] = " SELECT TOP 1 @FoundEntity = VoucherID FROM GoodsReceipts WHERE GoodsReceiptTypeID = " + (int)GlobalEnums.GoodsReceiptTypeID.StockTransfer + " AND VoucherID = @EntityID ";
+            
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("StockTransferEditable", queryArray);
         }

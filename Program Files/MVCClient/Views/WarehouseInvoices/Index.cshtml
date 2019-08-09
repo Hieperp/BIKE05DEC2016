@@ -11,10 +11,12 @@
             columns.Bound(p => p.WarehouseInvoiceID).DisplayNameTitle().Hidden();
             columns.Bound(p => p.LocationCode).Title("CN").Width(10);
             columns.Bound(p => p.EntryDate).Title("Ngày").Format("{0:dd/MM/yyyy}").Width(90);
+            columns.Bound(p => p.TransferOrderNo).Title("LĐN").Width(90);
+            columns.Bound(p => p.TransferOrderCode).Title("LĐX").Width(90);
             columns.Bound(p => p.VATInvoiceNo).Title("Số VCNB").Width(108);
             columns.Bound(p => p.SourceWarehouseName).Title("Kho xuất").Width(108);
             columns.Bound(p => p.WarehouseName).Title("Kho nhận").Width(108);
-            columns.Bound(p => p.Description).Title("Nội dung").Width(470);
+            columns.Bound(p => p.Description).Title("Nội dung").Width(290);
             columns.Bound(p => p.TotalGrossAmount).Title("Thành tiền").Format("{0:n0}").HtmlAttributes(new { @class = "grid-number-column" }).Filterable(false).Width(90);
 
             columns.Template(model => null).Width(170)

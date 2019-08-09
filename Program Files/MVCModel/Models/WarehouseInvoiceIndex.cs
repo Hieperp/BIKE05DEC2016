@@ -22,5 +22,7 @@ namespace MVCModel.Models
         public string Description { get; set; }
         public decimal TotalGrossAmount { get; set; }
         public string SourceWarehouseName { get; set; }
+        public string TransferOrderNo { get; set; }
+        public string TransferOrderCode { get; set; }
     }
 }

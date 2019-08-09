@@ -33,5 +33,6 @@ namespace MVCModel.Models
         public decimal VATAmount { get; set; }
         public decimal GrossAmount { get; set; }
         public string Remarks { get; set; }
+        public int StockTransferID { get; set; }
     }
 }
