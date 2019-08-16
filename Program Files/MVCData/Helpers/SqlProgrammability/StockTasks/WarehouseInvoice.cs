@@ -19,6 +19,9 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
             this.GetWarehouseInvoiceViewDetails();
 
+            this.GetPendingGoodsReceipts();
+            this.GetPendingGoodsReceiptDetails();
+
             this.GetPendingStockTransfers();
             this.GetPendingStockTransferDetails();
 
@@ -60,18 +63,112 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
-            queryString = queryString + "       SELECT      WarehouseInvoiceDetails.WarehouseInvoiceDetailID, WarehouseInvoiceDetails.WarehouseInvoiceID, WarehouseInvoiceDetails.StockTransferID, WarehouseInvoiceDetails.StockTransferDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
-            queryString = queryString + "                   StockTransferDetails.Quantity, WarehouseInvoiceDetails.ListedPrice, WarehouseInvoiceDetails.DiscountPercent, WarehouseInvoiceDetails.UnitPrice, WarehouseInvoiceDetails.VATPercent, WarehouseInvoiceDetails.GrossPrice, WarehouseInvoiceDetails.Amount, WarehouseInvoiceDetails.VATAmount, WarehouseInvoiceDetails.GrossAmount, WarehouseInvoiceDetails.Remarks" + "\r\n";
-            queryString = queryString + "       FROM        WarehouseInvoiceDetails INNER JOIN" + "\r\n";
-            queryString = queryString + "                   StockTransferDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @WarehouseInvoiceID AND WarehouseInvoiceDetails.StockTransferDetailID = StockTransferDetails.StockTransferDetailID INNER JOIN" + "\r\n";
-            queryString = queryString + "                   Commodities ON StockTransferDetails.CommodityID = Commodities.CommodityID LEFT JOIN" + "\r\n";
-            queryString = queryString + "                   GoodsReceiptDetails ON StockTransferDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID" + "\r\n";
-            queryString = queryString + "       " + "\r\n";
-
+            queryString = queryString + "       IF (NOT (SELECT MIN(GoodsReceiptDetailID) FROM WarehouseInvoiceDetails WHERE WarehouseInvoiceID = @WarehouseInvoiceID) IS NULL) " + "\r\n";
+            queryString = queryString + "                   " + this.GetWarehouseInvoiceViewDetailSQL() + " INNER JOIN " + "\r\n";
+            queryString = queryString + "                   GoodsReceiptDetails ON WarehouseInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "                   " + this.GetWarehouseInvoiceViewDetailSQL() + " LEFT JOIN " + "\r\n";
+            queryString = queryString + "                   StockTransferDetails ON WarehouseInvoiceDetails.StockTransferDetailID = StockTransferDetails.StockTransferDetailID LEFT JOIN " + "\r\n";
+            queryString = queryString + "                   GoodsReceiptDetails ON StockTransferDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID" + "\r\n";            
             queryString = queryString + "    END " + "\r\n";
 
             this.totalBikePortalsEntities.CreateStoredProcedure("GetWarehouseInvoiceViewDetails", queryString);
         }
+
+        private string GetWarehouseInvoiceViewDetailSQL()
+        {
+            string queryString = "";
+
+            queryString = queryString + "       SELECT      WarehouseInvoiceDetails.WarehouseInvoiceDetailID, WarehouseInvoiceDetails.WarehouseInvoiceID, WarehouseInvoiceDetails.GoodsReceiptID, WarehouseInvoiceDetails.GoodsReceiptDetailID, WarehouseInvoiceDetails.StockTransferID, WarehouseInvoiceDetails.StockTransferDetailID, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
+            queryString = queryString + "                   WarehouseInvoiceDetails.Quantity, WarehouseInvoiceDetails.ListedPrice, WarehouseInvoiceDetails.DiscountPercent, WarehouseInvoiceDetails.UnitPrice, WarehouseInvoiceDetails.VATPercent, WarehouseInvoiceDetails.GrossPrice, WarehouseInvoiceDetails.Amount, WarehouseInvoiceDetails.VATAmount, WarehouseInvoiceDetails.GrossAmount, WarehouseInvoiceDetails.Remarks " + "\r\n";
+            queryString = queryString + "       FROM        WarehouseInvoiceDetails INNER JOIN" + "\r\n";
+            queryString = queryString + "                   Commodities ON WarehouseInvoiceDetails.WarehouseInvoiceID = @WarehouseInvoiceID AND WarehouseInvoiceDetails.CommodityID = Commodities.CommodityID " + "\r\n";
+
+            return queryString;
+        }
+
+        private void GetPendingGoodsReceipts()
+        {
+            string queryString;
+
+            queryString = " @AspUserID nvarchar(128), @LocationID Int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       SELECT      DISTINCT GoodsReceiptDetails.WarehouseID, Warehouses.Name AS WarehouseName, Locations.Telephone AS WarehouseLocationTelephone, Locations.Facsimile AS WarehouseLocationFacsimile, Locations.Name AS WarehouseLocationName, Locations.Address AS WarehouseLocationAddress " + "\r\n";
+            queryString = queryString + "       FROM        GoodsReceipts " + "\r\n";
+            queryString = queryString + "                   INNER JOIN GoodsReceiptDetails ON GoodsReceipts.GoodsReceiptID = GoodsReceiptDetails.GoodsReceiptID AND GoodsReceiptDetails.WarehouseInvoiceID IS NULL    AND GoodsReceipts.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.GoodsReceipt + " AND AccessControls.AccessLevel >= 1)      " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Warehouses ON GoodsReceiptDetails.WarehouseID = Warehouses.WarehouseID " + "\r\n";
+            queryString = queryString + "                   INNER JOIN Locations ON Warehouses.LocationID = Locations.LocationID " + "\r\n";
+            queryString = queryString + "       ORDER BY    Warehouses.Name " + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("GetPendingGoodsReceipts", queryString);
+        }
+
+        private void GetPendingGoodsReceiptDetails()
+        {
+            string queryString;
+
+            queryString = " @GoodsReceiptID Int, @AspUserID nvarchar(128), @LocationID Int, @WarehouseID Int, @FromDate DateTime, @ToDate DateTime, @WarehouseInvoiceID Int, @GoodsReceiptDetailIDs varchar(3999) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+            queryString = queryString + "    BEGIN " + "\r\n";
+
+            queryString = queryString + "       IF  (@GoodsReceiptID <> 0) " + "\r\n"; //IF @GoodsReceiptID <> 0 THEN ALL OTHER Filter Parameters WILL BE NoNeeded. THIS CASE IS only USED TO MAKE ACCOUNTINVOICE AUTOMATICALLY FROM VEHICLEINVOICE
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQL(true) + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQL(false) + "\r\n";
+
+            queryString = queryString + "    END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("GetPendingGoodsReceiptDetails", queryString);
+        }
+
+        private string GetPendingGoodsReceiptDetailsBuildSQL(bool isGoodsReceiptID)
+        {
+            string queryString = "";
+            queryString = queryString + "   BEGIN " + "\r\n";
+            queryString = queryString + "       IF  (@WarehouseInvoiceID <> 0) " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQLA(isGoodsReceiptID, true) + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQLA(isGoodsReceiptID, false) + "\r\n";
+            queryString = queryString + "   END " + "\r\n";
+
+            return queryString;
+        }
+
+        private string GetPendingGoodsReceiptDetailsBuildSQLA(bool isGoodsReceiptID, bool isWarehouseInvoiceID)
+        {
+            string queryString = "";
+            queryString = queryString + "   BEGIN " + "\r\n";
+            queryString = queryString + "       IF  (@GoodsReceiptDetailIDs <> '') " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQLB(isGoodsReceiptID, isWarehouseInvoiceID, true) + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           " + this.GetPendingGoodsReceiptDetailsBuildSQLB(isGoodsReceiptID, isWarehouseInvoiceID, false) + "\r\n";
+            queryString = queryString + "   END " + "\r\n";
+
+            return queryString;
+        }
+
+        private string GetPendingGoodsReceiptDetailsBuildSQLB(bool isGoodsReceiptID, bool isWarehouseInvoiceID, bool isGoodsReceiptDetailIDs)
+        {
+            string queryString = "";
+
+            queryString = queryString + "   BEGIN " + "\r\n";
+            queryString = queryString + "       SELECT      GoodsReceiptDetails.GoodsReceiptID, GoodsReceiptDetails.GoodsReceiptDetailID, GoodsReceiptDetails.EntryDate, Commodities.CommodityID, Commodities.Code AS CommodityCode, Commodities.Name AS CommodityName, Commodities.CommodityTypeID, Warehouses.Name AS WarehouseName, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, " + "\r\n";
+            queryString = queryString + "                   GoodsReceiptDetails.Quantity, GoodsReceiptDetails.UnitPrice AS ListedPrice, CAST(0 AS decimal(18, 5)) AS DiscountPercent, GoodsReceiptDetails.UnitPrice, GoodsReceiptDetails.VATPercent, GoodsReceiptDetails.GrossPrice " + "\r\n";
+            queryString = queryString + "       FROM        GoodsReceiptDetails INNER JOIN" + "\r\n";
+            queryString = queryString + "                   Commodities ON GoodsReceiptDetails.WarehouseID = @WarehouseID AND GoodsReceiptDetails.GoodsReceiptTypeID = " + (int)GlobalEnums.GoodsReceiptTypeID.PurchaseInvoice + " AND GoodsReceiptDetails.GoodsReceiptID " + (isGoodsReceiptID ? " = @GoodsReceiptID " : " IN (SELECT GoodsReceiptID FROM GoodsReceipts WHERE EntryDate >= @FromDate AND EntryDate <= @ToDate AND GoodsReceipts.OrganizationalUnitID IN (SELECT AccessControls.OrganizationalUnitID FROM AccessControls INNER JOIN AspNetUsers ON AccessControls.UserID = AspNetUsers.UserID WHERE AspNetUsers.Id = @AspUserID AND AccessControls.NMVNTaskID = " + (int)MVCBase.Enums.GlobalEnums.NmvnTaskID.GoodsReceipt + " AND AccessControls.AccessLevel >= 1))      AND (GoodsReceiptDetails.WarehouseInvoiceID IS NULL " + (isWarehouseInvoiceID ? " OR GoodsReceiptDetails.WarehouseInvoiceID = @WarehouseInvoiceID" : "") + ")" + (isGoodsReceiptDetailIDs ? " AND GoodsReceiptDetails.GoodsReceiptDetailID NOT IN (SELECT Id FROM dbo.SplitToIntList (@GoodsReceiptDetailIDs))" : "")) + " AND GoodsReceiptDetails.CommodityID = Commodities.CommodityID AND Commodities.IsRegularCheckUps = 0 INNER JOIN " + "\r\n"; //AND LocationID = @LocationID
+            queryString = queryString + "                   Warehouses ON GoodsReceiptDetails.WarehouseID = Warehouses.WarehouseID " + "\r\n";
+            queryString = queryString + "   END " + "\r\n";
+
+            return queryString;
+        }
+
+
 
         private void GetPendingStockTransfers()
         {
@@ -175,7 +272,6 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + "   END " + "\r\n";
 
             return queryString;
-
         }
 
 
@@ -186,17 +282,32 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
             queryString = queryString + " AS " + "\r\n";
             queryString = queryString + "    BEGIN " + "\r\n";
 
+            queryString = queryString + "       DECLARE @GoodsReceiptDetailID int = (SELECT MIN(GoodsReceiptDetailID) FROM WarehouseInvoiceDetails WHERE WarehouseInvoiceID = @EntityID) " + "\r\n";
+
             queryString = queryString + "       IF (@SaveRelativeOption = 1) " + "\r\n";
-            queryString = queryString + "           UPDATE      StockTransferDetails" + "\r\n";
-            queryString = queryString + "           SET         StockTransferDetails.WarehouseInvoiceID = WarehouseInvoiceDetails.WarehouseInvoiceID " + "\r\n";
-            queryString = queryString + "           FROM        StockTransferDetails INNER JOIN" + "\r\n";
-            queryString = queryString + "                       WarehouseInvoiceDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND StockTransferDetails.StockTransferDetailID = WarehouseInvoiceDetails.StockTransferDetailID " + "\r\n";
-
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               IF (NOT @GoodsReceiptDetailID IS NULL) " + "\r\n";
+            queryString = queryString + "                   UPDATE      GoodsReceiptDetails" + "\r\n";
+            queryString = queryString + "                   SET         GoodsReceiptDetails.WarehouseInvoiceID = WarehouseInvoiceDetails.WarehouseInvoiceID " + "\r\n";
+            queryString = queryString + "                   FROM        GoodsReceiptDetails INNER JOIN" + "\r\n";
+            queryString = queryString + "                               WarehouseInvoiceDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND GoodsReceiptDetails.GoodsReceiptDetailID = WarehouseInvoiceDetails.GoodsReceiptDetailID " + "\r\n";
+            queryString = queryString + "               ELSE " + "\r\n";
+            queryString = queryString + "                   UPDATE      StockTransferDetails" + "\r\n";
+            queryString = queryString + "                   SET         StockTransferDetails.WarehouseInvoiceID = WarehouseInvoiceDetails.WarehouseInvoiceID " + "\r\n";
+            queryString = queryString + "                   FROM        StockTransferDetails INNER JOIN" + "\r\n";
+            queryString = queryString + "                               WarehouseInvoiceDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND StockTransferDetails.StockTransferDetailID = WarehouseInvoiceDetails.StockTransferDetailID " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
             queryString = queryString + "       ELSE " + "\r\n"; //(@SaveRelativeOption = -1) 
-            queryString = queryString + "           UPDATE      StockTransferDetails" + "\r\n";
-            queryString = queryString + "           SET         WarehouseInvoiceID = NULL " + "\r\n";
-            queryString = queryString + "           WHERE       WarehouseInvoiceID = @EntityID " + "\r\n";
-
+            queryString = queryString + "           BEGIN " + "\r\n";
+            queryString = queryString + "               IF (NOT @GoodsReceiptDetailID IS NULL) " + "\r\n";
+            queryString = queryString + "                   UPDATE      GoodsReceiptDetails" + "\r\n";
+            queryString = queryString + "                   SET         WarehouseInvoiceID = NULL " + "\r\n";
+            queryString = queryString + "                   WHERE       WarehouseInvoiceID = @EntityID " + "\r\n";
+            queryString = queryString + "               ELSE " + "\r\n";
+            queryString = queryString + "                   UPDATE      StockTransferDetails" + "\r\n";
+            queryString = queryString + "                   SET         WarehouseInvoiceID = NULL " + "\r\n";
+            queryString = queryString + "                   WHERE       WarehouseInvoiceID = @EntityID " + "\r\n";
+            queryString = queryString + "           END " + "\r\n";
             queryString = queryString + "    END " + "\r\n";
 
             this.totalBikePortalsEntities.CreateStoredProcedure("WarehouseInvoiceSaveRelative", queryString);
@@ -204,9 +315,10 @@ namespace MVCData.Helpers.SqlProgrammability.StockTasks
 
         private void WarehouseInvoicePostSaveValidate()
         {
-            string[] queryArray = new string[1];
+            string[] queryArray = new string[2];
 
-            queryArray[0] = " SELECT TOP 1 @FoundEntity = N'Phiếu chuyển kho chưa hoàn tất, hoặc ngày hóa đơn không hợp lệ. Ngày chuyển kho: ' + CAST(StockTransferDetails.EntryDate AS nvarchar) FROM WarehouseInvoiceDetails INNER JOIN StockTransferDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND WarehouseInvoiceDetails.StockTransferDetailID = StockTransferDetails.StockTransferDetailID AND (WarehouseInvoiceDetails.EntryDate < StockTransferDetails.EntryDate  OR CAST(WarehouseInvoiceDetails.EntryDate AS DATE) <> CAST(StockTransferDetails.EntryDate AS DATE))";
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = N'Phiếu nhập kho chưa hoàn tất, hoặc ngày hóa đơn không hợp lệ. Ngày nhập kho: ' + CAST(GoodsReceiptDetails.EntryDate AS nvarchar) FROM WarehouseInvoiceDetails INNER JOIN GoodsReceiptDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND WarehouseInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID AND (WarehouseInvoiceDetails.EntryDate < GoodsReceiptDetails.EntryDate  OR CAST(WarehouseInvoiceDetails.EntryDate AS DATE) <> CAST(GoodsReceiptDetails.EntryDate AS DATE))";
+            queryArray[1] = " SELECT TOP 1 @FoundEntity = N'Phiếu chuyển kho chưa hoàn tất, hoặc ngày hóa đơn không hợp lệ. Ngày chuyển kho: ' + CAST(StockTransferDetails.EntryDate AS nvarchar) FROM WarehouseInvoiceDetails INNER JOIN StockTransferDetails ON WarehouseInvoiceDetails.WarehouseInvoiceID = @EntityID AND WarehouseInvoiceDetails.StockTransferDetailID = StockTransferDetails.StockTransferDetailID AND (WarehouseInvoiceDetails.EntryDate < StockTransferDetails.EntryDate  OR CAST(WarehouseInvoiceDetails.EntryDate AS DATE) <> CAST(StockTransferDetails.EntryDate AS DATE))";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("WarehouseInvoicePostSaveValidate", queryArray);
         }
