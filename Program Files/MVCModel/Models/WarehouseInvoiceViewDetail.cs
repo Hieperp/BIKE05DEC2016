@@ -15,7 +15,7 @@ namespace MVCModel.Models
     {
         public int WarehouseInvoiceDetailID { get; set; }
         public int WarehouseInvoiceID { get; set; }
-        public int StockTransferDetailID { get; set; }
+        public Nullable<int> StockTransferDetailID { get; set; }
         public int CommodityID { get; set; }
         public string CommodityCode { get; set; }
         public string CommodityName { get; set; }
@@ -33,6 +33,8 @@ namespace MVCModel.Models
         public decimal VATAmount { get; set; }
         public decimal GrossAmount { get; set; }
         public string Remarks { get; set; }
-        public int StockTransferID { get; set; }
+        public Nullable<int> StockTransferID { get; set; }
+        public Nullable<int> GoodsReceiptID { get; set; }
+        public Nullable<int> GoodsReceiptDetailID { get; set; }
     }
 }

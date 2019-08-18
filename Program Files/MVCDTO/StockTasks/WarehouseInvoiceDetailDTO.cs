@@ -14,6 +14,7 @@ namespace MVCDTO.StockTasks
         public int WarehouseInvoiceDetailID { get; set; }
         public int WarehouseInvoiceID { get; set; }
 
+        public int? SourceWarehouseID { get; set; }
         public int WarehouseID { get; set; }
         [Range(1, 99999999999, ErrorMessage = "Lỗi bắt buộc phải có id hóa đơn bán hàng")]
         public int StockTransferID { get; set; }

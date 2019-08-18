@@ -1738,6 +1738,8 @@
     <Content Include="Views\WarehouseInvoices\Index.cshtml" />
     <Content Include="Views\WarehouseInvoices\PrintInvoice.cshtml" />
     <Content Include="Views\WarehouseInvoices\_WarehouseInvoice.cshtml" />
+    <Content Include="Views\WarehouseInvoices\_PendingGoodsReceiptDetails.cshtml" />
+    <Content Include="Views\WarehouseInvoices\_PendingStockTransferDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

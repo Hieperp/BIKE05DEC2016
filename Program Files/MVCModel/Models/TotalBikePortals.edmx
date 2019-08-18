@@ -226,6 +226,7 @@
           <Property Name="CommodityID" Type="int" Nullable="false" />
           <Property Name="CommodityTypeID" Type="int" Nullable="false" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
+          <Property Name="WarehouseInvoiceID" Type="int" />
           <Property Name="Origin" Type="nvarchar" MaxLength="100" />
           <Property Name="Packing" Type="nvarchar" MaxLength="100" />
           <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -898,10 +899,12 @@
           <Property Name="EntryDate" Type="datetime" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="WarehouseInvoiceID" Type="int" Nullable="false" />
-          <Property Name="SourceWarehouseID" Type="int" Nullable="false" />
+          <Property Name="SourceWarehouseID" Type="int" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
-          <Property Name="StockTransferID" Type="int" Nullable="false" />
-          <Property Name="StockTransferDetailID" Type="int" Nullable="false" />
+          <Property Name="GoodsReceiptID" Type="int" />
+          <Property Name="GoodsReceiptDetailID" Type="int" />
+          <Property Name="StockTransferID" Type="int" />
+          <Property Name="StockTransferDetailID" Type="int" />
           <Property Name="CommodityID" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="ListedPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -923,7 +926,7 @@
           <Property Name="Reference" Type="nvarchar" MaxLength="10" />
           <Property Name="TransferOrderNo" Type="nvarchar" MaxLength="50" />
           <Property Name="TransferOrderCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="SourceWarehouseID" Type="int" Nullable="false" />
+          <Property Name="SourceWarehouseID" Type="int" />
           <Property Name="WarehouseID" Type="int" Nullable="false" />
           <Property Name="PaymentTermID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
@@ -1980,7 +1983,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_WarehouseInvoiceDetails_StockTransferDetails">
-          <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="1" />
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="0..1" />
           <End Role="WarehouseInvoiceDetails" Type="Self.WarehouseInvoiceDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StockTransferDetails">
@@ -1992,7 +1995,7 @@ warning 6035: The relationship 'FK_TransferOrders_AspNetUsers2' has columns that
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_WarehouseInvoiceDetails_StockTransfers">
-          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1" />
+          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="0..1" />
           <End Role="WarehouseInvoiceDetails" Type="Self.WarehouseInvoiceDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StockTransfers">
@@ -2049,7 +2052,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_WarehouseInvoices_Warehouses1">
-          <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+          <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="0..1" />
           <End Role="WarehouseInvoices" Type="Self.WarehouseInvoices" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Warehouses">
@@ -2194,6 +2197,20 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         </Function>
         <Function Name="GetPartTransferViewDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StockTransferID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPendingGoodsReceiptDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GoodsReceiptID" Type="int" Mode="In" />
+          <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
+          <Parameter Name="LocationID" Type="int" Mode="In" />
+          <Parameter Name="WarehouseID" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+          <Parameter Name="WarehouseInvoiceID" Type="int" Mode="In" />
+          <Parameter Name="GoodsReceiptDetailIDs" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetPendingGoodsReceipts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
+          <Parameter Name="LocationID" Type="int" Mode="In" />
         </Function>
         <Function Name="GetPendingPartTransferOrders" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationID" Type="int" Mode="In" />
@@ -3675,24 +3692,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="Approved" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="UpdateWholeWarehouseBalance" />
-          <EntitySet Name="WarehouseInvoiceDetails" EntityType="TotalBikePortalsModel.WarehouseInvoiceDetail" />
-          <EntitySet Name="WarehouseInvoices" EntityType="TotalBikePortalsModel.WarehouseInvoice" />
-          <AssociationSet Name="FK_WarehouseInvoices_Locations" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Locations">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WarehouseInvoiceDetails_StockTransferDetails" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransferDetails">
-            <End Role="StockTransferDetail" EntitySet="StockTransferDetails" />
-            <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WarehouseInvoiceDetails_WarehouseInvoices" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices">
-            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
-            <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WarehouseInvoices_Warehouses" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses">
-            <End Role="Warehouse" EntitySet="Warehouses" />
-            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
-          </AssociationSet>
           <FunctionImport Name="GetPendingStockTransfers" ReturnType="Collection(TotalBikePortalsModel.PendingStockTransfer)">
             <Parameter Name="AspUserID" Mode="In" Type="String" />
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
@@ -3724,13 +3723,45 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="WarehouseInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="StockTransferDetailIDs" Mode="In" Type="String" />
           </FunctionImport>
-          <AssociationSet Name="FK_WarehouseInvoices_Warehouses1" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1">
-            <End Role="Warehouse" EntitySet="Warehouses" />
-            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
+          <EntitySet Name="WarehouseInvoiceDetails" EntityType="TotalBikePortalsModel.WarehouseInvoiceDetail" />
+          <AssociationSet Name="FK_WarehouseInvoiceDetails_StockTransferDetails" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransferDetails">
+            <End Role="StockTransferDetail" EntitySet="StockTransferDetails" />
+            <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_WarehouseInvoiceDetails_StockTransfers" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers">
             <End Role="StockTransfer" EntitySet="StockTransfers" />
             <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
+          </AssociationSet>
+          <FunctionImport Name="GetPendingGoodsReceiptDetails" ReturnType="Collection(TotalBikePortalsModel.PendingGoodsReceiptDetail)">
+            <Parameter Name="GoodsReceiptID" Mode="In" Type="Int32" />
+            <Parameter Name="AspUserID" Mode="In" Type="String" />
+            <Parameter Name="LocationID" Mode="In" Type="Int32" />
+            <Parameter Name="WarehouseID" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="WarehouseInvoiceID" Mode="In" Type="Int32" />
+            <Parameter Name="GoodsReceiptDetailIDs" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetPendingGoodsReceipts" ReturnType="Collection(TotalBikePortalsModel.PendingGoodsReceipt)">
+            <Parameter Name="AspUserID" Mode="In" Type="String" />
+            <Parameter Name="LocationID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="WarehouseInvoices" EntityType="TotalBikePortalsModel.WarehouseInvoice" />
+          <AssociationSet Name="FK_WarehouseInvoices_Locations" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Locations">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseInvoiceDetails_WarehouseInvoices" Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices">
+            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
+            <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseInvoices_Warehouses" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses">
+            <End Role="Warehouse" EntitySet="Warehouses" />
+            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseInvoices_Warehouses1" Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1">
+            <End Role="Warehouse" EntitySet="Warehouses" />
+            <End Role="WarehouseInvoice" EntitySet="WarehouseInvoices" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
@@ -4426,7 +4457,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="TransferOrders" Relationship="TotalBikePortalsModel.FK_TransferOrders_Warehouses" FromRole="Warehouse" ToRole="TransferOrder" />
           <NavigationProperty Name="WarehouseInvoices" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses" FromRole="Warehouse" ToRole="WarehouseInvoice" />
           <NavigationProperty Name="WarehouseInvoices1" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1" FromRole="Warehouse" ToRole="WarehouseInvoice" />
-        </EntityType>
+          </EntityType>
         <Association Name="FK_CommodityTypes_CommodityTypes">
           <End Type="TotalBikePortalsModel.CommodityType" Role="CommodityType" Multiplicity="0..1" />
           <End Type="TotalBikePortalsModel.CommodityType" Role="CommodityType1" Multiplicity="*" />
@@ -4929,6 +4960,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SalesInvoiceDetails" Relationship="TotalBikePortalsModel.FK_SalesInvoiceDetails_GoodsReceiptDetails" FromRole="GoodsReceiptDetail" ToRole="SalesInvoiceDetail" />
           <NavigationProperty Name="InventoryAdjustmentDetails" Relationship="TotalBikePortalsModel.FK_InventoryAdjustmentDetails_GoodsReceiptDetails" FromRole="GoodsReceiptDetail" ToRole="InventoryAdjustmentDetail" />
+          <Property Name="WarehouseInvoiceID" Type="Int32" />
         </EntityType>
         <EntityType Name="PurchaseInvoiceDetail">
           <Key>
@@ -6463,6 +6495,76 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="UnApprovalPermittedBACKUP" Type="Boolean" />
           <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <ComplexType Name="PendingStockTransfer">
+          <Property Type="Int32" Name="SourceWarehouseID" Nullable="false" />
+          <Property Type="Int32" Name="WarehouseID" Nullable="false" />
+          <Property Type="String" Name="SourceWarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationTelephone" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationFacsimile" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="WarehouseLocationAddress" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="WarehouseInvoiceIndex">
+          <Property Type="Int32" Name="WarehouseInvoiceID" Nullable="false" />
+          <Property Type="DateTime" Name="EntryDate" Nullable="true" />
+          <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="VATInvoiceNo" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="TotalGrossAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="SourceWarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="TransferOrderNo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TransferOrderCode" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="WarehouseInvoiceViewDetail">
+          <Property Type="Int32" Name="WarehouseInvoiceDetailID" Nullable="false" />
+          <Property Type="Int32" Name="WarehouseInvoiceID" Nullable="false" />
+          <Property Type="Int32" Name="StockTransferDetailID" Nullable="true" />
+          <Property Type="Int32" Name="CommodityID" Nullable="false" />
+          <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
+          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
+          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DiscountPercent" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="StockTransferID" Nullable="true" />
+          <Property Type="Int32" Name="GoodsReceiptID" Nullable="true" />
+          <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="PendingStockTransferDetail">
+          <Property Type="Int32" Name="StockTransferDetailID" Nullable="false" />
+          <Property Type="Int32" Name="CommodityID" Nullable="false" />
+          <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
+          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
+          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DiscountPercent" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="37" Scale="4" />
+          <Property Type="Decimal" Name="VATAmount" Nullable="true" Precision="38" Scale="4" />
+          <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="37" Scale="4" />
+          <Property Type="Boolean" Name="IsSelected" Nullable="true" />
+          <Property Type="Int32" Name="StockTransferID" Nullable="false" />
+        </ComplexType>
         <EntityType Name="WarehouseInvoiceDetail">
           <Key>
             <PropertyRef Name="WarehouseInvoiceDetailID" />
@@ -6471,12 +6573,12 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="WarehouseInvoiceID" Type="Int32" Nullable="false" />
+          <Property Name="SourceWarehouseID" Type="Int32" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
-          <Property Name="StockTransferDetailID" Type="Int32" Nullable="false" />
-          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="StockTransferDetail" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransferDetails" FromRole="WarehouseInvoiceDetail" ToRole="StockTransferDetail" />
-          <NavigationProperty Name="WarehouseInvoice" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices" FromRole="WarehouseInvoiceDetail" ToRole="WarehouseInvoice" />
-          <Property Name="SourceWarehouseID" Type="Int32" Nullable="false" />
+          <Property Name="GoodsReceiptID" Type="Int32" />
+          <Property Name="GoodsReceiptDetailID" Type="Int32" />
+          <Property Name="StockTransferID" Type="Int32" />
+          <Property Name="StockTransferDetailID" Type="Int32" />
           <Property Name="CommodityID" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="ListedPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -6487,9 +6589,62 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="VATAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="GrossAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="StockTransferID" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StockTransferDetail" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransferDetails" FromRole="WarehouseInvoiceDetail" ToRole="StockTransferDetail" />
           <NavigationProperty Name="StockTransfer" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" FromRole="WarehouseInvoiceDetail" ToRole="StockTransfer" />
+          <NavigationProperty Name="WarehouseInvoice" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices" FromRole="WarehouseInvoiceDetail" ToRole="WarehouseInvoice" />
         </EntityType>
+        <Association Name="FK_WarehouseInvoiceDetails_StockTransferDetails">
+          <End Type="TotalBikePortalsModel.StockTransferDetail" Role="StockTransferDetail" Multiplicity="0..1" />
+          <End Type="TotalBikePortalsModel.WarehouseInvoiceDetail" Role="WarehouseInvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransferDetail">
+              <PropertyRef Name="StockTransferDetailID" />
+            </Principal>
+            <Dependent Role="WarehouseInvoiceDetail">
+              <PropertyRef Name="StockTransferDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseInvoiceDetails_StockTransfers">
+          <End Type="TotalBikePortalsModel.StockTransfer" Role="StockTransfer" Multiplicity="0..1" />
+          <End Type="TotalBikePortalsModel.WarehouseInvoiceDetail" Role="WarehouseInvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransfer">
+              <PropertyRef Name="StockTransferID" />
+            </Principal>
+            <Dependent Role="WarehouseInvoiceDetail">
+              <PropertyRef Name="StockTransferID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="PendingGoodsReceiptDetail">
+          <Property Type="Int32" Name="GoodsReceiptID" Nullable="false" />
+          <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="false" />
+          <Property Type="DateTime" Name="EntryDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="CommodityID" Nullable="false" />
+          <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
+          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
+          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DiscountPercent" Nullable="true" Precision="18" Scale="5" />
+          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="PendingGoodsReceipt">
+          <Property Type="Int32" Name="WarehouseID" Nullable="false" />
+          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationTelephone" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationFacsimile" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="WarehouseLocationName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="WarehouseLocationAddress" Nullable="false" MaxLength="100" />
+        </ComplexType>
         <EntityType Name="WarehouseInvoice">
           <Key>
             <PropertyRef Name="WarehouseInvoiceID" />
@@ -6497,6 +6652,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="WarehouseInvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Reference" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TransferOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransferOrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SourceWarehouseID" Type="Int32" />
           <Property Name="WarehouseID" Type="Int32" Nullable="false" />
           <Property Name="PaymentTermID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
@@ -6523,10 +6681,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Locations" FromRole="WarehouseInvoice" ToRole="Location" />
           <NavigationProperty Name="WarehouseInvoiceDetails" Relationship="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices" FromRole="WarehouseInvoice" ToRole="WarehouseInvoiceDetail" />
           <NavigationProperty Name="Warehouse" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses" FromRole="WarehouseInvoice" ToRole="Warehouse" />
-          <Property Name="SourceWarehouseID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Warehouse1" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1" FromRole="WarehouseInvoice" ToRole="Warehouse" />
-          <Property Name="TransferOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TransferOrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_WarehouseInvoices_Locations">
           <End Type="TotalBikePortalsModel.Location" Role="Location" Multiplicity="1" />
@@ -6537,18 +6692,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Principal>
             <Dependent Role="WarehouseInvoice">
               <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WarehouseInvoiceDetails_StockTransferDetails">
-          <End Type="TotalBikePortalsModel.StockTransferDetail" Role="StockTransferDetail" Multiplicity="1" />
-          <End Type="TotalBikePortalsModel.WarehouseInvoiceDetail" Role="WarehouseInvoiceDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockTransferDetail">
-              <PropertyRef Name="StockTransferDetailID" />
-            </Principal>
-            <Dependent Role="WarehouseInvoiceDetail">
-              <PropertyRef Name="StockTransferDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6576,76 +6719,8 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="PendingStockTransfer">
-          <Property Type="Int32" Name="SourceWarehouseID" Nullable="false" />
-          <Property Type="Int32" Name="WarehouseID" Nullable="false" />
-          <Property Type="String" Name="SourceWarehouseName" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="WarehouseLocationTelephone" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="WarehouseLocationFacsimile" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="WarehouseLocationName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="WarehouseLocationAddress" Nullable="false" MaxLength="100" />
-        </ComplexType>
-        <ComplexType Name="WarehouseInvoiceIndex">
-          <Property Type="Int32" Name="WarehouseInvoiceID" Nullable="false" />
-          <Property Type="DateTime" Name="EntryDate" Nullable="true" />
-          <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="VATInvoiceNo" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
-          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
-          <Property Type="Decimal" Name="TotalGrossAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="String" Name="SourceWarehouseName" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="TransferOrderNo" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="TransferOrderCode" Nullable="true" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="WarehouseInvoiceViewDetail">
-          <Property Type="Int32" Name="WarehouseInvoiceDetailID" Nullable="false" />
-          <Property Type="Int32" Name="WarehouseInvoiceID" Nullable="false" />
-          <Property Type="Int32" Name="StockTransferDetailID" Nullable="false" />
-          <Property Type="Int32" Name="CommodityID" Nullable="false" />
-          <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
-          <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
-          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
-          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
-          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
-          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="DiscountPercent" Nullable="false" Precision="18" Scale="5" />
-          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="VATAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="GrossAmount" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="StockTransferID" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="PendingStockTransferDetail">
-          <Property Type="Int32" Name="StockTransferDetailID" Nullable="false" />
-          <Property Type="Int32" Name="CommodityID" Nullable="false" />
-          <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
-          <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
-          <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
-          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
-          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
-          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
-          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="ListedPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="DiscountPercent" Nullable="false" Precision="18" Scale="5" />
-          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="37" Scale="4" />
-          <Property Type="Decimal" Name="VATAmount" Nullable="true" Precision="38" Scale="4" />
-          <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="37" Scale="4" />
-          <Property Type="Boolean" Name="IsSelected" Nullable="true" />
-          <Property Type="Int32" Name="StockTransferID" Nullable="false" />
-        </ComplexType>
         <Association Name="FK_WarehouseInvoices_Warehouses1">
-          <End Type="TotalBikePortalsModel.Warehouse" Role="Warehouse" Multiplicity="1" />
+          <End Type="TotalBikePortalsModel.Warehouse" Role="Warehouse" Multiplicity="0..1" />
           <End Type="TotalBikePortalsModel.WarehouseInvoice" Role="WarehouseInvoice" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Warehouse">
@@ -6653,18 +6728,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Principal>
             <Dependent Role="WarehouseInvoice">
               <PropertyRef Name="SourceWarehouseID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WarehouseInvoiceDetails_StockTransfers">
-          <End Type="TotalBikePortalsModel.StockTransfer" Role="StockTransfer" Multiplicity="1" />
-          <End Type="TotalBikePortalsModel.WarehouseInvoiceDetail" Role="WarehouseInvoiceDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockTransfer">
-              <PropertyRef Name="StockTransferID" />
-            </Principal>
-            <Dependent Role="WarehouseInvoiceDetail">
-              <PropertyRef Name="StockTransferID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7538,6 +7601,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <EntitySetMapping Name="GoodsReceiptDetails">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.GoodsReceiptDetail">
               <MappingFragment StoreEntitySet="GoodsReceiptDetails">
+                <ScalarProperty Name="WarehouseInvoiceID" ColumnName="WarehouseInvoiceID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
@@ -8617,66 +8681,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <FunctionImportMapping FunctionImportName="PartsInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.PartsInvoiceToggleApproved" />
           <FunctionImportMapping FunctionImportName="ServicesInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.ServicesInvoiceToggleApproved" />
           <FunctionImportMapping FunctionImportName="UpdateWholeWarehouseBalance" FunctionName="TotalBikePortalsModel.Store.UpdateWholeWarehouseBalance" />
-          <EntitySetMapping Name="WarehouseInvoiceDetails">
-            <EntityTypeMapping TypeName="TotalBikePortalsModel.WarehouseInvoiceDetail">
-              <MappingFragment StoreEntitySet="WarehouseInvoiceDetails">
-                <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
-                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
-                <ScalarProperty Name="VATAmount" ColumnName="VATAmount" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="GrossPrice" ColumnName="GrossPrice" />
-                <ScalarProperty Name="VATPercent" ColumnName="VATPercent" />
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
-                <ScalarProperty Name="ListedPrice" ColumnName="ListedPrice" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="CommodityID" ColumnName="CommodityID" />
-                <ScalarProperty Name="SourceWarehouseID" ColumnName="SourceWarehouseID" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="StockTransferDetailID" ColumnName="StockTransferDetailID" />
-                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
-                <ScalarProperty Name="WarehouseInvoiceID" ColumnName="WarehouseInvoiceID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
-                <ScalarProperty Name="WarehouseInvoiceDetailID" ColumnName="WarehouseInvoiceDetailID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WarehouseInvoices">
-            <EntityTypeMapping TypeName="TotalBikePortalsModel.WarehouseInvoice">
-              <MappingFragment StoreEntitySet="WarehouseInvoices">
-                <ScalarProperty Name="TransferOrderCode" ColumnName="TransferOrderCode" />
-                <ScalarProperty Name="TransferOrderNo" ColumnName="TransferOrderNo" />
-                <ScalarProperty Name="SourceWarehouseID" ColumnName="SourceWarehouseID" />
-                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
-                <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
-                <ScalarProperty Name="InActive" ColumnName="InActive" />
-                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
-                <ScalarProperty Name="Approved" ColumnName="Approved" />
-                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="VATInvoiceSeries" ColumnName="VATInvoiceSeries" />
-                <ScalarProperty Name="VATInvoiceDate" ColumnName="VATInvoiceDate" />
-                <ScalarProperty Name="VATInvoiceNo" ColumnName="VATInvoiceNo" />
-                <ScalarProperty Name="TotalGrossAmount" ColumnName="TotalGrossAmount" />
-                <ScalarProperty Name="TotalVATAmount" ColumnName="TotalVATAmount" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
-                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="OrganizationalUnitID" ColumnName="OrganizationalUnitID" />
-                <ScalarProperty Name="PreparedPersonID" ColumnName="PreparedPersonID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
-                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
-                <ScalarProperty Name="WarehouseInvoiceID" ColumnName="WarehouseInvoiceID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetPendingStockTransfers" FunctionName="TotalBikePortalsModel.Store.GetPendingStockTransfers">
             <ResultMapping>
               <ComplexTypeMapping TypeName="TotalBikePortalsModel.PendingStockTransfer">
@@ -8732,6 +8736,8 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
                 <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+                <ScalarProperty Name="GoodsReceiptID" ColumnName="GoodsReceiptID" />
+                <ScalarProperty Name="GoodsReceiptDetailID" ColumnName="GoodsReceiptDetailID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -8763,6 +8769,103 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="WarehouseInvoiceDetails">
+            <EntityTypeMapping TypeName="TotalBikePortalsModel.WarehouseInvoiceDetail">
+              <MappingFragment StoreEntitySet="WarehouseInvoiceDetails">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="VATAmount" ColumnName="VATAmount" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="GrossPrice" ColumnName="GrossPrice" />
+                <ScalarProperty Name="VATPercent" ColumnName="VATPercent" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="ListedPrice" ColumnName="ListedPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CommodityID" ColumnName="CommodityID" />
+                <ScalarProperty Name="StockTransferDetailID" ColumnName="StockTransferDetailID" />
+                <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+                <ScalarProperty Name="GoodsReceiptDetailID" ColumnName="GoodsReceiptDetailID" />
+                <ScalarProperty Name="GoodsReceiptID" ColumnName="GoodsReceiptID" />
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="SourceWarehouseID" ColumnName="SourceWarehouseID" />
+                <ScalarProperty Name="WarehouseInvoiceID" ColumnName="WarehouseInvoiceID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="WarehouseInvoiceDetailID" ColumnName="WarehouseInvoiceDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetPendingGoodsReceiptDetails" FunctionName="TotalBikePortalsModel.Store.GetPendingGoodsReceiptDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TotalBikePortalsModel.PendingGoodsReceiptDetail">
+                <ScalarProperty Name="GoodsReceiptID" ColumnName="GoodsReceiptID" />
+                <ScalarProperty Name="GoodsReceiptDetailID" ColumnName="GoodsReceiptDetailID" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="CommodityID" ColumnName="CommodityID" />
+                <ScalarProperty Name="CommodityCode" ColumnName="CommodityCode" />
+                <ScalarProperty Name="CommodityName" ColumnName="CommodityName" />
+                <ScalarProperty Name="CommodityTypeID" ColumnName="CommodityTypeID" />
+                <ScalarProperty Name="WarehouseName" ColumnName="WarehouseName" />
+                <ScalarProperty Name="ChassisCode" ColumnName="ChassisCode" />
+                <ScalarProperty Name="EngineCode" ColumnName="EngineCode" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ListedPrice" ColumnName="ListedPrice" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="VATPercent" ColumnName="VATPercent" />
+                <ScalarProperty Name="GrossPrice" ColumnName="GrossPrice" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPendingGoodsReceipts" FunctionName="TotalBikePortalsModel.Store.GetPendingGoodsReceipts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TotalBikePortalsModel.PendingGoodsReceipt">
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="WarehouseName" ColumnName="WarehouseName" />
+                <ScalarProperty Name="WarehouseLocationTelephone" ColumnName="WarehouseLocationTelephone" />
+                <ScalarProperty Name="WarehouseLocationFacsimile" ColumnName="WarehouseLocationFacsimile" />
+                <ScalarProperty Name="WarehouseLocationName" ColumnName="WarehouseLocationName" />
+                <ScalarProperty Name="WarehouseLocationAddress" ColumnName="WarehouseLocationAddress" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="WarehouseInvoices">
+            <EntityTypeMapping TypeName="TotalBikePortalsModel.WarehouseInvoice">
+              <MappingFragment StoreEntitySet="WarehouseInvoices">
+                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
+                <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="VATInvoiceSeries" ColumnName="VATInvoiceSeries" />
+                <ScalarProperty Name="VATInvoiceDate" ColumnName="VATInvoiceDate" />
+                <ScalarProperty Name="VATInvoiceNo" ColumnName="VATInvoiceNo" />
+                <ScalarProperty Name="TotalGrossAmount" ColumnName="TotalGrossAmount" />
+                <ScalarProperty Name="TotalVATAmount" ColumnName="TotalVATAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="OrganizationalUnitID" ColumnName="OrganizationalUnitID" />
+                <ScalarProperty Name="PreparedPersonID" ColumnName="PreparedPersonID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="SourceWarehouseID" ColumnName="SourceWarehouseID" />
+                <ScalarProperty Name="TransferOrderCode" ColumnName="TransferOrderCode" />
+                <ScalarProperty Name="TransferOrderNo" ColumnName="TransferOrderNo" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="WarehouseInvoiceID" ColumnName="WarehouseInvoiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

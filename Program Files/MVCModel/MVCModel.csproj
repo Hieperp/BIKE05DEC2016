@@ -203,6 +203,12 @@
     <Compile Include="Models\PaymentTerm.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PendingGoodsReceipt.cs">
+      <DependentUpon>TotalBikePortals.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PendingGoodsReceiptDetail.cs">
+      <DependentUpon>TotalBikePortals.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PendingPartTransferOrder.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>

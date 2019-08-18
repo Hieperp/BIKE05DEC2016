@@ -19,29 +19,25 @@
     @Html.HiddenFor(model => model.WarehouseLocationName)
     @Html.HiddenFor(model => model.WarehouseLocationAddress)
 
-    @(Html.Kendo().Grid<PendingStockTransfer>()
-        .Name("gridStockTransfers")
-        .Columns(columns =>
-        {
-            columns.Bound(c => c.SourceWarehouseName).DisplayNameTitle().Width(80);
-            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
-        })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Template(@<text>
-                <div class="toolbar" style="float: right;">
-                    <label>Nhập lệnh điều hàng</label>
-                    <input id="stockTransferSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="stockTransferSearchBox_KeyUp()" />
-                </div>
-            </text>);
-        })
-        .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
-        .DataSource(ds => ds.Ajax()
-        .Read(read => read.Action("GetPendingStockTransfers", "WarehouseInvoiceApi").Data("onAdditionalGetPendingStockTransfers"))
-        .ServerOperation(true))
-        .Selectable()
-    )
 
+    @(Html.Kendo().TabStrip()
+        .HtmlAttributes(new { @style = "height: 466px; margin-left: 0px; margin-right: 0px;" })
+        .Name("tabStrip")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Nhập hàng từ HONDA")
+                .Content(@<text>
+                    @Html.Partial("~/Views/WarehouseInvoices/_PendingGoodsReceiptDetails.cshtml")
+                </text>);
+
+            tabStrip.Add().Text("Xuất kho VCNB")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("~/Views/WarehouseInvoices/_PendingStockTransferDetails.cshtml")
+                </text>);
+        })
+    )
+    
     <div class="background-bar" style="height: 45px;">
         <div class="popup-button-bar">
             <input id="submitCreateWizard" type="submit" formaction="@Url.Action("CreateWizard", "WarehouseInvoices")" formtarget="_top" style="display:none" />
@@ -57,25 +53,8 @@
 
 
 <script type="text/javascript">
-    function onAdditionalGetPendingStockTransfers(e) {
-        return {
-            locationID: window.parent.requireConfig.pageOptions.LocationID
-        };
-    }
-
-    function stockTransferSearchBox_KeyUp() {
-        if ($("#stockTransferSearchBox").val().length === 0 || $("#stockTransferSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
-            $("#gridStockTransfers").data("kendoGrid").dataSource.read();
-        }
-    }
-
-    $("#gridStockTransfers").dblclick(function (e) {
-        okButton_Click();
-    })
-
-
     function okButton_Click() {
-        handleOKEvent($("#gridStockTransfers").data("kendoGrid"));
+        handleOKEvent($($("#tabStrip").data("kendoTabStrip").select().index() === 0 ? "#gridGoodsReceipts" : "#gridStockTransfers").data("kendoGrid"));
     }
 
     function cancelButton_Click() {
@@ -108,10 +87,4 @@
         }
     }
 
-</script>
-
-
-
-
-<script type="text/javascript">
 </script>

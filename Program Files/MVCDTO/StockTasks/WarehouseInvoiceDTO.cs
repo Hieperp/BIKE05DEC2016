@@ -20,7 +20,7 @@ namespace MVCDTO.StockTasks
 
         public int WarehouseInvoiceID { get; set; }
 
-        public int SourceWarehouseID { get; set; }
+        public int? SourceWarehouseID { get; set; }
         [Display(Name = "Khách hàng")]
         public string SourceWarehouseName { get; set; }
 
@@ -55,7 +55,7 @@ namespace MVCDTO.StockTasks
         public override void PerformPresaveRule()
         {
             base.PerformPresaveRule();
-            this.DtoDetails().ToList().ForEach(e => { e.WarehouseID = this.WarehouseID; });
+            this.DtoDetails().ToList().ForEach(e => { e.SourceWarehouseID = this.SourceWarehouseID; e.WarehouseID = this.WarehouseID; });
         }
     }
 

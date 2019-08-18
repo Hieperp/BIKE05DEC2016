@@ -127,14 +127,14 @@
         <AssociationConnector Association="TotalBikePortalsModel.FK_SalesInvoices_ServiceContracts" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_SalesInvoices_ServiceInvoices" />
         <EntityTypeShape EntityType="TotalBikePortalsModel.AccessControl" Width="1.5" PointX="13.375" PointY="8.75" />
-        <EntityTypeShape EntityType="TotalBikePortalsModel.WarehouseInvoiceDetail" Width="1.5" PointX="10.75" PointY="28.875" />
-        <EntityTypeShape EntityType="TotalBikePortalsModel.WarehouseInvoice" Width="1.5" PointX="11.25" PointY="46.875" />
-        <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Locations" />
+        <EntityTypeShape EntityType="TotalBikePortalsModel.WarehouseInvoiceDetail" Width="1.5" PointX="13.5" PointY="40.125" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransferDetails" />
+        <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" />
+        <EntityTypeShape EntityType="TotalBikePortalsModel.WarehouseInvoice" Width="1.5" PointX="11.25" PointY="46.5" />
+        <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Locations" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_WarehouseInvoices" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses" />
         <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoices_Warehouses1" />
-        <AssociationConnector Association="TotalBikePortalsModel.FK_WarehouseInvoiceDetails_StockTransfers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -84,14 +84,17 @@
                     <div id="warehouse-div" class="warehouse-background">
                         @Html.Partial("~/Views/Helpers/Commons/_WarehouseMaskedTextBox.cshtml")
 
-                        <div class="div-row3 warehouse-lmargin" style="padding-top: 34px;">
-                            <div class="div-row3">
-                                <div class="div-input" style="margin-left: 0px;">
-                                    @Html.HiddenFor(model => model.SourceWarehouseID)
-                                    @Html.Kendo().MaskedTextBoxFor(model => model.SourceWarehouseName).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.SourceWarehouseID)
+                        @if (Model.SourceWarehouseID != null)
+                        {
+                            <div class="div-row3 warehouse-lmargin" style="padding-top: 34px;">
+                                <div class="div-row3">
+                                    <div class="div-input" style="margin-left: 0px;">                                        
+                                        @Html.Kendo().MaskedTextBoxFor(model => model.SourceWarehouseName).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
 

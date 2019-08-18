@@ -18,10 +18,12 @@ namespace MVCModel.Models
         public System.DateTime EntryDate { get; set; }
         public int LocationID { get; set; }
         public int WarehouseInvoiceID { get; set; }
+        public Nullable<int> SourceWarehouseID { get; set; }
         public int WarehouseID { get; set; }
-        public int StockTransferDetailID { get; set; }
-        public string Remarks { get; set; }
-        public int SourceWarehouseID { get; set; }
+        public Nullable<int> GoodsReceiptID { get; set; }
+        public Nullable<int> GoodsReceiptDetailID { get; set; }
+        public Nullable<int> StockTransferID { get; set; }
+        public Nullable<int> StockTransferDetailID { get; set; }
         public int CommodityID { get; set; }
         public decimal Quantity { get; set; }
         public decimal ListedPrice { get; set; }
@@ -32,10 +34,10 @@ namespace MVCModel.Models
         public decimal Amount { get; set; }
         public decimal VATAmount { get; set; }
         public decimal GrossAmount { get; set; }
-        public int StockTransferID { get; set; }
+        public string Remarks { get; set; }
     
         public virtual StockTransferDetail StockTransferDetail { get; set; }
-        public virtual WarehouseInvoice WarehouseInvoice { get; set; }
         public virtual StockTransfer StockTransfer { get; set; }
+        public virtual WarehouseInvoice WarehouseInvoice { get; set; }
     }
 }

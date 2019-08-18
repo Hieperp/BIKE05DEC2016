@@ -1,0 +1,44 @@
+﻿@using MVCModel.Models
+@using MVCClient.Configuration
+
+
+@(Html.Kendo().Grid<PendingGoodsReceipt>()
+        .Name("gridGoodsReceipts")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar" style="float: right;">
+                    <label>Nhập phiếu nhập kho</label>
+                    <input id="goodsReceiptSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="goodsReceiptSearchBox_KeyUp()" />
+                </div>
+            </text>);
+        })
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
+            .DataSource(ds => ds.Ajax()
+            .Read(read => read.Action("GetPendingGoodsReceipts", "WarehouseInvoiceApi").Data("onAdditionalGetPendingGoodsReceipts"))
+            .ServerOperation(true))
+            .Selectable()
+)
+
+<script type="text/javascript">
+
+    function onAdditionalGetPendingGoodsReceipts(e) {
+        return {
+            locationID: window.parent.requireConfig.pageOptions.LocationID
+        };
+    }
+
+    function goodsReceiptSearchBox_KeyUp() {
+        if ($("#goodsReceiptSearchBox").val().length === 0 || $("#goodsReceiptSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+            $("#gridGoodsReceipts").data("kendoGrid").dataSource.read();
+        }
+    }
+
+    $("#gridGoodsReceipts").dblclick(function (e) {
+        okButton_Click();
+    })
+</script>

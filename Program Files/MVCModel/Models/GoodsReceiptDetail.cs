@@ -46,6 +46,7 @@ namespace MVCModel.Models
         public string ColorCode { get; set; }
         public string Remarks { get; set; }
         public int LocationID { get; set; }
+        public Nullable<int> WarehouseInvoiceID { get; set; }
     
         public virtual Commodity Commodity { get; set; }
         public virtual GoodsReceipt GoodsReceipt { get; set; }
