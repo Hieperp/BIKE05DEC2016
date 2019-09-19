@@ -105,25 +105,31 @@
                         .Columns(columns =>
                         {
                             columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
-
-
+                            columns.Bound(p => p.VATInvoiceNo).DisplayNameTitle().Filterable(false).Hidden(Model.SourceWarehouseID != null)
+                                .ClientTemplate("#= (VATInvoiceNo == null)? '' : VATInvoiceNo #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].VATInvoiceNo' value='#= (VATInvoiceNo == null) ? '' : VATInvoiceNo #' />");
+                            
                             columns.Bound(p => p.WarehouseInvoiceDetailID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= WarehouseInvoiceDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].WarehouseInvoiceDetailID' value='#= WarehouseInvoiceDetailID #' />");
                             columns.Bound(p => p.WarehouseInvoiceID).DisplayNameTitle().Filterable(false).Hidden()
                                .ClientTemplate("#= WarehouseInvoiceID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].WarehouseInvoiceID' value='#= WarehouseInvoiceID #' />");
 
 
-                            columns.Bound(p => p.StockTransferID).DisplayNameTitle().Filterable(false).Hidden()
-                                .ClientTemplate("#= StockTransferID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferID' value='#= StockTransferID #' />");                            
-                            columns.Bound(p => p.StockTransferDetailID).DisplayNameTitle().Filterable(false).Hidden()
-                               .ClientTemplate("#= StockTransferDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferDetailID' value='#= StockTransferDetailID #' />");
+                            columns.Bound(p => p.GoodsReceiptID).DisplayNameTitle().Hidden()
+                                .ClientTemplate("#= (GoodsReceiptID == null)? '' : GoodsReceiptID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].GoodsReceiptID' value='#= (GoodsReceiptID == null) ? '' : GoodsReceiptID #' />");
+                            columns.Bound(p => p.GoodsReceiptDetailID).DisplayNameTitle().Hidden()
+                                .ClientTemplate("#= (GoodsReceiptDetailID == null)? '' : GoodsReceiptDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].GoodsReceiptDetailID' value='#= (GoodsReceiptDetailID == null) ? '' : GoodsReceiptDetailID #' />");
+
+                            columns.Bound(p => p.StockTransferID).DisplayNameTitle().Hidden()
+                                .ClientTemplate("#= (StockTransferID == null)? '' : StockTransferID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferID' value='#= (StockTransferID == null) ? '' : StockTransferID #' />");
+                            columns.Bound(p => p.StockTransferDetailID).DisplayNameTitle().Hidden()
+                                .ClientTemplate("#= (StockTransferDetailID == null)? '' : StockTransferDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].StockTransferDetailID' value='#= (StockTransferDetailID == null) ? '' : StockTransferDetailID #' />");
 
 
                             columns.Bound(p => p.CommodityID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityID' value='#= CommodityID #' />");
-                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Width(136)
+                            columns.Bound(p => p.CommodityCode).DisplayNameTitle().Filterable(false).Width(132)
                                 .ClientTemplate("#= CommodityCode #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityCode' value='#= CommodityCode #' />");
-                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(218)
+                            columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(242)
                                 .ClientFooterTemplate("Tổng cộng:")
                                 .ClientTemplate("#= CommodityName #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
                                                      
@@ -139,11 +145,11 @@
                                 .ClientTemplate("#= ColorCode #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].ColorCode' value='#= ColorCode #' />");
 
 
-                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).EditorTemplateName("DecimalReadonly").HtmlAttributes(new { @class = "grid-number-column", @readonly = "readonly" }).Width(50)
+                            columns.Bound(p => p.Quantity).DisplayNameTitle().Filterable(false).EditorTemplateName("DecimalReadonly").HtmlAttributes(new { @class = "grid-number-column", @readonly = "readonly" }).Width(33)
                                 .Format("{0:n0}")
                                 .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
                                 .ClientTemplate("#= kendo.format('{0:n0}', Quantity) #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].Quantity' value='#= Quantity #' />");
-                            columns.Bound(p => p.ListedPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90).Hidden()
+                            columns.Bound(p => p.ListedPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(82).Hidden()
                                .Format("{0:n0}")
                                .ClientTemplate("#= kendo.format('{0:n0}', ListedPrice) #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].ListedPrice' value='#= ListedPrice #' />");
 
@@ -190,7 +196,7 @@
                         {
                             if (Model.Editable)
                             {
-                                toolbar.Custom().Text("Chọn phiếu chuyển kho").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransferDetails()" });
+                                toolbar.Custom().Text("Chọn phiếu " + (Model.SourceWarehouseID == null ? "nhập" : "chuyển") + " kho").Url("#").HtmlAttributes(new { onclick = "GetPendingStockTransferDetails()" });
                             }
                             else
                             {//Add a functionless button for display purpose only
@@ -327,7 +333,7 @@
     function GetPendingStockTransferDetails() {
         require(["kpopupWindow"], function (kpopupWindow) {
             var createWizardWindow = new kpopupWindow();
-            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingStockTransferDetails", "WarehouseInvoices")", "Chọn phiếu bán hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+            createWizardWindow.openWindow($("#popupWindow"), "@Url.Action(Model.SourceWarehouseID == null ? "GetPendingGoodsReceiptDetails" : "GetPendingStockTransferDetails", "WarehouseInvoices")", "Chọn dữ liệu lập hóa đơn VCNB", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
         });
     }
 

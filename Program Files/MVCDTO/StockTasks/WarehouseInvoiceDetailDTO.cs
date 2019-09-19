@@ -16,9 +16,12 @@ namespace MVCDTO.StockTasks
 
         public int? SourceWarehouseID { get; set; }
         public int WarehouseID { get; set; }
-        [Range(1, 99999999999, ErrorMessage = "Lỗi bắt buộc phải có id hóa đơn bán hàng")]
-        public int StockTransferID { get; set; }
-        public int StockTransferDetailID { get; set; }
+
+        public int? GoodsReceiptID { get; set; }
+        public int? GoodsReceiptDetailID { get; set; }
+
+        public int? StockTransferID { get; set; }
+        public int? StockTransferDetailID { get; set; }
 
         [UIHint("StringReadonly")]
         public override string CommodityName { get; set; }
@@ -36,6 +39,10 @@ namespace MVCDTO.StockTasks
         public Nullable<bool> IsBonus { get; set; }
         public Nullable<bool> IsWarrantyClaim { get; set; }
 
+        [Display(Name = "HĐ")]
+        [UIHint("StringReadonly")]
+        public string VATInvoiceNo { get; set; }
+
         [Display(Name = "Số khung")]
         [UIHint("StringReadonly")]
         public string ChassisCode { get; set; }
@@ -45,5 +52,12 @@ namespace MVCDTO.StockTasks
         [UIHint("StringReadonly")]
         [Display(Name = "Mã màu")]
         public string ColorCode { get; set; }
+
+        public override System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            foreach (var result in base.Validate(validationContext)) { yield return result; }
+
+            if (this.GoodsReceiptDetailID == null && this.StockTransferDetailID == null) yield return new ValidationResult("Bắt buộc phải có dữ liệu gốc [" + this.CommodityCode + "]", new[] { "CommodityCode" });
+        }
     }
 }

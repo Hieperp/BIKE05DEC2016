@@ -50,10 +50,16 @@ function handleOKEvent(warehouseInvoiceGridDataSource, pendingStockTransferDetai
         dataRow.LocationID = null;
         dataRow.Remarks = null;
 
-        dataRow.StockTransferID = transferOrderGridDataItem.StockTransferID;
-        dataRow.StockTransferDetailID = transferOrderGridDataItem.StockTransferDetailID;
+        dataRow.GoodsReceiptID = transferOrderGridDataItem.GoodsReceiptID === undefined ? null : transferOrderGridDataItem.GoodsReceiptID;
+        dataRow.GoodsReceiptDetailID = transferOrderGridDataItem.GoodsReceiptDetailID === undefined ? null : transferOrderGridDataItem.GoodsReceiptDetailID;
+
+        dataRow.StockTransferID = transferOrderGridDataItem.StockTransferID === undefined ? null : transferOrderGridDataItem.StockTransferID;
+        dataRow.StockTransferDetailID = transferOrderGridDataItem.StockTransferDetailID === undefined ? null : transferOrderGridDataItem.StockTransferDetailID;
 
         dataRow.WarehouseID = transferOrderGridDataItem.WarehouseID;
+        
+        dataRow.VATInvoiceNo = transferOrderGridDataItem.VATInvoiceNo === undefined ? null : transferOrderGridDataItem.VATInvoiceNo;
+
         dataRow.CommodityID = transferOrderGridDataItem.CommodityID;
         dataRow.CommodityName = transferOrderGridDataItem.CommodityName;
         dataRow.CommodityCode = transferOrderGridDataItem.CommodityCode;

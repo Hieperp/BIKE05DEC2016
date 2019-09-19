@@ -8,11 +8,11 @@
     .Name("gridPendingStockTransferDetails")
     .Columns(columns =>
     {
-        columns.Bound(c => c.WarehouseName).Title("Khách hàng").Width(15);
+        columns.Bound(c => c.WarehouseName).Title("CN").Width(10);
         columns.Bound(c => c.CommodityCode).Title("Mã xe, phụ tùng, dv").Width(15);
         columns.Bound(c => c.CommodityName).Title("Tên xe, phụ tùng, dv").Width(22);
-        columns.Bound(c => c.ChassisCode).Title("Số khung").Width(15);
-        columns.Bound(c => c.EngineCode).Title("Số máy").Width(12);
+        columns.Bound(c => c.ChassisCode).Title("Số khung").Width(18);
+        columns.Bound(c => c.EngineCode).Title("Số máy").Width(15);
         columns.Bound(c => c.ColorCode).Title("Mã màu").Width(7);
         columns.Bound(c => c.Quantity).Title("SL").Format("{0:n0}").Width(5).HtmlAttributes(new { @class = "grid-number-column" });
         columns.Bound(c => c.GrossPrice).Title("Đơn giá").Format("{0:n0}").Width(10).HtmlAttributes(new { @class = "grid-number-column" });
@@ -24,7 +24,7 @@
     {
         toolbar.Template(@<text>
             <div class="toolbar" style="float: right;">
-                <label class="category-label" for="category">Tìm khách hàng, xe, phụ tùng, hoặc số khung, số máy:</label>
+                <label class="category-label" for="category">Tìm xe, phụ tùng, hoặc số khung, số máy:</label>
                 <input id="filterText" class="k-textbox" style="text-align: center;" onkeyup="onFilterTextKeyUp()" />
                 @Html.Kendo().DatePicker().Name("EntryDate").Value(DateTime.Today).Events(e => e.Change("reReadPendingStockTransferDetails")).HtmlAttributes(new { @class = "input-class", style = "text-align: center; width:105px" })
 

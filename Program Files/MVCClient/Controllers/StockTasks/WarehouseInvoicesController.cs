@@ -30,7 +30,7 @@ namespace MVCClient.Controllers.StockTasks
 
             WarehouseInvoice entity = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Readable);
             if (entity == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            printViewModel.ViewOptionID = (entity.Warehouse.LocationID == 9 || entity.Warehouse1.LocationID == 9) ? 9 : entity.Warehouse.LocationID;
+            printViewModel.ViewOptionID = (entity.Warehouse.LocationID == 9 || (entity.Warehouse1 != null && entity.Warehouse1.LocationID == 9)) ? 9 : (entity.Warehouse1 != null ? entity.Warehouse.LocationID : 1976);
 
             return View(printViewModel);
         }

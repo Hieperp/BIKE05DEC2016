@@ -30,5 +30,10 @@ namespace MVCModel.Models
         public decimal UnitPrice { get; set; }
         public decimal VATPercent { get; set; }
         public decimal GrossPrice { get; set; }
+        public decimal Amount { get; set; }
+        public decimal VATAmount { get; set; }
+        public decimal GrossAmount { get; set; }
+        public Nullable<bool> IsSelected { get; set; }
+        public string VATInvoiceNo { get; set; }
     }
 }

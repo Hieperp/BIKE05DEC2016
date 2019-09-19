@@ -32,10 +32,10 @@ namespace MVCData.Repositories.StockTasks
             return pendingGoodsReceipts;
         }
 
-        public IEnumerable<PendingGoodsReceiptDetail> GetPendingGoodsReceiptDetails(int goodsReceiptID, string aspUserID, int locationID, int warehouseID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string goodsReceiptDetailIDs)
+        public IEnumerable<PendingGoodsReceiptDetail> GetPendingGoodsReceiptDetails(int goodsReceiptID, string aspUserID, int locationID, int warehouseID, int commodityTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string goodsReceiptDetailIDs)
         {
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;
-            IEnumerable<PendingGoodsReceiptDetail> pendingGoodsReceipts = base.TotalBikePortalsEntities.GetPendingGoodsReceiptDetails(goodsReceiptID, aspUserID, locationID, warehouseID, fromDate, toDate, warehouseInvoiceID, goodsReceiptDetailIDs).ToList();
+            IEnumerable<PendingGoodsReceiptDetail> pendingGoodsReceipts = base.TotalBikePortalsEntities.GetPendingGoodsReceiptDetails(goodsReceiptID, aspUserID, locationID, warehouseID, commodityTypeID, fromDate, toDate, warehouseInvoiceID, goodsReceiptDetailIDs).ToList();
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = true;
 
             return pendingGoodsReceipts;

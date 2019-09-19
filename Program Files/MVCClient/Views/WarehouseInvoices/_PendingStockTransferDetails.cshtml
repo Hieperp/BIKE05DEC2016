@@ -6,22 +6,22 @@
         .Name("gridStockTransfers")
         .Columns(columns =>
         {
-            columns.Bound(c => c.SourceWarehouseName).DisplayNameTitle().Width(80);
-            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
+            columns.Bound(c => c.SourceWarehouseName).Title("Kho Xuất").Width(80);
+            columns.Bound(c => c.WarehouseName).Title("Kho Nhập").Width(100);
         })
         .ToolBar(toolbar =>
         {
             toolbar.Template(@<text>
                 <div class="toolbar" style="float: right;">
-                    <label>Nhập lệnh điều hàng</label>
+                    <label>Nhập mã kho</label>
                     <input id="stockTransferSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="stockTransferSearchBox_KeyUp()" />
                 </div>
             </text>);
         })
-            .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
             .DataSource(ds => ds.Ajax()
             .Read(read => read.Action("GetPendingStockTransfers", "WarehouseInvoiceApi").Data("onAdditionalGetPendingStockTransfers"))
-            .ServerOperation(true))
+            .ServerOperation(false))
             .Selectable()
 )
 
@@ -34,8 +34,21 @@
     }
 
     function stockTransferSearchBox_KeyUp() {
-        if ($("#stockTransferSearchBox").val().length === 0 || $("#stockTransferSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
-            $("#gridStockTransfers").data("kendoGrid").dataSource.read();
+        var stockTransferSearchBox = $("#stockTransferSearchBox").val(), gridDetails = $("#gridStockTransfers").data("kendoGrid");
+
+        if (stockTransferSearchBox && stockTransferSearchBox.length >= 2) {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "SourceWarehouseName", operator: "contains", value: stockTransferSearchBox },
+                    { field: "WarehouseName", operator: "contains", value: stockTransferSearchBox }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
         }
     }
 

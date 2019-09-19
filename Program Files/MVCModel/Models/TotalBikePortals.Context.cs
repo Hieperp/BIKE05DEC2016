@@ -1519,7 +1519,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingStockTransferDetail>("GetPendingStockTransferDetails", stockTransferIDParameter, aspUserIDParameter, locationIDParameter, sourceWarehouseIDParameter, warehouseIDParameter, stockTransferTypeIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, stockTransferDetailIDsParameter);
         }
     
-        public virtual ObjectResult<PendingGoodsReceiptDetail> GetPendingGoodsReceiptDetails(Nullable<int> goodsReceiptID, string aspUserID, Nullable<int> locationID, Nullable<int> warehouseID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> warehouseInvoiceID, string goodsReceiptDetailIDs)
+        public virtual ObjectResult<PendingGoodsReceiptDetail> GetPendingGoodsReceiptDetails(Nullable<int> goodsReceiptID, string aspUserID, Nullable<int> locationID, Nullable<int> warehouseID, Nullable<int> commodityTypeID, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> warehouseInvoiceID, string goodsReceiptDetailIDs)
         {
             var goodsReceiptIDParameter = goodsReceiptID.HasValue ?
                 new ObjectParameter("GoodsReceiptID", goodsReceiptID) :
@@ -1537,6 +1537,10 @@ namespace MVCModel.Models
                 new ObjectParameter("WarehouseID", warehouseID) :
                 new ObjectParameter("WarehouseID", typeof(int));
     
+            var commodityTypeIDParameter = commodityTypeID.HasValue ?
+                new ObjectParameter("CommodityTypeID", commodityTypeID) :
+                new ObjectParameter("CommodityTypeID", typeof(int));
+    
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
                 new ObjectParameter("FromDate", typeof(System.DateTime));
@@ -1553,7 +1557,7 @@ namespace MVCModel.Models
                 new ObjectParameter("GoodsReceiptDetailIDs", goodsReceiptDetailIDs) :
                 new ObjectParameter("GoodsReceiptDetailIDs", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingGoodsReceiptDetail>("GetPendingGoodsReceiptDetails", goodsReceiptIDParameter, aspUserIDParameter, locationIDParameter, warehouseIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, goodsReceiptDetailIDsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingGoodsReceiptDetail>("GetPendingGoodsReceiptDetails", goodsReceiptIDParameter, aspUserIDParameter, locationIDParameter, warehouseIDParameter, commodityTypeIDParameter, fromDateParameter, toDateParameter, warehouseInvoiceIDParameter, goodsReceiptDetailIDsParameter);
         }
     
         public virtual ObjectResult<PendingGoodsReceipt> GetPendingGoodsReceipts(string aspUserID, Nullable<int> locationID)

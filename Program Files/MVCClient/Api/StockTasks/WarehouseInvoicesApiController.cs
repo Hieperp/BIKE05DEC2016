@@ -50,9 +50,9 @@ namespace MVCClient.Api.StockTasks
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetPendingGoodsReceiptDetails([DataSourceRequest] DataSourceRequest dataSourceRequest, int goodsReceiptID, int locationID, int warehouseID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string goodsReceiptDetailIDs)
+        public JsonResult GetPendingGoodsReceiptDetails([DataSourceRequest] DataSourceRequest dataSourceRequest, int goodsReceiptID, int locationID, int warehouseID, int commodityTypeID, DateTime fromDate, DateTime toDate, int warehouseInvoiceID, string goodsReceiptDetailIDs)
         {
-            var result = this.warehouseInvoiceAPIRepository.GetPendingGoodsReceiptDetails(goodsReceiptID, User.Identity.GetUserId(), locationID, warehouseID, fromDate, toDate.AddHours(23).AddMinutes(59).AddSeconds(59), warehouseInvoiceID, goodsReceiptDetailIDs);
+            var result = this.warehouseInvoiceAPIRepository.GetPendingGoodsReceiptDetails(goodsReceiptID, User.Identity.GetUserId(), locationID, warehouseID, commodityTypeID, fromDate, toDate.AddHours(23).AddMinutes(59).AddSeconds(59), warehouseInvoiceID, goodsReceiptDetailIDs);
             return Json(result.ToDataSourceResult(dataSourceRequest), JsonRequestBehavior.AllowGet);
         }
 

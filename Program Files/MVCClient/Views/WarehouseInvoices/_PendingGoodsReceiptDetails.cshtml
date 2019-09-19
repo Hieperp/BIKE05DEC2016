@@ -6,21 +6,21 @@
         .Name("gridGoodsReceipts")
         .Columns(columns =>
         {
-            columns.Bound(c => c.WarehouseName).DisplayNameTitle().Width(100);
+            columns.Bound(c => c.WarehouseName).Title("Kho nhập").Width(100);
         })
         .ToolBar(toolbar =>
         {
             toolbar.Template(@<text>
                 <div class="toolbar" style="float: right;">
-                    <label>Nhập phiếu nhập kho</label>
+                    <label>Nhập mã kho</label>
                     <input id="goodsReceiptSearchBox" class="k-textbox" style="text-align: center; margin-right: 13px;" onkeyup="goodsReceiptSearchBox_KeyUp()" />
                 </div>
             </text>);
         })
-            .Scrollable(s => s.Height(SettingsManager.PopupContentHeightSmall))
+            .Scrollable(s => s.Height(SettingsManager.PopupContentHeight))
             .DataSource(ds => ds.Ajax()
             .Read(read => read.Action("GetPendingGoodsReceipts", "WarehouseInvoiceApi").Data("onAdditionalGetPendingGoodsReceipts"))
-            .ServerOperation(true))
+            .ServerOperation(false))
             .Selectable()
 )
 
@@ -33,8 +33,20 @@
     }
 
     function goodsReceiptSearchBox_KeyUp() {
-        if ($("#goodsReceiptSearchBox").val().length === 0 || $("#goodsReceiptSearchBox").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
-            $("#gridGoodsReceipts").data("kendoGrid").dataSource.read();
+        var goodsReceiptSearchBox = $("#goodsReceiptSearchBox").val(), gridDetails = $("#gridGoodsReceipts").data("kendoGrid");
+
+        if (goodsReceiptSearchBox && goodsReceiptSearchBox.length >= 2) {
+            gridDetails.dataSource.filter({
+                logic: "or",
+                filters: [
+                    { field: "WarehouseName", operator: "contains", value: goodsReceiptSearchBox }
+                ]
+            });
+
+
+        } else {
+            if (gridDetails.dataSource.filter() != undefined)
+                gridDetails.dataSource.filter({});
         }
     }
 

@@ -39,5 +39,6 @@ namespace MVCModel.Models
         public virtual StockTransferDetail StockTransferDetail { get; set; }
         public virtual StockTransfer StockTransfer { get; set; }
         public virtual WarehouseInvoice WarehouseInvoice { get; set; }
+        public virtual GoodsReceiptDetail GoodsReceiptDetail { get; set; }
     }
 }

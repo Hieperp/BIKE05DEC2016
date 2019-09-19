@@ -36,5 +36,6 @@ namespace MVCModel.Models
         public Nullable<int> StockTransferID { get; set; }
         public Nullable<int> GoodsReceiptID { get; set; }
         public Nullable<int> GoodsReceiptDetailID { get; set; }
+        public string VATInvoiceNo { get; set; }
     }
 }
