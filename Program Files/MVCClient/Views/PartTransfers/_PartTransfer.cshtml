@@ -156,6 +156,10 @@
                 }
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+            @if (Model.Editable && Model.TransferOrderID == null)
+            {
+                <div><input type="file" name="xlfile" id="xlf" /></div>
+            }
         </div>
     }
 
@@ -164,6 +168,11 @@
 <link href="@Url.Content("~/Content/CustomCss/FourColumn.css")" rel="stylesheet" type="text/css" />
 <script src="@Url.Content("~/Scripts/Helpers/KendoGrid/gridHelper.js")"></script>
 
+<script src="@Url.Content("~/Scripts/Controllers/Root/PartTransferOrders/ImportExcel.js")"></script>
+
+<script>
+    window.urlCommoditiesApi = '@Url.Action("GetPartAvailables", "CommoditiesApi")';
+</script>
 
 <script type="text/javascript">
 

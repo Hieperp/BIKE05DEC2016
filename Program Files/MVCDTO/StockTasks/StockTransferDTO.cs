@@ -33,7 +33,7 @@ namespace MVCDTO.StockTasks
 
         public int WarehouseID { get; set; }
         [Display(Name = "Kho nhập")]
-        [Required]
+        [Required(ErrorMessage = "Vui lòng chọn kho nhập")]
         public string WarehouseName { get; set; }
         [Display(Name = "Kho nhập")]
         public string WarehouseCode { get; set; }

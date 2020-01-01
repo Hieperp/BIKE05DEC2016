@@ -1,4 +1,5 @@
-﻿@using MVCDTO.StockTasks;
+﻿@using MVCBase.Enums
+@using MVCDTO.StockTasks;
 @using MVCClient.Configuration;
 
 @using (Html.BeginForm())
@@ -31,7 +32,11 @@
     <div class="background-bar" style="height: 45px;">
         <div class="popup-button-bar">
             <input id="okButton" type="button" value="Điều hàng theo lệnh" class="k-button" onclick="okButton_Click()" />
-            @*<input id="okWOSelectButton" type="button" value="Tự điều hàng" class="k-button" onclick="okWOSelectButton_Click()" /> PHAN MEM KHONG CAN DIEU CHINH GI HET, CHI CAN ACTIVE CAI CAU LENH NAY: THI SE CHO PHEP TU Tự điều hàng *@
+            @if (ViewData["okWOSelectButton"] == "true")
+            { 
+                <input id="okWOSelectButton" type="button" value="Tự điều hàng" class="k-button" onclick="okWOSelectButton_Click()" /> 
+                @*PHAN MEM KHONG CAN DIEU CHINH GI HET, CHI CAN ACTIVE CAI CAU LENH NAY: THI SE CHO PHEP TU Tự điều hàng*@ 
+            }
             <input id="cancelButton" type="button" value="Thoát" class="k-button" onclick="cancelButton_Click()" />
         </div>
     </div>
