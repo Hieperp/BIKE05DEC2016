@@ -97,7 +97,7 @@
 
                             columns.Bound(p => p.Remarks).DisplayNameTitle().Filterable(false).Width(10)
                                 .ClientTemplate("#= (Remarks == null)? '' : Remarks #" + "<input type='hidden' name='PartsInvoiceViewDetails[#= index(data) #].Remarks' value='#= (Remarks == null) ? '' : Remarks #' />");
-                            
+
                             columns.Bound(p => p.WarehouseID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= WarehouseID #" + "<input type='hidden' name='PartsInvoiceViewDetails[#= index(data) #].WarehouseID' value='#= WarehouseID #' />");
                             columns.Bound(p => p.WarehouseCode).DisplayNameTitle().Filterable(false).Width(120).Hidden()
@@ -161,22 +161,29 @@
                         {
                             if (Model.Editable)
                             {
-                                toolbar.Create();
-                                if (Model.QuotationID != null)
-                                    toolbar.Custom().Text("Add From Quotation").Url("#").HtmlAttributes(new { onclick = "GetQuotationDetails()" });
-                            }
-                            else
-                            {//Add a functionless button for display purpose only
-                                toolbar.Template(
-                                    @<text>
-                                        <div>
-                                            @(Html.Kendo().Button()
-                                                .Name("iconButton")
-                                                .HtmlAttributes(new { type = "button" })
-                                                .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
-                                            )
-                                        </div>
-                                    </text>);
+                                //toolbar.Create();
+                                //if (Model.QuotationID != null)
+                                //    toolbar.Custom().Text("Add From Quotation").Url("#").HtmlAttributes(new { onclick = "GetQuotationDetails()" });
+
+                                toolbar.Template(@<text>
+                                    <button type="button" class="k-button" onclick="$('#kendoGridDetails').data('kendoGrid').addRow()"> <img src="~/Content/Images/Mains/Size24/Actions-bookmark-add-icon-24.png" /> Thêm mặt hàng </button>
+                                    <span style="float: right;">
+                                        <label>Quét mã vạch</label>
+                                        <input id="barcodeInput" class="k-textbox" style="text-align: center; " onkeyup="barcodeInput_KeyUp()" />
+                                </span> </text>);
+                     }
+                     else
+                     {//Add a functionless button for display purpose only
+                         toolbar.Template(
+                                        @<text>
+                                            <div>
+                                                @(Html.Kendo().Button()
+                                                    .Name("iconButton")
+                                                    .HtmlAttributes(new { type = "button" })
+                                                    .SpriteCssClass("k-icon k-i-ungroup") //.Content("My button label")
+                                                )
+                                            </div>
+                                        </text>);
                             }
                         })
 
@@ -192,29 +199,29 @@
                                 function(e) {
                                 rowNumber = 0;
                                 }
-                            </text>);
-                        @*events.DataBound(@<text>
-                                function(e) {
-                                    var grid = $("#kendoGridDetails").data("kendoGrid");
-                                    var data = grid.dataSource.data();
-                                    $.each(data, function (i, row) {
-                                        var isWarrantyClaim = row.IsWarrantyClaim;
-                                        if (isWarrantyClaim == true) {
-                                            $('tr[data-uid="' + row.uid + '"]').css("color", "darkred");
-                                        }
-                                    });
+                        </text>);
+                    @*events.DataBound(@<text>
+                        function(e) {
+                            var grid = $("#kendoGridDetails").data("kendoGrid");
+                            var data = grid.dataSource.data();
+                            $.each(data, function (i, row) {
+                                var isWarrantyClaim = row.IsWarrantyClaim;
+                                if (isWarrantyClaim == true) {
+                                    $('tr[data-uid="' + row.uid + '"]').css("color", "darkred");
                                 }
-                            </text>);*@
-                        })
-                        .DataSource(dataSource => dataSource
+                            });
+                        }
+                    </text>);*@
+                            })
+                            .DataSource(dataSource => dataSource
                             .Ajax()
                             .Batch(true)
                             .ServerOperation(false)
                             .Model(model =>
                             {
-                                model.Id(x => x.SalesInvoiceDetailID);
-                                model.Field(m => m.SalesInvoiceDetailID).DefaultValue(0);
-                                model.Field(m => m.SalesInvoiceID).DefaultValue(@Model.SalesInvoiceID);
+                                 model.Id(x => x.SalesInvoiceDetailID);
+                                 model.Field(m => m.SalesInvoiceDetailID).DefaultValue(0);
+                                 model.Field(m => m.SalesInvoiceID).DefaultValue(@Model.SalesInvoiceID);
                             })
                             .Events(events =>
                             {
@@ -225,7 +232,7 @@
                             .Aggregates(a => a.Add(x => x.Amount).Sum())
                             .Aggregates(a => a.Add(x => x.VATAmount).Sum())
                             .Aggregates(a => a.Add(x => x.GrossAmount).Sum())
-                        )
+                            )
                     )
 
                     @Html.Partial("~/Views/SalesInvoices/_SalesInvoiceSectionB.cshtml")
@@ -274,5 +281,57 @@
             createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetQuotationDetails", "ServicesInvoices")", "Chọn dịch vụ", "900px", "413px");
         });
     }
+    
+    function barcodeInput_KeyUp() {
+        if ($("#barcodeInput").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
 
+            var gridDataSource = $("#kendoGridDetails").data("kendoGrid").dataSource;
+            _getCommoditiesByCode(gridDataSource, $("#barcodeInput").val());
+
+            $("#barcodeInput").val("");
+        }
+        
+        function _getCommoditiesByCode(gridDataSource, barcodeInput) {
+            return $.ajax({
+                url: window.urlCommoditiesApi,
+                data: JSON.stringify({ "locationID": requireConfig.pageOptions.LocationID, "entryDate": $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(), "searchText": barcodeInput, "includeCommoditiesOutOfStock": false, "salesInvoiceID": $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0, "stockTransferID": $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0, "inventoryAdjustmentID": $("#InventoryAdjustmentID") != undefined? $("#InventoryAdjustmentID").val(): 0 }),
+
+                type: 'POST',
+                contentType: 'application/json;',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.CommodityID > 0) {
+
+                        var dataRow = gridDataSource.add({});
+
+                        dataRow.set("CommodityID", result.CommodityID);
+                        dataRow.set("CommodityCode", result.CommodityCode);
+                        dataRow.set("CommodityName", result.CommodityName);
+                        dataRow.set("CommodityTypeID", result.CommodityTypeID);
+                        dataRow.set("WarehouseID", result.WarehouseID);
+                        dataRow.set("WarehouseCode", result.WarehouseCode);
+                        dataRow.set("QuantityAvailable", result.QuantityAvailable);
+                        dataRow.set("Quantity", 1);
+                        dataRow.set("VATPercent", result.VATPercent);
+                        dataRow.set("GrossPrice", result.GrossPrice);
+
+                        if (dataRow.ListedPrice != undefined)
+                            dataRow.set("ListedPrice", dataRow.UnitPrice);
+                    }
+                    else {
+                        //alert(result.CommodityCode);
+                        //dataRow.set("CommodityName", result.CommodityName);
+                        //dataRow.set("CommodityOfficialName", result.CommodityOfficialName);
+                    }
+                },
+                error: function (jqXHR, textStatus) {
+                    alert(textStatus);
+                    //dataRow.set("CommodityName", textStatus);
+                    //dataRow.set("CommodityOfficialName", textStatus);
+                }
+            });
+        }
+    }
+
+    window.urlCommoditiesApi = '@Url.Action("GetAjaxCommoditiesInWarehouses", "CommoditiesApi")';
 </script>

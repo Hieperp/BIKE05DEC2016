@@ -160,5 +160,37 @@ namespace MVCClient.Api.CommonTasks
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+
+
+
+
+        /// <summary>
+        /// This function is designed to use by import function only
+        /// Never to use by orther area
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetAjaxCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
+        {
+            try
+            {
+                var commodityResult = new { CommodityID = 0, CommodityCode = "", CommodityName = "", CommodityTypeID = 0, WarehouseID = 0, WarehouseCode = "", QuantityAvailable = new decimal(0), GrossPrice = new decimal(0), VATPercent = new decimal(0) };
+
+                var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+
+                if (result.Count() > 0)
+                    commodityResult = new { CommodityID = result.First().CommodityID, CommodityCode = result.First().CommodityCode, CommodityName = result.First().CommodityName, CommodityTypeID = result.First().CommodityTypeID, WarehouseID = result.First().WarehouseID, WarehouseCode = result.First().WarehouseCode, QuantityAvailable = (decimal)result.First().QuantityAvailable, GrossPrice = (decimal)result.First().GrossPrice, VATPercent = (decimal)result.First().VATPercent };
+
+                return Json(commodityResult, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { CommodityID = 0, CommodityCode = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }
