@@ -283,7 +283,7 @@
     }
     
     function barcodeInput_KeyUp() {
-        if ($("#barcodeInput").val().length >= "@SettingsManager.AutoCompleteMinLenght") {
+        if ($("#barcodeInput").val().length >= 6) {
 
             var gridDataSource = $("#kendoGridDetails").data("kendoGrid").dataSource;
             _getCommoditiesByCode(gridDataSource, $("#barcodeInput").val());
