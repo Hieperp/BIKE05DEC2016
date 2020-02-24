@@ -100,41 +100,41 @@ namespace MVCClient.Api.CommonTasks
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonResult GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
+        public JsonResult GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
         {
-            var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+            var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, wholeMatch, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonResult GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public JsonResult GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            var result = commodityRepository.GetCommoditiesAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+            var result = commodityRepository.GetCommoditiesAvailables(locationID, entryDate, searchText, wholeMatch).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonResult GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public JsonResult GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            var result = commodityRepository.GetVehicleAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+            var result = commodityRepository.GetVehicleAvailables(locationID, entryDate, searchText, wholeMatch).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonResult GetPartAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public JsonResult GetPartAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+            var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText, wholeMatch).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SearchPartAvailables([DataSourceRequest] DataSourceRequest request, int? locationID, DateTime? entryDate, string searchText)
+        public JsonResult SearchPartAvailables([DataSourceRequest] DataSourceRequest request, int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
             if (entryDate == null) entryDate = DateTime.Now;
-            var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+            var result = commodityRepository.GetPartAvailables(locationID, entryDate, searchText, wholeMatch).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
             DataSourceResult response = result.ToDataSourceResult(request);
             return Json(response, JsonRequestBehavior.AllowGet);
@@ -172,13 +172,13 @@ namespace MVCClient.Api.CommonTasks
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetAjaxCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
+        public JsonResult GetAjaxCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
         {
             try
             {
                 var commodityResult = new { CommodityID = 0, CommodityCode = "", CommodityName = "", CommodityTypeID = 0, WarehouseID = 0, WarehouseCode = "", QuantityAvailable = new decimal(0), GrossPrice = new decimal(0), VATPercent = new decimal(0) };
 
-                var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
+                var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, wholeMatch, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
                 if (result.Count() > 0)
                     commodityResult = new { CommodityID = result.First().CommodityID, CommodityCode = result.First().CommodityCode, CommodityName = result.First().CommodityName, CommodityTypeID = result.First().CommodityTypeID, WarehouseID = result.First().WarehouseID, WarehouseCode = result.First().WarehouseCode, QuantityAvailable = (decimal)result.First().QuantityAvailable, GrossPrice = (decimal)result.First().GrossPrice, VATPercent = (decimal)result.First().VATPercent };

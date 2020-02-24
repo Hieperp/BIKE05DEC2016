@@ -296,7 +296,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ServiceContractSaveRelative", entityIDParameter, saveRelativeOptionParameter);
         }
     
-        public virtual ObjectResult<CommoditiesInWarehouse> GetCommoditiesInWarehouses(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<int> salesInvoiceID, Nullable<int> stockTransferID, Nullable<int> inventoryAdjustmentID)
+        public virtual ObjectResult<CommoditiesInWarehouse> GetCommoditiesInWarehouses(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<bool> wholeMatch, Nullable<int> salesInvoiceID, Nullable<int> stockTransferID, Nullable<int> inventoryAdjustmentID)
         {
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
@@ -310,6 +310,10 @@ namespace MVCModel.Models
                 new ObjectParameter("SearchText", searchText) :
                 new ObjectParameter("SearchText", typeof(string));
     
+            var wholeMatchParameter = wholeMatch.HasValue ?
+                new ObjectParameter("WholeMatch", wholeMatch) :
+                new ObjectParameter("WholeMatch", typeof(bool));
+    
             var salesInvoiceIDParameter = salesInvoiceID.HasValue ?
                 new ObjectParameter("SalesInvoiceID", salesInvoiceID) :
                 new ObjectParameter("SalesInvoiceID", typeof(int));
@@ -322,7 +326,7 @@ namespace MVCModel.Models
                 new ObjectParameter("InventoryAdjustmentID", inventoryAdjustmentID) :
                 new ObjectParameter("InventoryAdjustmentID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesInWarehouse>("GetCommoditiesInWarehouses", locationIDParameter, entryDateParameter, searchTextParameter, salesInvoiceIDParameter, stockTransferIDParameter, inventoryAdjustmentIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesInWarehouse>("GetCommoditiesInWarehouses", locationIDParameter, entryDateParameter, searchTextParameter, wholeMatchParameter, salesInvoiceIDParameter, stockTransferIDParameter, inventoryAdjustmentIDParameter);
         }
     
         public virtual ObjectResult<WarehouseJournal> WarehouseJournal(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string warehouseIDList, string commodityIDList, Nullable<bool> isFullJournal, Nullable<bool> isAmountIncluded)
@@ -554,7 +558,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ServiceContractResult>("SearchServiceContracts", searchTextParameter);
         }
     
-        public virtual ObjectResult<CommoditiesAvailable> GetCommoditiesAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText)
+        public virtual ObjectResult<CommoditiesAvailable> GetCommoditiesAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<bool> wholeMatch)
         {
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
@@ -568,7 +572,11 @@ namespace MVCModel.Models
                 new ObjectParameter("SearchText", searchText) :
                 new ObjectParameter("SearchText", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesAvailable>("GetCommoditiesAvailables", locationIDParameter, entryDateParameter, searchTextParameter);
+            var wholeMatchParameter = wholeMatch.HasValue ?
+                new ObjectParameter("WholeMatch", wholeMatch) :
+                new ObjectParameter("WholeMatch", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesAvailable>("GetCommoditiesAvailables", locationIDParameter, entryDateParameter, searchTextParameter, wholeMatchParameter);
         }
     
         public virtual ObjectResult<string> GoodsReceiptEditable(Nullable<int> entityID)
@@ -751,7 +759,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ServicesInvoiceDeletable", entityIDParameter);
         }
     
-        public virtual ObjectResult<PartAvailable> GetPartAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText)
+        public virtual ObjectResult<PartAvailable> GetPartAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<bool> wholeMatch)
         {
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
@@ -765,7 +773,11 @@ namespace MVCModel.Models
                 new ObjectParameter("SearchText", searchText) :
                 new ObjectParameter("SearchText", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PartAvailable>("GetPartAvailables", locationIDParameter, entryDateParameter, searchTextParameter);
+            var wholeMatchParameter = wholeMatch.HasValue ?
+                new ObjectParameter("WholeMatch", wholeMatch) :
+                new ObjectParameter("WholeMatch", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PartAvailable>("GetPartAvailables", locationIDParameter, entryDateParameter, searchTextParameter, wholeMatchParameter);
         }
     
         public virtual ObjectResult<PartTransferOrderViewDetail> GetPartTransferOrderViewDetails(Nullable<int> transferOrderID)
@@ -777,7 +789,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PartTransferOrderViewDetail>("GetPartTransferOrderViewDetails", transferOrderIDParameter);
         }
     
-        public virtual ObjectResult<VehicleAvailable> GetVehicleAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText)
+        public virtual ObjectResult<VehicleAvailable> GetVehicleAvailables(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<bool> wholeMatch)
         {
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
@@ -791,7 +803,11 @@ namespace MVCModel.Models
                 new ObjectParameter("SearchText", searchText) :
                 new ObjectParameter("SearchText", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VehicleAvailable>("GetVehicleAvailables", locationIDParameter, entryDateParameter, searchTextParameter);
+            var wholeMatchParameter = wholeMatch.HasValue ?
+                new ObjectParameter("WholeMatch", wholeMatch) :
+                new ObjectParameter("WholeMatch", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<VehicleAvailable>("GetVehicleAvailables", locationIDParameter, entryDateParameter, searchTextParameter, wholeMatchParameter);
         }
     
         public virtual ObjectResult<VehicleTransferOrderViewDetail> GetVehicleTransferOrderViewDetails(Nullable<int> transferOrderID)
@@ -1261,7 +1277,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TransferOrderVoid", entityIDParameter, inActiveParameter);
         }
     
-        public virtual ObjectResult<CommoditiesInWarehouse> GetCommoditiesInWarehousesIncludeOutOfStock(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<int> salesInvoiceID, Nullable<int> stockTransferID, Nullable<int> inventoryAdjustmentID)
+        public virtual ObjectResult<CommoditiesInWarehouse> GetCommoditiesInWarehousesIncludeOutOfStock(Nullable<int> locationID, Nullable<System.DateTime> entryDate, string searchText, Nullable<bool> wholeMatch, Nullable<int> salesInvoiceID, Nullable<int> stockTransferID, Nullable<int> inventoryAdjustmentID)
         {
             var locationIDParameter = locationID.HasValue ?
                 new ObjectParameter("LocationID", locationID) :
@@ -1275,6 +1291,10 @@ namespace MVCModel.Models
                 new ObjectParameter("SearchText", searchText) :
                 new ObjectParameter("SearchText", typeof(string));
     
+            var wholeMatchParameter = wholeMatch.HasValue ?
+                new ObjectParameter("WholeMatch", wholeMatch) :
+                new ObjectParameter("WholeMatch", typeof(bool));
+    
             var salesInvoiceIDParameter = salesInvoiceID.HasValue ?
                 new ObjectParameter("SalesInvoiceID", salesInvoiceID) :
                 new ObjectParameter("SalesInvoiceID", typeof(int));
@@ -1287,7 +1307,7 @@ namespace MVCModel.Models
                 new ObjectParameter("InventoryAdjustmentID", inventoryAdjustmentID) :
                 new ObjectParameter("InventoryAdjustmentID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesInWarehouse>("GetCommoditiesInWarehousesIncludeOutOfStock", locationIDParameter, entryDateParameter, searchTextParameter, salesInvoiceIDParameter, stockTransferIDParameter, inventoryAdjustmentIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CommoditiesInWarehouse>("GetCommoditiesInWarehousesIncludeOutOfStock", locationIDParameter, entryDateParameter, searchTextParameter, wholeMatchParameter, salesInvoiceIDParameter, stockTransferIDParameter, inventoryAdjustmentIDParameter);
         }
     
         public virtual ObjectResult<ServicesInvoiceIndex> SearchServicesInvoiceIndexes(Nullable<int> serviceContractID)

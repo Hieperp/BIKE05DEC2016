@@ -2120,6 +2120,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="LocationID" Type="int" Mode="In" />
           <Parameter Name="EntryDate" Type="datetime" Mode="In" />
           <Parameter Name="SearchText" Type="nvarchar" Mode="In" />
+          <Parameter Name="WholeMatch" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetCommoditiesInGoodsReceipts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationID" Type="int" Mode="In" />
@@ -2132,6 +2133,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="LocationID" Type="int" Mode="In" />
           <Parameter Name="EntryDate" Type="datetime" Mode="In" />
           <Parameter Name="SearchText" Type="nvarchar" Mode="In" />
+          <Parameter Name="WholeMatch" Type="bit" Mode="In" />
           <Parameter Name="SalesInvoiceID" Type="int" Mode="In" />
           <Parameter Name="StockTransferID" Type="int" Mode="In" />
           <Parameter Name="InventoryAdjustmentID" Type="int" Mode="In" />
@@ -2140,6 +2142,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="LocationID" Type="int" Mode="In" />
           <Parameter Name="EntryDate" Type="datetime" Mode="In" />
           <Parameter Name="SearchText" Type="nvarchar" Mode="In" />
+          <Parameter Name="WholeMatch" Type="bit" Mode="In" />
           <Parameter Name="SalesInvoiceID" Type="int" Mode="In" />
           <Parameter Name="StockTransferID" Type="int" Mode="In" />
           <Parameter Name="InventoryAdjustmentID" Type="int" Mode="In" />
@@ -2185,6 +2188,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="LocationID" Type="int" Mode="In" />
           <Parameter Name="EntryDate" Type="datetime" Mode="In" />
           <Parameter Name="SearchText" Type="nvarchar" Mode="In" />
+          <Parameter Name="WholeMatch" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetPartsInvoiceIndexes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
@@ -2308,6 +2312,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="LocationID" Type="int" Mode="In" />
           <Parameter Name="EntryDate" Type="datetime" Mode="In" />
           <Parameter Name="SearchText" Type="nvarchar" Mode="In" />
+          <Parameter Name="WholeMatch" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetVehiclesInvoiceIndexes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
@@ -3016,6 +3021,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
             <Parameter Name="EntryDate" Mode="In" Type="DateTime" />
             <Parameter Name="SearchText" Mode="In" Type="String" />
+            <Parameter Name="WholeMatch" Mode="In" Type="Boolean" />
             <Parameter Name="SalesInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="StockTransferID" Mode="In" Type="Int32" />
             <Parameter Name="InventoryAdjustmentID" Mode="In" Type="Int32" />
@@ -3305,6 +3311,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
             <Parameter Name="EntryDate" Mode="In" Type="DateTime" />
             <Parameter Name="SearchText" Mode="In" Type="String" />
+            <Parameter Name="WholeMatch" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GoodsReceiptEditable" ReturnType="Collection(String)">
           <Parameter Name="EntityID" Mode="In" Type="Int32" />
@@ -3370,6 +3377,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
             <Parameter Name="EntryDate" Mode="In" Type="DateTime" />
             <Parameter Name="SearchText" Mode="In" Type="String" />
+            <Parameter Name="WholeMatch" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetPartTransferOrderViewDetails" ReturnType="Collection(TotalBikePortalsModel.PartTransferOrderViewDetail)">
           <Parameter Name="TransferOrderID" Mode="In" Type="Int32" />
@@ -3378,6 +3386,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
             <Parameter Name="EntryDate" Mode="In" Type="DateTime" />
             <Parameter Name="SearchText" Mode="In" Type="String" />
+            <Parameter Name="WholeMatch" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetVehicleTransferOrderViewDetails" ReturnType="Collection(TotalBikePortalsModel.VehicleTransferOrderViewDetail)">
           <Parameter Name="TransferOrderID" Mode="In" Type="Int32" />
@@ -3621,6 +3630,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="LocationID" Mode="In" Type="Int32" />
             <Parameter Name="EntryDate" Mode="In" Type="DateTime" />
             <Parameter Name="SearchText" Mode="In" Type="String" />
+            <Parameter Name="WholeMatch" Mode="In" Type="Boolean" />
             <Parameter Name="SalesInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="StockTransferID" Mode="In" Type="Int32" />
             <Parameter Name="InventoryAdjustmentID" Mode="In" Type="Int32" />

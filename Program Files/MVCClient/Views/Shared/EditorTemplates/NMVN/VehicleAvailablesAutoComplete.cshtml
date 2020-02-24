@@ -21,31 +21,32 @@
                 "<span class=\"k-state-default\"><p>#: data.QuantityAvailable #</p></span>" +
                 "</div>")
         .DataSource(source =>
-        {
-            source.Read(read =>
             {
-                read.Action("GetVehicleAvailables", "CommoditiesApi").Data(@<text>
+                source.Read(read =>
+                {
+                    read.Action("GetVehicleAvailables", "CommoditiesApi").Data(@<text>
 
-                    function (e) {
-                    return {
-                    locationID: $("#SourceLocationID").val(),
-                    entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
-                    searchText: $("#CommodityName").data("kendoAutoComplete").value()
-                    };}
+                        function (e) {
+                        return {
+                        locationID: $("#SourceLocationID").val(),
+                        entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
+                        searchText: $("#CommodityName").data("kendoAutoComplete").value(),
+                        wholeMatch: false
+                        };}
 
-                </text>);//Send parameter to controller search action: parameter locationID?????
-            })
-            .ServerFiltering(true);
-        })
-        .Events(e =>
-        {
-            e.Select("commoditiesInWarehousesSelect");
-            e.Change("commoditiesInWarehousesChange");
+                    </text>);//Send parameter to controller search action: parameter locationID?????
+         })
+         .ServerFiltering(true);
+     })
+     .Events(e =>
+     {
+         e.Select("commoditiesInWarehousesSelect");
+         e.Change("commoditiesInWarehousesChange");
 
-            e.DataBound("commoditiesInWarehousesDataBound");
-        })
-        .Value(Model)
-        .HtmlAttributes(new { @class = "custom-control" })
+         e.DataBound("commoditiesInWarehousesDataBound");
+     })
+     .Value(Model)
+     .HtmlAttributes(new { @class = "custom-control" })
 )
 
 <script type="text/javascript">

@@ -81,7 +81,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             //BỔ SUNG NGÀY 24/05/2018: @LocationID = 0 KHI (NOT getSavedData && NOT includeCommoditiesOutOfStock): MỤC ĐÍCH: QUICK SEARCH
 
 
-            string queryString = " @LocationID int, @EntryDate DateTime, @SearchText nvarchar(60) " + (getSavedData ? ", @SalesInvoiceID int, @StockTransferID int, @InventoryAdjustmentID int " : "") + "\r\n";
+            string queryString = " @LocationID int, @EntryDate DateTime, @SearchText nvarchar(60), @WholeMatch bit " + (getSavedData ? ", @SalesInvoiceID int, @StockTransferID int, @InventoryAdjustmentID int " : "") + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
@@ -89,8 +89,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "       DECLARE @CommoditiesAvailable TABLE (WarehouseID int NOT NULL, CommodityID int NOT NULL, QuantityAvailable decimal(18, 2) NOT NULL)" + "\r\n";
             queryString = queryString + "       DECLARE @HasCommoditiesAvailable int SET @HasCommoditiesAvailable = 0" + "\r\n";
 
-            queryString = queryString + "       INSERT INTO @Commodities SELECT TOP 30 CommodityID, Code, Name, GrossPrice, CommodityTypeID, CommodityCategoryID FROM Commodities WHERE CommodityTypeID IN (" + (withCommoditiesInGoodsReceipts ? "" + (int)GlobalEnums.CommodityTypeID.Vehicles : "") + (withCommoditiesInGoodsReceipts && withCommoditiesInWarehouses ? ", " : "") + (withCommoditiesInWarehouses ? (int)GlobalEnums.CommodityTypeID.Parts + ", " + (int)GlobalEnums.CommodityTypeID.Consumables : "") + ") AND @SearchText <> '' AND (Code LIKE '%' + @SearchText + '%' OR OfficialCode LIKE '%' + @SearchText + '%' OR Name LIKE '%' + @SearchText + '%') " + "\r\n";
-
+            string queryFindCommodities = "     INSERT INTO @Commodities SELECT TOP 30 CommodityID, Code, Name, GrossPrice, CommodityTypeID, CommodityCategoryID FROM Commodities WHERE CommodityTypeID IN (" + (withCommoditiesInGoodsReceipts ? "" + (int)GlobalEnums.CommodityTypeID.Vehicles : "") + (withCommoditiesInGoodsReceipts && withCommoditiesInWarehouses ? ", " : "") + (withCommoditiesInWarehouses ? (int)GlobalEnums.CommodityTypeID.Parts + ", " + (int)GlobalEnums.CommodityTypeID.Consumables : "") + ") AND @SearchText <> '' " + "\r\n";
+            queryString = queryString + "       IF (@WholeMatch = 1) " + "\r\n";
+            queryString = queryString + "           " + queryFindCommodities + " AND (Code = @SearchText OR OfficialCode = @SearchText OR Name = @SearchText) " + "\r\n";
+            queryString = queryString + "       ELSE " + "\r\n";
+            queryString = queryString + "           " + queryFindCommodities + " AND (Code LIKE '%' + @SearchText + '%' OR OfficialCode LIKE '%' + @SearchText + '%' OR Name LIKE '%' + @SearchText + '%') " + "\r\n";
 
             queryString = queryString + "       IF (@@ROWCOUNT > 0) " + "\r\n";
             queryString = queryString + "           " + this.GetCommoditiesInWarehousesBuildSQL(withCommoditiesInGoodsReceipts, withCommoditiesInWarehouses, getSavedData, includeCommoditiesOutOfStock) + "\r\n";

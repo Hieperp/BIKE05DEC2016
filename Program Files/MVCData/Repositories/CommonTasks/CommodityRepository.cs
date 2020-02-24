@@ -70,36 +70,36 @@ namespace MVCData.Repositories.CommonTasks
             return commoditiesInGoodsReceipts;
         }
 
-        public IList<CommoditiesInWarehouse> GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
+        public IList<CommoditiesInWarehouse> GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID)
         {
             List<CommoditiesInWarehouse> commoditiesInWarehouses;
 
             if (!includeCommoditiesOutOfStock)
-                commoditiesInWarehouses = this.TotalBikePortalsEntities.GetCommoditiesInWarehouses(locationID, entryDate, searchText, salesInvoiceID, stockTransferID, inventoryAdjustmentID).ToList();
+                commoditiesInWarehouses = this.TotalBikePortalsEntities.GetCommoditiesInWarehouses(locationID, entryDate, searchText, wholeMatch, salesInvoiceID, stockTransferID, inventoryAdjustmentID).ToList();
             else
-                commoditiesInWarehouses = this.TotalBikePortalsEntities.GetCommoditiesInWarehousesIncludeOutOfStock(locationID, entryDate, searchText, salesInvoiceID, stockTransferID, inventoryAdjustmentID).ToList();
+                commoditiesInWarehouses = this.TotalBikePortalsEntities.GetCommoditiesInWarehousesIncludeOutOfStock(locationID, entryDate, searchText, wholeMatch, salesInvoiceID, stockTransferID, inventoryAdjustmentID).ToList();
 
             return commoditiesInWarehouses;
         }
 
 
-        public IList<CommoditiesAvailable> GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public IList<CommoditiesAvailable> GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            List<CommoditiesAvailable> commoditiesAvailables = this.TotalBikePortalsEntities.GetCommoditiesAvailables(locationID, entryDate, searchText).ToList();
+            List<CommoditiesAvailable> commoditiesAvailables = this.TotalBikePortalsEntities.GetCommoditiesAvailables(locationID, entryDate, searchText, wholeMatch).ToList();
 
             return commoditiesAvailables;
         }
 
-        public IList<VehicleAvailable> GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public IList<VehicleAvailable> GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            List<VehicleAvailable> vehicleAvailables = this.TotalBikePortalsEntities.GetVehicleAvailables(locationID, entryDate, searchText).ToList();
+            List<VehicleAvailable> vehicleAvailables = this.TotalBikePortalsEntities.GetVehicleAvailables(locationID, entryDate, searchText, wholeMatch).ToList();
 
             return vehicleAvailables;
         }
 
-        public IList<PartAvailable> GetPartAvailables(int? locationID, DateTime? entryDate, string searchText)
+        public IList<PartAvailable> GetPartAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch)
         {
-            List<PartAvailable> partAvailables = this.TotalBikePortalsEntities.GetPartAvailables(locationID, entryDate, searchText).ToList();
+            List<PartAvailable> partAvailables = this.TotalBikePortalsEntities.GetPartAvailables(locationID, entryDate, searchText, wholeMatch).ToList();
 
             return partAvailables;
         }

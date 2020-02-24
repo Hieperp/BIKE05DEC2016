@@ -288,13 +288,12 @@
             var gridDataSource = $("#kendoGridDetails").data("kendoGrid").dataSource;
             _getCommoditiesByCode(gridDataSource, $("#barcodeInput").val());
 
-            $("#barcodeInput").val("");
         }
         
         function _getCommoditiesByCode(gridDataSource, barcodeInput) {
             return $.ajax({
                 url: window.urlCommoditiesApi,
-                data: JSON.stringify({ "locationID": requireConfig.pageOptions.LocationID, "entryDate": $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(), "searchText": barcodeInput, "includeCommoditiesOutOfStock": false, "salesInvoiceID": $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0, "stockTransferID": $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0, "inventoryAdjustmentID": $("#InventoryAdjustmentID") != undefined? $("#InventoryAdjustmentID").val(): 0 }),
+                data: JSON.stringify({ "locationID": requireConfig.pageOptions.LocationID, "entryDate": $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(), "searchText": barcodeInput, "wholeMatch": true, "includeCommoditiesOutOfStock": false, "salesInvoiceID": $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0, "stockTransferID": $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0, "inventoryAdjustmentID": $("#InventoryAdjustmentID") != undefined? $("#InventoryAdjustmentID").val(): 0 }),
 
                 type: 'POST',
                 contentType: 'application/json;',
@@ -317,6 +316,8 @@
 
                         if (dataRow.ListedPrice != undefined)
                             dataRow.set("ListedPrice", dataRow.UnitPrice);
+
+                        $("#barcodeInput").val("");
                     }
                     else {
                         //alert(result.CommodityCode);

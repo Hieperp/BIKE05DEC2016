@@ -21,36 +21,37 @@
                 "<span class=\"k-state-default\"><p>#: data.QuantityAvailable #</p></span>" +
                 "</div>")
         .DataSource(source =>
-        {
-            source.Read(read =>
             {
-                read.Action("GetCommoditiesInWarehouses", "CommoditiesApi").Data(@<text>
+                source.Read(read =>
+                {
+                    read.Action("GetCommoditiesInWarehouses", "CommoditiesApi").Data(@<text>
 
-                    function (e) {
-                    return {
-                    locationID: requireConfig.pageOptions.LocationID,
-                    entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
-                    searchText: $("#CommodityName").data("kendoAutoComplete").value(),
-                    includeCommoditiesOutOfStock: window.includeCommoditiesOutOfStock,
-                    salesInvoiceID: $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0,
-                    stockTransferID: $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0,
-                    inventoryAdjustmentID: $("#InventoryAdjustmentID") != undefined? $("#InventoryAdjustmentID").val(): 0
-                    };}
+                        function (e) {
+                        return {
+                        locationID: requireConfig.pageOptions.LocationID,
+                        entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
+                        searchText: $("#CommodityName").data("kendoAutoComplete").value(),
+                        wholeMatch: false
+                        includeCommoditiesOutOfStock: window.includeCommoditiesOutOfStock,
+                        salesInvoiceID: $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0,
+                        stockTransferID: $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0,
+                        inventoryAdjustmentID: $("#InventoryAdjustmentID") != undefined? $("#InventoryAdjustmentID").val(): 0
+                        };}
 
 
-                </text>);//Send parameter to controller search action: parameter locationID?????
-            })
-            .ServerFiltering(true);
-        })
-        .Events(e =>
-        {
-            e.Select("commoditiesInWarehousesSelect");
-            e.Change("commoditiesInWarehousesChange");
+                    </text>);//Send parameter to controller search action: parameter locationID?????
+         })
+         .ServerFiltering(true);
+     })
+     .Events(e =>
+     {
+         e.Select("commoditiesInWarehousesSelect");
+         e.Change("commoditiesInWarehousesChange");
 
-            e.DataBound("commoditiesInWarehousesDataBound");
-        })
-        .Value(Model)
-        .HtmlAttributes(new { @class = "custom-control" })
+         e.DataBound("commoditiesInWarehousesDataBound");
+     })
+     .Value(Model)
+     .HtmlAttributes(new { @class = "custom-control" })
 )
 
 <script type="text/javascript">

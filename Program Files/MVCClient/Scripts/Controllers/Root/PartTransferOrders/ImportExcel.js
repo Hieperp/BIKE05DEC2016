@@ -41,7 +41,7 @@
         function _getCommoditiesByCode(dataRow, excelRow) {
             return $.ajax({
                 url: window.urlCommoditiesApi,
-                data: JSON.stringify({ "locationID": ($("#SourceLocationID").val() != undefined ? $("#SourceLocationID").val() : requireConfig.pageOptions.LocationID), "entryDate": $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(), "searchText": excelRow["CommodityCode"] }),
+                data: JSON.stringify({ "locationID": ($("#SourceLocationID").val() != undefined ? $("#SourceLocationID").val() : requireConfig.pageOptions.LocationID), "entryDate": $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(), "searchText": excelRow["CommodityCode"], "wholeMatch": false }),
                 type: 'POST',
                 contentType: 'application/json;',
                 dataType: 'json',

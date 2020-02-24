@@ -14,11 +14,11 @@ namespace MVCCore.Repositories.CommonTasks
         IList<Commodity> SearchCommoditiesByName(string searchText, string commodityTypeIDList, bool? isOnlyAlphaNumericString);
         IList<Commodity> SearchCommoditiesByIndex(int commodityCategoryID, int commodityTypeID);
         IList<CommoditiesInGoodsReceipt> GetCommoditiesInGoodsReceipts(int? locationID, string searchText, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID);
-        IList<CommoditiesInWarehouse> GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID);        
+        IList<CommoditiesInWarehouse> GetCommoditiesInWarehouses(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch, bool includeCommoditiesOutOfStock, int? salesInvoiceID, int? stockTransferID, int? inventoryAdjustmentID);        
         
-        IList<CommoditiesAvailable> GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText);
-        IList<VehicleAvailable> GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText);
-        IList<PartAvailable> GetPartAvailables(int? locationID, DateTime? entryDate, string searchText);
+        IList<CommoditiesAvailable> GetCommoditiesAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch);
+        IList<VehicleAvailable> GetVehicleAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch);
+        IList<PartAvailable> GetPartAvailables(int? locationID, DateTime? entryDate, string searchText, bool wholeMatch);
     }
     
 }
