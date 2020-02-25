@@ -31,7 +31,7 @@
                         locationID: requireConfig.pageOptions.LocationID,
                         entryDate: $("#EntryDate").data("kendoDateTimePicker").value().toUTCString(),
                         searchText: $("#CommodityName").data("kendoAutoComplete").value(),
-                        wholeMatch: false
+                        wholeMatch: false,
                         includeCommoditiesOutOfStock: window.includeCommoditiesOutOfStock,
                         salesInvoiceID: $("#SalesInvoiceID") != undefined? $("#SalesInvoiceID").val(): 0,
                         stockTransferID: $("#StockTransferID") != undefined? $("#StockTransferID").val(): 0,
