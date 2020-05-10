@@ -6,6 +6,8 @@
         public static int rndAmount = 0;
         public static int rndDiscountPercent = 1;
 
+        public static int CommodityCategoryID53 = 53; //HÀNG NGOÀI
+
         public enum SubmitTypeOption
         {
             Save = 0,
