@@ -274,7 +274,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
         private void SalesInvoiceInitReference()
         {
-            SalesInvoiceInitReference simpleInitReference = new SalesInvoiceInitReference("SalesInvoices", "SalesInvoiceID", "Reference", ModelSettingManager.ReferenceLength, ModelSettingManager.ReferencePrefix(GlobalEnums.NmvnTaskID.SalesInvoice));
+            SalesInvoiceInitReference simpleInitReference = new SalesInvoiceInitReference("SalesInvoices", "SalesInvoiceID", "Reference", ModelSettingManager.ReferenceLength + 1, ModelSettingManager.ReferencePrefix(GlobalEnums.NmvnTaskID.SalesInvoice));
             this.totalBikePortalsEntities.CreateTrigger("SalesInvoiceInitReference", simpleInitReference.CreateQuery());
         }
     }

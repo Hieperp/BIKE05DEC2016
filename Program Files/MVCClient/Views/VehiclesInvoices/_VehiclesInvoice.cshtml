@@ -234,6 +234,9 @@
                     <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "VehiclesInvoices", new { id = @Model.SalesInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
                     <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "VehiclesInvoices", new { id = @Model.SalesInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>
                     <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "VehiclesInvoices", new { id = @Model.SalesInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê </button>
+
+                    <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "VehiclesInvoices", new { id = @Model.SalesInvoiceID, pgid = 10 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử </button>
+
                     if (Model.FIRSTAccountInvoiceID != null)
                     {
                         <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Delete", "AccountInvoices", new { id = @Model.FIRSTAccountInvoiceID })')"> <img src="~/Content/Images/New/Delete32m.png" /> Xóa hóa đơn </button> }

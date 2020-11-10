@@ -276,16 +276,18 @@
                     @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>*@
                 }
                 @*else
-                {
-                    <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
-                    <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
-                }*@
+        {
+            <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+            <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
+        }*@
 
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê xe </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 3 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê phụ tùng </button>
 
+                <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 10 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử </button>
+                @*<button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 11 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử rút gọn </button>*@
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>
