@@ -22,6 +22,8 @@
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,9 +60,8 @@
       <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.0.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    <Reference Include="Microsoft.ReportViewer.WebForms">
+      <HintPath>..\packages\ReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
     </Reference>
     <Reference Include="MvcReportViewer">
       <HintPath>..\packages\MvcReportViewer.0.4.0\lib\net40\MvcReportViewer.dll</HintPath>
