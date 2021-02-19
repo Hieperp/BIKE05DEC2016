@@ -1,4 +1,4 @@
 ﻿@using MvcReportViewer;
 @model MVCClient.ViewModels.Helpers.PrintViewModel
 
-@Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/" + (@Model.PrintOptionID == 10 ? "AccountInvoiceExcel" : (@Model.PrintOptionID == 2 ? "AccountInvoiceSheetVehicles" : "AccountInvoiceSheet"))).ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName, AccountInvoiceID = @Model.Id, PrintOptionID = @Model.PrintOptionID }).Attributes(new { Height = 850, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false })
+@Html.MvcReportViewerFluent("/" + @Model.ReportFolder + "/" + (@Model.PrintOptionID == 10 ? "Sheet1" : (@Model.PrintOptionID == 2 ? "AccountInvoiceSheetVehicles" : "AccountInvoiceSheet"))).ReportParameters(new { ServerName = @Model.ServerName, CatalogName = @Model.CatalogName, AccountInvoiceID = @Model.Id, PrintOptionID = @Model.PrintOptionID }).Attributes(new { Height = 850, Width = 1150, style = "border: none" }).ControlSettings(new ControlSettings() { ShowParameterPrompts = false })
