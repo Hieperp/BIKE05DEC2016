@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\HIEPLE~1\AppData\Local\Temp\vs3A58.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\HiepL\AppData\Local\Temp\vsCA96.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\HIEPLE~1\AppData\Local\Temp\vs3A58.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\HiepL\AppData\Local\Temp\vsCA96.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
