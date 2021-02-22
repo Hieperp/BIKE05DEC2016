@@ -86,6 +86,9 @@
     <Compile Include="Models\AccountInvoiceIndex.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountInvoiceSheet.cs">
+      <DependentUpon>TotalBikePortals.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccountInvoiceViewDetail.cs">
       <DependentUpon>TotalBikePortals.tt</DependentUpon>
     </Compile>

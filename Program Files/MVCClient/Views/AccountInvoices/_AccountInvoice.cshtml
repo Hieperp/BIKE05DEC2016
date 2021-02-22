@@ -288,6 +288,8 @@
 
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 10 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử </button>
                 @*<button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 11 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử rút gọn </button>*@
+
+                <button type="button" class="k-button custom-button" onclick="callPublishInvoice()"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất HĐ điện tử </button>
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>
@@ -305,6 +307,13 @@
         require(["kpopupWindow"], function (kpopupWindow) {
             var createWizardWindow = new kpopupWindow();
             createWizardWindow.openWindow($("#popupWindow"), "@Url.Action("GetPendingSalesInvoices", "AccountInvoices")", "Chọn phiếu bán hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+        });
+    }
+
+    function callPublishInvoice() {
+        require(["kpopupWindow"], function (kpopupWindow) {
+            var voidDetailWindow = new kpopupWindow();
+            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("PublishInvoice", "AccountInvoices")" + "/" + $("#AccountInvoiceID").val(), "Hủy/ phục hồi một phần đơn hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
         });
     }
 

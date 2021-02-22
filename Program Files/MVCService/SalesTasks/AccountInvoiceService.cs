@@ -11,9 +11,11 @@ namespace MVCService.SalesTasks
 {
     public class AccountInvoiceService: GenericWithViewDetailService<AccountInvoice, AccountInvoiceDetail, AccountInvoiceViewDetail, AccountInvoiceDTO, AccountInvoicePrimitiveDTO, AccountInvoiceDetailDTO>, IAccountInvoiceService
     {
+        private IAccountInvoiceRepository accountInvoiceRepository;
         public AccountInvoiceService(IAccountInvoiceRepository accountInvoiceRepository)
             : base(accountInvoiceRepository, "AccountInvoicePostSaveValidate", "AccountInvoiceSaveRelative", null, "GetAccountInvoiceViewDetails")
         {
+            this.accountInvoiceRepository = accountInvoiceRepository;
         }
 
         public new bool Save(AccountInvoiceDTO dto, bool useExistingTransaction)
@@ -27,5 +29,9 @@ namespace MVCService.SalesTasks
             return this.GetViewDetails(parameters);
         }
 
+        public List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID)
+        {
+            return this.accountInvoiceRepository.GetAccountInvoiceSheet(accountInvoiceID);
+        }
     }
 }

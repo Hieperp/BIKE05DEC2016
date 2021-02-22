@@ -70,4 +70,101 @@ namespace MVCDTO.SalesTasks
         protected override IEnumerable<AccountInvoiceDetailDTO> DtoDetails() { return this.AccountInvoiceViewDetails; }
     }
 
+
+
+
+    #region HELPER
+
+    //https://json2csharp.com/xml-to-csharp
+
+
+    // using System.Xml.Serialization;
+    // XmlSerializer serializer = new XmlSerializer(typeof(Invoices));
+    // using (StringReader reader = new StringReader(xml))
+    // {
+    //    var test = (Invoices)serializer.Deserialize(reader);
+    // }
+
+    public class Invoices
+    {
+        public Invoices()
+        {
+            this.Inv = new Inv();
+        }
+
+        public Inv Inv { get; set; }
+        //public string Xsi { get; set; } = "@#@";
+        //public string Xsd { get; set; } = "@#@";
+        //public string Text { get; set; } = "@#@";
+    }
+
+    public class Inv
+    {
+        public Inv()
+        {
+            this.Invoice = new Invoice();
+        }
+
+        public string key { get; set; }
+        public Invoice Invoice { get; set; }
+    }
+
+    public class Invoice
+    {
+        public Invoice()
+        {
+            this.Products = new List<Product>();
+        }
+
+        public string CusCode { get; set; } = "@#@";
+        public string CusName { get; set; } = "@#@";
+        public string CusAddress { get; set; } = "@#@";
+        public string CusPhone { get; set; } = "@#@";
+        public string CusTaxCode { get; set; } = "@#@";
+        public string PaymentMethod { get; set; } = "@#@";
+        public string KindOfService { get; set; } = "@#@";
+        public string Total { get; set; } = "@#@";
+        public string DiscountRate { get; set; } = "@#@";
+        public string DiscountAmount { get; set; } = "@#@";
+        public string VATRate { get; set; } = "@#@";
+        public string VATAmount { get; set; } = "@#@";
+        public string Amount { get; set; } = "@#@";
+        public string AmountInWords { get; set; } = "@#@";
+        public string ConvertedAmount { get; set; } = "@#@";
+        public string Extra { get; set; } = "@#@";
+        public string Extra1 { get; set; } = "@#@";
+        public string Extra2 { get; set; } = "@#@";
+        public string ArisingDate { get; set; } = "@#@";
+        public string PaymentStatus { get; set; } = "@#@";
+        public string ResourceCode { get; set; } = "@#@";
+        public string GrossValue { get; set; } = "@#@";
+        public string GrossValue0 { get; set; } = "@#@";
+        public string VatAmount0 { get; set; } = "@#@";
+        public string GrossValue5 { get; set; } = "@#@";
+        public string VatAmount5 { get; set; } = "@#@";
+        public string GrossValue10 { get; set; } = "@#@";
+        public string VatAmount10 { get; set; } = "@#@";
+
+        public List<Product> Products { get; set; }
+    }
+
+    public class Product
+    {
+        public string ProdName { get; set; } = "@#@";
+        public string ProdUnit { get; set; } = "@#@";
+        public string ProdQuantity { get; set; } = "@#@";
+        public string ProdPrice { get; set; } = "@#@";
+        public string Amount { get; set; } = "@#@";
+        public string Remark { get; set; } = "@#@";
+        public string Total { get; set; } = "@#@";
+        public string VATRate { get; set; } = "@#@";
+        public string VATAmount { get; set; } = "@#@";
+        public string Extra1 { get; set; } = "@#@";
+        public string Extra2 { get; set; } = "@#@";
+        public string Discount { get; set; } = "@#@";
+        public string DiscountAmount { get; set; } = "@#@";
+        public string IsSum { get; set; } = "@#@";
+    }
+
+    #endregion
 }

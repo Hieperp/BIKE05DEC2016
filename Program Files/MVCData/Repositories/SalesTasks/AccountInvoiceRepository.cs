@@ -16,6 +16,15 @@ namespace MVCData.Repositories.SalesTasks
     {
         public AccountInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
             : base(totalBikePortalsEntities) { }
+
+        public List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID)
+        {
+            this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;
+            List<AccountInvoiceSheet> accountInvoiceSheets = base.TotalBikePortalsEntities.AccountInvoiceSheet(accountInvoiceID).ToList();
+            this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = true;
+
+            return accountInvoiceSheets;
+        }
     }
 
 

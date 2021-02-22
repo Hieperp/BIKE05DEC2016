@@ -1592,5 +1592,14 @@ namespace MVCModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PendingGoodsReceipt>("GetPendingGoodsReceipts", aspUserIDParameter, locationIDParameter);
         }
+    
+        public virtual ObjectResult<AccountInvoiceSheet> AccountInvoiceSheet(Nullable<int> accountInvoiceID)
+        {
+            var accountInvoiceIDParameter = accountInvoiceID.HasValue ?
+                new ObjectParameter("AccountInvoiceID", accountInvoiceID) :
+                new ObjectParameter("AccountInvoiceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AccountInvoiceSheet>("AccountInvoiceSheet", accountInvoiceIDParameter);
+        }
     }
 }

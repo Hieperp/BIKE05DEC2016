@@ -2094,6 +2094,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="EntityID" Type="int" Mode="In" />
           <Parameter Name="SaveRelativeOption" Type="int" Mode="In" />
         </Function>
+        <Function Name="AccountInvoiceSheet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetAccessLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
           <Parameter Name="NMVNTaskID" Type="int" Mode="In" />
@@ -3795,6 +3798,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <End Role="GoodsReceiptDetail" EntitySet="GoodsReceiptDetails" />
             <End Role="WarehouseInvoiceDetail" EntitySet="WarehouseInvoiceDetails" />
           </AssociationSet>
+          <FunctionImport Name="AccountInvoiceSheet" ReturnType="Collection(TotalBikePortalsModel.AccountInvoiceSheet)">
+          <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
           <Property Type="Int32" Name="PurchaseOrderID" Nullable="false" />
@@ -6783,6 +6789,52 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="AccountInvoiceSheet">
+          <Property Type="Int32" Name="AccountInvoiceID" Nullable="false" />
+          <Property Type="DateTime" Name="EntryDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="VATInvoiceNo" Nullable="false" MaxLength="60" />
+          <Property Type="DateTime" Name="VATInvoiceDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="VATInvoiceSeries" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="CustomerID" Nullable="false" />
+          <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="CustomerOfficialName" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="VATCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="AddressNo" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="EntireTerritoryEntireName" Nullable="false" MaxLength="508" />
+          <Property Type="Int32" Name="PaymentTermID" Nullable="false" />
+          <Property Type="String" Name="PaymentTermName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="MINSalesInvoiceTypeID" Nullable="true" />
+          <Property Type="Int32" Name="SalesInvoiceDetailID" Nullable="false" />
+          <Property Type="Boolean" Name="IsBonus" Nullable="false" />
+          <Property Type="Int32" Name="CommodityID" Nullable="true" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="303" />
+          <Property Type="String" Name="SalesUnit" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="LineDescription" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
+          <Property Type="String" Name="ColorCodeName" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="VATAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalQuantity" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalVATAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalGrossAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="TotalGrossAmountInWords" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LocationOfficialName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LocationAddress" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LocationTaxcode" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="LocationTelephone" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="LocationFacsimile" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="Telephone" Nullable="false" MaxLength="100" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8924,6 +8976,56 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AccountInvoiceSheet" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceSheet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TotalBikePortalsModel.AccountInvoiceSheet">
+                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="VATInvoiceNo" ColumnName="VATInvoiceNo" />
+                <ScalarProperty Name="VATInvoiceDate" ColumnName="VATInvoiceDate" />
+                <ScalarProperty Name="VATInvoiceSeries" ColumnName="VATInvoiceSeries" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerOfficialName" ColumnName="CustomerOfficialName" />
+                <ScalarProperty Name="VATCode" ColumnName="VATCode" />
+                <ScalarProperty Name="AddressNo" ColumnName="AddressNo" />
+                <ScalarProperty Name="EntireTerritoryEntireName" ColumnName="EntireTerritoryEntireName" />
+                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
+                <ScalarProperty Name="PaymentTermName" ColumnName="PaymentTermName" />
+                <ScalarProperty Name="MINSalesInvoiceTypeID" ColumnName="MINSalesInvoiceTypeID" />
+                <ScalarProperty Name="SalesInvoiceDetailID" ColumnName="SalesInvoiceDetailID" />
+                <ScalarProperty Name="IsBonus" ColumnName="IsBonus" />
+                <ScalarProperty Name="CommodityID" ColumnName="CommodityID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SalesUnit" ColumnName="SalesUnit" />
+                <ScalarProperty Name="LineDescription" ColumnName="LineDescription" />
+                <ScalarProperty Name="ChassisCode" ColumnName="ChassisCode" />
+                <ScalarProperty Name="EngineCode" ColumnName="EngineCode" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+                <ScalarProperty Name="ColorCodeName" ColumnName="ColorCodeName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="VATPercent" ColumnName="VATPercent" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="VATAmount" ColumnName="VATAmount" />
+                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalVATAmount" ColumnName="TotalVATAmount" />
+                <ScalarProperty Name="TotalGrossAmount" ColumnName="TotalGrossAmount" />
+                <ScalarProperty Name="TotalGrossAmountInWords" ColumnName="TotalGrossAmountInWords" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LocationOfficialName" ColumnName="LocationOfficialName" />
+                <ScalarProperty Name="LocationAddress" ColumnName="LocationAddress" />
+                <ScalarProperty Name="LocationTaxcode" ColumnName="LocationTaxcode" />
+                <ScalarProperty Name="LocationTelephone" ColumnName="LocationTelephone" />
+                <ScalarProperty Name="LocationFacsimile" ColumnName="LocationFacsimile" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

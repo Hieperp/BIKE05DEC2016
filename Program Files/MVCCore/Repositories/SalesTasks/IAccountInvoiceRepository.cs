@@ -10,6 +10,7 @@ namespace MVCCore.Repositories.SalesTasks
 {
     public interface IAccountInvoiceRepository : IGenericWithDetailRepository<AccountInvoice, AccountInvoiceDetail>
     {
+        List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID);
     }
 
     public interface IAccountInvoiceAPIRepository : IGenericAPIRepository
