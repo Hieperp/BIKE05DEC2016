@@ -17,6 +17,17 @@ namespace MVCData.Repositories.SalesTasks
         public AccountInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
             : base(totalBikePortalsEntities) { }
 
+        public void ClearAccountInvoiceApi(int? accountInvoiceID)
+        {
+            base.TotalBikePortalsEntities.ClearAccountInvoiceApi(accountInvoiceID);
+        }
+
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string responedMessage)
+        {
+            if (apiSerialID == 0) apiSerialID = null;
+            base.TotalBikePortalsEntities.UpdateAccountInvoiceApi(accountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+        }
+
         public List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID)
         {
             this.TotalBikePortalsEntities.Configuration.ProxyCreationEnabled = false;

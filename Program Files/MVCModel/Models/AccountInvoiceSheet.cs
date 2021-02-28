@@ -57,5 +57,6 @@ namespace MVCModel.Models
         public string LocationTelephone { get; set; }
         public string LocationFacsimile { get; set; }
         public string Telephone { get; set; }
+        public bool Approved { get; set; }
     }
 }

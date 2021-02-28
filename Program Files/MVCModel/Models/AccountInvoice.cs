@@ -45,6 +45,9 @@ namespace MVCModel.Models
         public bool InActivePartial { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
         public int PaymentTermID { get; set; }
+        public string ApiSerialString { get; set; }
+        public Nullable<int> ApiSerialID { get; set; }
+        public string ResponedMessage { get; set; }
     
         public virtual ICollection<AccountInvoiceDetail> AccountInvoiceDetails { get; set; }
         public virtual Customer Customer { get; set; }

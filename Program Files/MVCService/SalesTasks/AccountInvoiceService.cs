@@ -23,6 +23,17 @@ namespace MVCService.SalesTasks
             return base.Save(dto, true);
         }
 
+        public void ClearAccountInvoiceApi(int? accountInvoiceID)
+        {
+            this.accountInvoiceRepository.ClearAccountInvoiceApi(accountInvoiceID);
+        }
+        
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string responedMessage)
+        {
+            this.accountInvoiceRepository.UpdateAccountInvoiceApi(accountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+        }
+
+
         public override ICollection<AccountInvoiceViewDetail> GetViewDetails(int accountInvoiceID)
         {
             ObjectParameter[] parameters = new ObjectParameter[] { new ObjectParameter("AccountInvoiceID", accountInvoiceID) };

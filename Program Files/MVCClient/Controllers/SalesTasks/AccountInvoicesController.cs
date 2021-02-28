@@ -66,12 +66,12 @@ namespace MVCClient.Controllers.SalesTasks
                 AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Editable);
                 if (accountInvoice == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                List<AccountInvoiceSheet> accountInvoiceSheets = this.accountInvoiceService.GetAccountInvoiceSheet(id);
-                if (accountInvoiceSheets.Count > 0)
+                List<AccountInvoiceSheet> accountInvoiceSheets = this.accountInvoiceService.GetAccountInvoiceSheet(accountInvoice.AccountInvoiceID);
+                if (accountInvoiceSheets.Count > 0 && accountInvoiceSheets[0].Approved)
                 {
 
                     Invoices invoices = new Invoices();
-                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID + 10).ToString() };
+                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID + 12).ToString() };
 
                     invoices.Inv.Invoice.ArisingDate = accountInvoiceSheets[0].VATInvoiceDate.ToString("dd/MM/yyyy");
 
@@ -86,7 +86,7 @@ namespace MVCClient.Controllers.SalesTasks
                     invoices.Inv.Invoice.VATAmount = accountInvoiceSheets[0].TotalVATAmount.ToString("0");
                     invoices.Inv.Invoice.Amount = accountInvoiceSheets[0].TotalGrossAmount.ToString("0");
                     invoices.Inv.Invoice.AmountInWords = accountInvoiceSheets[0].TotalGrossAmountInWords;
-                    
+
                     foreach (AccountInvoiceSheet accountInvoiceSheet in accountInvoiceSheets)
                     {
                         Product product = new Product();
@@ -109,12 +109,56 @@ namespace MVCClient.Controllers.SalesTasks
                     }
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
-                    xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'> <x:Header /> <x:Body> <tem:ImportAndPublishInv> <tem:Account>tanthanh-cn1admin</tem:Account> <tem:ACpass>Einv@oi@vn#pt20</tem:ACpass> <tem:xmlInvData> <![CDATA[" + xmlContent;
-                    xmlContent += "]]></tem:xmlInvData><tem:username>tanthanhcn1service</tem:username><tem:password>Einv@oi@vn#pt20</tem:password><tem:pattern>01GTKT0/001</tem:pattern><tem:serial>TT/20E</tem:serial><tem:convert>0</tem:convert></tem:ImportAndPublishInv></x:Body></x:Envelope>";
+                    #region MyRegion
+                    string apiAccount = "tanthanh-cn1admin";
+                    string apiACPass = "Einv@oi@vn#pt20";
+                    string apiUserName = "tanthanhcn1service";
+                    string apiPassWord = "Einv@oi@vn#pt20";
+                    string invoicePattern = "01GTKT0/001";
+                    string invoiceSerial = "TT/20E";
+                    #endregion
+                    string xmlData = xmlContent;
+                    xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
+                    xmlContent += "<x:Header /> <x:Body> <tem:ImportAndPublishInv> <tem:Account>" + apiAccount + "</tem:Account> <tem:ACpass>" + apiACPass + "</tem:ACpass> <tem:xmlInvData>";
+                    xmlContent += "<![CDATA[" + xmlData;
+                    xmlContent += "]]></tem:xmlInvData><tem:username>" + apiUserName + "</tem:username><tem:password>" + apiPassWord + "</tem:password>";
+                    xmlContent += "<tem:pattern>" + invoicePattern + "</tem:pattern><tem:serial>" + invoiceSerial + "</tem:serial><tem:convert>0</tem:convert></tem:ImportAndPublishInv></x:Body></x:Envelope>";
 
 
                     if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/PublishService.asmx", "http://tempuri.org/ImportAndPublishInv", xmlContent, out responedMessage))
-                        return RedirectToAction("Index");
+                    {
+                        int i = responedMessage.IndexOf("<ImportAndPublishInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
+                        if (i != -1)
+                        {
+                            responedMessage = responedMessage.Substring(i + "<ImportAndPublishInvResult>".Length);
+                            i = responedMessage.IndexOf("</ImportAndPublishInvResult>");
+                            if (i != -1)
+                            {
+                                responedMessage = responedMessage.Substring(0, i);
+                                i = responedMessage.IndexOf(invoiceSerial + "-" + invoices.Inv.key + "_");
+                                if (i != -1)
+                                {
+                                    apiSerialString = responedMessage.Substring(i + (invoiceSerial + "-" + invoices.Inv.key + "_").Length);
+                                    int.TryParse(apiSerialString, out apiSerialID);
+                                }
+                            }
+
+                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            i = responedMessage.IndexOf("<ImportAndPublishInvResult>ERR");
+                            if (i != -1)
+                            {
+                                responedMessage = responedMessage.Substring(i + "<ImportAndPublishInvResult>".Length);
+                                i = responedMessage.IndexOf("</ImportAndPublishInvResult>");
+                                if (i != -1) responedMessage = responedMessage.Substring(0, i);
+                            }
+                            throw new System.ArgumentException("Lỗi xuất HĐ điện tử", responedMessage);
+                        }
+                    }
                     else
                         throw new System.ArgumentException("Lỗi xuất HĐ điện tử", responedMessage);
                 }

@@ -56,6 +56,9 @@
           <Property Name="VATInvoiceSeries" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiSerialString" Type="nvarchar" MaxLength="30" />
+          <Property Name="ApiSerialID" Type="int" />
+          <Property Name="ResponedMessage" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="EditedDate" Type="datetime" Nullable="false" />
           <Property Name="Approved" Type="bit" Nullable="false" />
@@ -2097,6 +2100,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <Function Name="AccountInvoiceSheet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
         </Function>
+        <Function Name="ClearAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetAccessLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
           <Parameter Name="NMVNTaskID" Type="int" Mode="In" />
@@ -2502,6 +2508,12 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <Function Name="TransferOrderVoid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
           <Parameter Name="InActive" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+          <Parameter Name="ApiSerialID" Type="int" Mode="In" />
+          <Parameter Name="ApiSerialString" Type="nvarchar" Mode="In" />
+          <Parameter Name="ResponedMessage" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="UpdateLockedDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
@@ -3800,6 +3812,15 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </AssociationSet>
           <FunctionImport Name="AccountInvoiceSheet" ReturnType="Collection(TotalBikePortalsModel.AccountInvoiceSheet)">
           <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ClearAccountInvoiceApi">
+          <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateAccountInvoiceApi">
+            <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+            <Parameter Name="ApiSerialID" Mode="In" Type="Int32" />
+            <Parameter Name="ApiSerialString" Mode="In" Type="String" />
+            <Parameter Name="ResponedMessage" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
@@ -5869,6 +5890,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="Customer" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="AccountInvoice" ToRole="Customer" />
           <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="AccountInvoice" ToRole="Location" />
           <Property Name="PaymentTermID" Type="Int32" Nullable="false" />
+          <Property Name="ApiSerialString" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ApiSerialID" Type="Int32" />
+          <Property Name="ResponedMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
           <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
@@ -6834,6 +6858,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="LocationTelephone" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="LocationFacsimile" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="Telephone" Nullable="false" MaxLength="100" />
+          <Property Type="Boolean" Name="Approved" Nullable="false" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8345,6 +8370,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <EntitySetMapping Name="AccountInvoices">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
               <MappingFragment StoreEntitySet="AccountInvoices">
+                <ScalarProperty Name="ResponedMessage" ColumnName="ResponedMessage" />
+                <ScalarProperty Name="ApiSerialID" ColumnName="ApiSerialID" />
+                <ScalarProperty Name="ApiSerialString" ColumnName="ApiSerialString" />
                 <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
                 <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
                 <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
@@ -9023,9 +9051,12 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
                 <ScalarProperty Name="LocationTelephone" ColumnName="LocationTelephone" />
                 <ScalarProperty Name="LocationFacsimile" ColumnName="LocationFacsimile" />
                 <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ClearAccountInvoiceApi" FunctionName="TotalBikePortalsModel.Store.ClearAccountInvoiceApi" />
+          <FunctionImportMapping FunctionImportName="UpdateAccountInvoiceApi" FunctionName="TotalBikePortalsModel.Store.UpdateAccountInvoiceApi" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

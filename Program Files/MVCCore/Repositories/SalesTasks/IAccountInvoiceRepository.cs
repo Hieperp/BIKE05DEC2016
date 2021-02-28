@@ -10,6 +10,9 @@ namespace MVCCore.Repositories.SalesTasks
 {
     public interface IAccountInvoiceRepository : IGenericWithDetailRepository<AccountInvoice, AccountInvoiceDetail>
     {
+        void ClearAccountInvoiceApi(int? accountInvoiceID);
+        void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string responedMessage);
+
         List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID);
     }
 

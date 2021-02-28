@@ -4,7 +4,7 @@ using MVCModel.Models;
 
 namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 {
-    class AccountInvoice
+    public class AccountInvoice
     {
         private readonly TotalBikePortalsEntities totalBikePortalsEntities;
 
@@ -22,6 +22,9 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             this.AccountInvoiceSaveRelative();
             this.AccountInvoicePostSaveValidate();
+
+            this.UpdateAccountInvoiceApi();
+            this.ClearAccountInvoiceApi();
 
             this.AccountInvoiceInitReference();
 
@@ -176,6 +179,50 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         }
 
 
+        private void UpdateAccountInvoiceApi()
+        {
+            string queryString = " @AccountInvoiceID int, @ApiSerialID int, @ApiSerialString nvarchar(30), @ResponedMessage nvarchar(100) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       BEGIN " + "\r\n";
+            queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
+            queryString = queryString + "           SET             ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ResponedMessage = @ResponedMessage " + "\r\n";
+            queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
+
+            queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
+            queryString = queryString + "               BEGIN " + "\r\n";
+            queryString = queryString + "                   DECLARE         @msg NVARCHAR(300); " + "\r\n";
+            queryString = queryString + "                   SET             @msg = N'Lỗi cập nhật database. Vui lòng kiểm tra lại trước khi tiếp tục' ; " + "\r\n";
+            queryString = queryString + "                   THROW           61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "               END " + "\r\n";
+            queryString = queryString + "       END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("UpdateAccountInvoiceApi", queryString);
+        }
+
+        private void ClearAccountInvoiceApi()
+        {
+            string queryString = " @AccountInvoiceID int " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       BEGIN " + "\r\n";
+            queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
+            queryString = queryString + "           SET             ApiSerialID = NULL, ApiSerialString = NULL, ResponedMessage = NULL " + "\r\n";
+            queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
+
+            queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
+            queryString = queryString + "               BEGIN " + "\r\n";
+            queryString = queryString + "                   DECLARE         @msg NVARCHAR(300); " + "\r\n";
+            queryString = queryString + "                   SET             @msg = N'Lỗi cập nhật database. Vui lòng kiểm tra lại trước khi tiếp tục' ; " + "\r\n";
+            queryString = queryString + "                   THROW           61001,  @msg, 1; " + "\r\n";
+            queryString = queryString + "               END " + "\r\n";
+            queryString = queryString + "       END " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("ClearAccountInvoiceApi", queryString);
+        }
+
 
         private void AccountInvoiceInitReference()
         {
@@ -198,7 +245,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "                       MINGoodsReceiptDetails.MINSalesInvoiceTypeID, AccountInvoiceCollections.SalesInvoiceDetailID, ISNULL(AccountInvoiceCollections.IsBonus, CAST(0 AS bit)) AS IsBonus, Commodities.CommodityID, Commodities.Code, Commodities.OfficialName + ' ' + ISNULL('(' + AccountInvoiceCollections.Remarks + ')', '') AS Name, Commodities.SalesUnit, AccountInvoiceCollections.LineDescription AS LineDescription, AccountInvoiceCollections.ChassisCode, AccountInvoiceCollections.EngineCode, AccountInvoiceCollections.ColorCode, AccountInvoiceCollections.ColorCodeName, " + "\r\n";
             queryString = queryString + "                       AccountInvoiceCollections.Quantity, AccountInvoiceCollections.UnitPrice, AccountInvoiceCollections.VATPercent, AccountInvoiceCollections.Amount, AccountInvoiceCollections.VATAmount, AccountInvoiceCollections.GrossAmount, " + "\r\n";
             queryString = queryString + "                       AccountInvoices.TotalQuantity, AccountInvoices.TotalAmount, AccountInvoices.TotalVATAmount, AccountInvoices.TotalGrossAmount, dbo.SayVND(AccountInvoices.TotalGrossAmount) AS TotalGrossAmountInWords, AccountInvoices.Description, " + "\r\n";
-            queryString = queryString + "                       Locations.OfficialName AS LocationOfficialName, Locations.Address AS LocationAddress, Locations.Taxcode AS LocationTaxcode, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile " + "\r\n";
+            queryString = queryString + "                       Locations.OfficialName AS LocationOfficialName, Locations.Address AS LocationAddress, Locations.Taxcode AS LocationTaxcode, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile, AccountInvoices.Approved " + "\r\n";
 
             queryString = queryString + "       FROM            (SELECT SalesInvoiceDetails.AccountInvoiceID, SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.CommodityID, N'' AS LineDescription, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.Remarks, SalesInvoiceDetails.IsBonus, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, ISNULL(ColorCodes.Name, GoodsReceiptDetails.ColorCode) AS ColorCodeName FROM SalesInvoiceDetails LEFT JOIN GoodsReceiptDetails ON SalesInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID LEFT JOIN ColorCodes ON GoodsReceiptDetails.CommodityID = ColorCodes.CommodityID AND GoodsReceiptDetails.ColorCode = ColorCodes.Code WHERE SalesInvoiceDetails.AccountInvoiceID = @LocalAccountInvoiceID) AS AccountInvoiceCollections " + "\r\n";
 

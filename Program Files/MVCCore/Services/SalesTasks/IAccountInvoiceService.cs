@@ -9,6 +9,9 @@ namespace MVCCore.Services.SalesTasks
     {
         bool Save(AccountInvoiceDTO dto, bool useExistingTransaction);
 
+        void ClearAccountInvoiceApi(int? accountInvoiceID);
+        void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string responedMessage);
+
         List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID);
     }
 }
