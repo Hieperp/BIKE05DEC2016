@@ -71,7 +71,7 @@ namespace MVCClient.Controllers.SalesTasks
                 {
 
                     Invoices invoices = new Invoices();
-                    invoices.Inv = new Inv() { key = accountInvoiceSheets[0].AccountInvoiceID.ToString() };
+                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID + 10).ToString() };
 
                     invoices.Inv.Invoice.ArisingDate = accountInvoiceSheets[0].VATInvoiceDate.ToString("dd/MM/yyyy");
 
@@ -100,37 +100,26 @@ namespace MVCClient.Controllers.SalesTasks
                     }
 
 
-                    string xml = "";
-
+                    string xmlContent = ""; string responedMessage = "";
                     using (var stringwriter = new System.IO.StringWriter())
                     {
                         var serializer = new XmlSerializer(typeof(Invoices));
                         serializer.Serialize(stringwriter, invoices);
-                        xml = stringwriter.ToString();
+                        xmlContent = stringwriter.ToString();
                     }
+                    xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
-                    xml = xml.Replace("<?xml version=\"1.0\" encoding=\"utf - 16\"?>", "");
-                    xml.Replace("\\\"", "'");
-                    xml.Replace("\r\n", "");
-                    xml.Replace(">@#@<", "><");
-                    
+                    xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'> <x:Header /> <x:Body> <tem:ImportAndPublishInv> <tem:Account>tanthanh-cn1admin</tem:Account> <tem:ACpass>Einv@oi@vn#pt20</tem:ACpass> <tem:xmlInvData> <![CDATA[" + xmlContent;
+                    xmlContent += "]]></tem:xmlInvData><tem:username>tanthanhcn1service</tem:username><tem:password>Einv@oi@vn#pt20</tem:password><tem:pattern>01GTKT0/001</tem:pattern><tem:serial>TT/20E</tem:serial><tem:convert>0</tem:convert></tem:ImportAndPublishInv></x:Body></x:Envelope>";
 
-                    //XmlSerializer serializer = new XmlSerializer(typeof(Invoices));
-                    //using (StringReader reader = new StringReader())
-                    //{
-                    //    var test = (Invoices)serializer.Deserialize(reader);
-                    //}
 
-                    //if (this.GenericService.PublishInvoice(id, inActive))
-                    //    return RedirectToAction("Index");
-                    //else
-                    //    throw new System.ArgumentException("Lỗi vô hiệu dữ liệu", "Dữ liệu này không thể vô hiệu.");
-
-                    return RedirectToAction("PublishInvoice", id);
+                    if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/PublishService.asmx", "http://tempuri.org/ImportAndPublishInv", xmlContent, out responedMessage))
+                        return RedirectToAction("Index");
+                    else
+                        throw new System.ArgumentException("Lỗi xuất HĐ điện tử", responedMessage);
                 }
                 else
-                    return RedirectToAction("PublishInvoice", id);
-
+                    throw new System.ArgumentException("Lỗi xuất HĐ điện tử", "Không thể mở hóa đơn để xuất.");
             }
             catch (Exception exception)
             {
