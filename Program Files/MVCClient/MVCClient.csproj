@@ -1746,6 +1746,7 @@
     <Content Include="Views\WarehouseInvoices\_PendingStockTransferDetails.cshtml" />
     <Content Include="Views\WarehouseInvoices\GetPendingGoodsReceiptDetails.cshtml" />
     <Content Include="Views\AccountInvoices\PublishInvoice.cshtml" />
+    <Content Include="Views\AccountInvoices\PublishSucceed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

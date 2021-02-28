@@ -145,7 +145,7 @@ namespace MVCClient.Controllers.SalesTasks
 
                             this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, apiSerialID, apiSerialString, responedMessage);
 
-                            return RedirectToAction("Index");
+                            return View("PublishSucceed", accountInvoice);
                         }
                         else
                         {
