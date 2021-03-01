@@ -222,7 +222,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ResponedMessage = @ResponedMessage " + "\r\n";
+            queryString = queryString + "           SET             ApiApprovedDate = GetDate(), ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ResponedMessage = @ResponedMessage " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
@@ -244,7 +244,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiSerialID = NULL, ApiSerialString = NULL, ResponedMessage = NULL " + "\r\n";
+            queryString = queryString + "           SET             ApiApprovedDate = GetDate(), ApiSerialID = NULL, ApiSerialString = NULL, ResponedMessage = NULL " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";

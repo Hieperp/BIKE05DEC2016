@@ -292,7 +292,7 @@
                 }
                 @if (Model.AccountInvoiceID > 0 && Model.Approved)
                 {
-                    <button type="button" class="k-button custom-button" onclick="callPublishInvoice()"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> @(string.IsNullOrEmpty(Model.ResponedMessage)? "Xuất HĐ điện tử" : "Xóa HĐ điện tử") </button>
+                    <button type="button" class="k-button custom-button" onclick="callPublishClearInvoice(@(string.IsNullOrEmpty(Model.ResponedMessage)? 1: 0) )"> <img src="~/Content/Images/Mains/invoiceRed.png" /> @(string.IsNullOrEmpty(Model.ResponedMessage)? "Xuất HĐ điện tử" : "Xóa HĐ điện tử [" + Model.ResponedMessage + "]" ) </button>
                 }
             </div>
             <div class="div-button">
@@ -323,10 +323,13 @@
         });
     }
 
-    function callPublishInvoice() {
+    function callPublishClearInvoice(publishClearInvoice) {
         require(["kpopupWindow"], function (kpopupWindow) {
+            var url = "@Url.Action("PublishClearInvoice", "AccountInvoices")" + "/" + $("#AccountInvoiceID").val();
+            url = url.replace("PublishClearInvoice", (publishClearInvoice == 1 ? "PublishInvoice" :"ClearInvoice"));
+
             var voidDetailWindow = new kpopupWindow();
-            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("PublishInvoice", "AccountInvoices")" + "/" + $("#AccountInvoiceID").val(), "Xuất hóa đơn", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+            voidDetailWindow.openWindow($("#popupWindow"), url, (publishClearInvoice == 1 ? "Xuất" : "Xóa") + " HĐ điện tử", 620, 181);
         });
     }
 

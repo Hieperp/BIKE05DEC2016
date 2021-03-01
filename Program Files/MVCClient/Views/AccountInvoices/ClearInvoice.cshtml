@@ -8,22 +8,12 @@
 
     @Html.Hidden("Id", @Model);
 
-    <div style="height: 130px;">
-
-        @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
-
-    </div>
-
-
-
-    <div class="background-bar" style="width: 620px;">
-        <div class="popup-button-bar" style="margin-right: 6px;">
-            <button type="submit" class="k-button"> <img src="~/Content/Images/Mains/invoiceRed.png" alt="" /> Xác nhận xuất HĐ điện tử </button>
+    <div class="background-bar">
+        <div class="popup-button-bar">
+            <button type="submit" class="k-button"> <img src="~/Content/Images/Mains/iSync-icon32.png" alt="" /> Xác nhận xuất hóa đơn điện tử </button>
             <button type="button" class="k-button" onclick="window.parent.$('#myWindow').data('kendoWindow').close()"> <img src="~/Content/Images/Mains/Users-Exit-icon.png" alt="" /> Thoát </button>
         </div>
     </div>
-
-
 }
 
 <link href="@Url.Content("~/Content/CustomCss/GeneralPopup.css")" rel="stylesheet" type="text/css" />
@@ -33,13 +23,3 @@
         window.parent.$("#myWindow").data("kendoWindow").close();
     }
 </script>
-
-<style>
-    #div-alert {
-        width: 600px;
-    }
-
-    .validation-summary-errors {
-        width: 600px;
-    }
-</style>

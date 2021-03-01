@@ -218,10 +218,10 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
                     xmlContent += "<x:Header /> <x:Body> <tem:cancelInv> <tem:Account>" + apiAccount + "</tem:Account> <tem:ACpass>" + apiACPass + "</tem:ACpass> <tem:xmlInvData>";
                     xmlContent += "<tem:fkey>" + fkey + "</tem:fkey>";
-                    xmlContent += "</tem:xmlInvData><tem:username>" + apiUserName + "</tem:username><tem:password>" + apiPassWord + "</tem:password>";
+                    xmlContent += "</tem:xmlInvData><tem:username>" + apiUserName + "</tem:username><tem:userPass>" + apiPassWord + "</tem:userPass>";
                     xmlContent += "</tem:cancelInv></x:Body></x:Envelope>";
 
-
+                    //<cancelInvResult>OK:</cancelInvResult>
                     if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/BusinessService.asmx", "http://tempuri.org/cancelInv", xmlContent, out responedMessage))
                     {
                         int i = responedMessage.IndexOf("<CancelInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;

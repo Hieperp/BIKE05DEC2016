@@ -464,6 +464,10 @@
     <Content Include="Content\Images\Mains\GrayWorker.png" />
     <Content Include="Content\Images\Mains\home-icon-24.png" />
     <Content Include="Content\Images\Mains\home-icon.png" />
+    <Content Include="Content\Images\Mains\invoiceBlue.png" />
+    <Content Include="Content\Images\Mains\invoiceBuleF.png" />
+    <Content Include="Content\Images\Mains\invoiceO.png" />
+    <Content Include="Content\Images\Mains\invoiceRed.png" />
     <Content Include="Content\Images\Mains\iSync-icon32.png" />
     <Content Include="Content\Images\Mains\iSync-icon64.png" />
     <Content Include="Content\Images\Mains\Laborers.png" />
@@ -1966,6 +1970,7 @@
     <Content Include="Views\AccountInvoices\PublishInvoice.cshtml" />
     <Content Include="Views\AccountInvoices\PublishSucceed.cshtml" />
     <Content Include="Views\AccountInvoices\Approve.cshtml" />
+    <Content Include="Views\AccountInvoices\ClearInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
