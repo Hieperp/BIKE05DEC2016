@@ -112,6 +112,7 @@ namespace MVCService.SalesTasks
                     accountInvoiceDTO.AverageDiscountPercent = vehiclesInvoiceDTO.AverageDiscountPercent;
 
                     accountInvoiceDTO.Remarks = vehiclesInvoiceDTO.Remarks;
+                    accountInvoiceDTO.Approved = vehiclesInvoiceDTO.Approved;
 
                     string lDescription = "";
                     IEnumerable<PendingSalesInvoice> pendingSalesInvoices = this.accountInvoiceAPIRepository.GetPendingSalesInvoices(salesInvoice.SalesInvoiceID, "", salesInvoice.LocationID, 0, DateTime.Now, DateTime.Now, 0, "");

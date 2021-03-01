@@ -3,7 +3,7 @@
 @model MVCClient.ViewModels.SalesTasks.AccountInvoiceViewModel
 
 <div id="div-form">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "MainForm" }))
     {
         @Html.AntiForgeryToken()
 
@@ -13,6 +13,12 @@
         @Html.HiddenFor(model => model.TotalVATAmount)
         @Html.HiddenFor(model => model.TotalGrossAmount)
         @Html.HiddenFor(model => model.AverageDiscountPercent)
+
+        @Html.HiddenFor(model => model.ApiSerialID)
+        @Html.HiddenFor(model => model.ApiSerialString)
+        @Html.HiddenFor(model => model.ResponedMessage)
+
+        @Html.HiddenFor(model => model.Approved)
 
         @Html.HiddenFor(model => model.SubmitTypeOption)
 
@@ -48,7 +54,7 @@
                 <div class="form-group1">
                     @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
-                        @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.Kendo().DateTimePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
                         @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -276,11 +282,20 @@
                     @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>*@
                 }
                 @*else
-        {
-            <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
-            <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
-        }*@
-
+                    {
+                        <button formaction="@Url.Action("Print", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+                        <button formaction="@Url.Action("PrintDetail", "AccountInvoices", new { id = @Model.AccountInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
+                    }*@
+                @if (Model.AccountInvoiceID > 0 && !Model.Approvable && !Model.UnApprovable)
+                {
+                    <button type="button" class="k-button custom-button" onclick="location.href='@Url.Action("Approve", "AccountInvoices", new {id = @Model.AccountInvoiceID })'"> <img src="~/Content/Images/Mains/@(!@Model.Approved ? "Check-32-CHY.png" : "cloud-32-NoCheck.png")" /> @(!Model.Approved ? "Duyệt HĐ" : "Hủy duyệt HĐ") </button>
+                }
+                @if (Model.AccountInvoiceID > 0 && Model.Approved)
+                {
+                    <button type="button" class="k-button custom-button" onclick="callPublishInvoice()"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> @(string.IsNullOrEmpty(Model.ResponedMessage)? "Xuất HĐ điện tử" : "Xóa HĐ điện tử") </button>
+                }
+            </div>
+            <div class="div-button">
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 2 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In bảng kê xe </button>
@@ -288,8 +303,6 @@
 
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 10 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử </button>
                 @*<button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "AccountInvoices", new { id = @Model.AccountInvoiceID, pgid = 11 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất Excel HĐ điện tử rút gọn </button>*@
-
-                <button type="button" class="k-button custom-button" onclick="callPublishInvoice()"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> Xuất HĐ điện tử </button>
             </div>
             @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>
@@ -313,7 +326,7 @@
     function callPublishInvoice() {
         require(["kpopupWindow"], function (kpopupWindow) {
             var voidDetailWindow = new kpopupWindow();
-            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("PublishInvoice", "AccountInvoices")" + "/" + $("#AccountInvoiceID").val(), "Hủy/ phục hồi một phần đơn hàng", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
+            voidDetailWindow.openWindow($("#popupWindow"), "@Url.Action("PublishInvoice", "AccountInvoices")" + "/" + $("#AccountInvoiceID").val(), "Xuất hóa đơn", "@SettingsManager.PopupWidth", "@SettingsManager.PopupHeight");
         });
     }
 

@@ -215,7 +215,7 @@ namespace MVCClient.Controllers
             try
             {
                 if (this.GenericService.ToggleApproved(simpleViewModel))
-                    return RedirectToAction("Index");
+                    return RedirectAfterApprove(simpleViewModel);
                 else
                     throw new System.ArgumentException("Lỗi duyệt dữ liệu", "Dữ liệu này không thể duyệt được.");
             }
@@ -226,6 +226,11 @@ namespace MVCClient.Controllers
             }
         }
 
+
+        public virtual ActionResult RedirectAfterApprove(TSimpleViewModel simpleViewModel)
+        {
+            return RedirectToAction("Index");
+        }
 
         #endregion Approve/ UnApprove
 
@@ -447,17 +452,17 @@ namespace MVCClient.Controllers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        private TSimpleViewModel GetViewModel(TEntity entity)
+        protected TSimpleViewModel GetViewModel(TEntity entity)
         {
             return this.GetViewModel(entity, false);
         }
 
-        private TSimpleViewModel GetViewModel(TEntity entity, bool forDelete)
+        protected TSimpleViewModel GetViewModel(TEntity entity, bool forDelete)
         {
             return this.GetViewModel(entity, forDelete, false);
         }
 
-        private TSimpleViewModel GetViewModel(TEntity entity, bool forDelete, bool forAlter)
+        protected TSimpleViewModel GetViewModel(TEntity entity, bool forDelete, bool forAlter)
         {
             return this.TailorViewModel(this.DecorateViewModel(this.MapEntityToViewModel(entity)), forDelete, forAlter);
         }

@@ -1631,5 +1631,36 @@ namespace MVCModel.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAccountInvoiceApi", accountInvoiceIDParameter, apiSerialIDParameter, apiSerialStringParameter, responedMessageParameter);
         }
+    
+        public virtual ObjectResult<string> AccountInvoiceApproved(Nullable<int> entityID)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("AccountInvoiceApproved", entityIDParameter);
+        }
+    
+        public virtual ObjectResult<string> AccountInvoiceEditable(Nullable<int> entityID)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("AccountInvoiceEditable", entityIDParameter);
+        }
+    
+        public virtual int AccountInvoiceToggleApproved(Nullable<int> entityID, Nullable<bool> approved)
+        {
+            var entityIDParameter = entityID.HasValue ?
+                new ObjectParameter("EntityID", entityID) :
+                new ObjectParameter("EntityID", typeof(int));
+    
+            var approvedParameter = approved.HasValue ?
+                new ObjectParameter("Approved", approved) :
+                new ObjectParameter("Approved", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AccountInvoiceToggleApproved", entityIDParameter, approvedParameter);
+        }
     }
 }

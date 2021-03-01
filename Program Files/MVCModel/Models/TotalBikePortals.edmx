@@ -2090,6 +2090,12 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="AccountInvoiceApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AccountInvoiceEditable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+        </Function>
         <Function Name="AccountInvoicePostSaveValidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EntityID" Type="int" Mode="In" />
         </Function>
@@ -2099,6 +2105,10 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         </Function>
         <Function Name="AccountInvoiceSheet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AccountInvoiceToggleApproved" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EntityID" Type="int" Mode="In" />
+          <Parameter Name="Approved" Type="bit" Mode="In" />
         </Function>
         <Function Name="ClearAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
@@ -3821,6 +3831,16 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="ApiSerialID" Mode="In" Type="Int32" />
             <Parameter Name="ApiSerialString" Mode="In" Type="String" />
             <Parameter Name="ResponedMessage" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AccountInvoiceApproved" ReturnType="Collection(String)">
+            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AccountInvoiceEditable" ReturnType="Collection(String)">
+            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AccountInvoiceToggleApproved">
+            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+            <Parameter Name="Approved" Mode="In" Type="Boolean" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
@@ -9057,6 +9077,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ClearAccountInvoiceApi" FunctionName="TotalBikePortalsModel.Store.ClearAccountInvoiceApi" />
           <FunctionImportMapping FunctionImportName="UpdateAccountInvoiceApi" FunctionName="TotalBikePortalsModel.Store.UpdateAccountInvoiceApi" />
+          <FunctionImportMapping FunctionImportName="AccountInvoiceApproved" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceApproved" />
+          <FunctionImportMapping FunctionImportName="AccountInvoiceEditable" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceEditable" />
+          <FunctionImportMapping FunctionImportName="AccountInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceToggleApproved" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -26,7 +26,7 @@
                 <div class="form-group1">
                     @Html.LabelFor(model => model.VATInvoiceDate, htmlAttributes: new { @class = "control-label-left" })
                     <div class="div-input">
-                        @Html.Kendo().DatePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
+                        @Html.Kendo().DateTimePickerFor(model => model.VATInvoiceDate).HtmlAttributes(new { @class = "input-class" })
                         @Html.ValidationMessageFor(model => model.VATInvoiceDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -239,7 +239,7 @@
 
                     if (Model.FIRSTAccountInvoiceID != null)
                     {
-                        <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Delete", "AccountInvoices", new { id = @Model.FIRSTAccountInvoiceID })')"> <img src="~/Content/Images/New/Delete32m.png" /> Xóa hóa đơn </button> }
+                        <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Edit", "AccountInvoices", new { id = @Model.FIRSTAccountInvoiceID })')"> <img src="~/Content/Images/New/Delete32m.png" /> Hóa đơn </button> }
                     if (Model.FIRSTServiceContractID != null)
                     {
                         <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("Delete", "ServiceContracts", new { id = @Model.FIRSTServiceContractID })')"> <img src="~/Content/Images/New/Delete32m.png" /> Xóa hồ sơ </button>}

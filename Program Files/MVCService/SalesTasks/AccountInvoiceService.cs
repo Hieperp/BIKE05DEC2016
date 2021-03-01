@@ -13,7 +13,7 @@ namespace MVCService.SalesTasks
     {
         private IAccountInvoiceRepository accountInvoiceRepository;
         public AccountInvoiceService(IAccountInvoiceRepository accountInvoiceRepository)
-            : base(accountInvoiceRepository, "AccountInvoicePostSaveValidate", "AccountInvoiceSaveRelative", null, "GetAccountInvoiceViewDetails")
+            : base(accountInvoiceRepository, "AccountInvoicePostSaveValidate", "AccountInvoiceSaveRelative", "AccountInvoiceToggleApproved", "GetAccountInvoiceViewDetails")
         {
             this.accountInvoiceRepository = accountInvoiceRepository;
         }

@@ -27,6 +27,11 @@ namespace MVCClient.Controllers.SalesTasks
             this.accountInvoiceService = accountInvoiceService;
         }
 
+        public override ActionResult RedirectAfterApprove(AccountInvoiceViewModel simpleViewModel)
+        {
+            return RedirectToAction("Edit", new { id = simpleViewModel.GetID() });
+        }
+
         [OnResultExecutingFilterAttribute]
         public ActionResult PrintInvoice(int? id, int? pgid)
         {
@@ -49,6 +54,7 @@ namespace MVCClient.Controllers.SalesTasks
 
 
         #region VNPT SOAP
+        #region ImportAndPublishInv
         [AccessLevelAuthorize, ImportModelStateFromTempData]
         [OnResultExecutingFilterAttribute]
         public virtual ActionResult PublishInvoice(int? id)
@@ -71,7 +77,7 @@ namespace MVCClient.Controllers.SalesTasks
                 {
 
                     Invoices invoices = new Invoices();
-                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID + 12).ToString() };
+                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID).ToString() };
 
                     invoices.Inv.Invoice.ArisingDate = accountInvoiceSheets[0].VATInvoiceDate.ToString("dd/MM/yyyy");
 
@@ -171,7 +177,99 @@ namespace MVCClient.Controllers.SalesTasks
                 return RedirectToAction("PublishInvoice", id);
             }
         }
+        #endregion ImportAndPublishInv
 
+
+
+        #region ImportAndPublishInv
+        [AccessLevelAuthorize, ImportModelStateFromTempData]
+        [OnResultExecutingFilterAttribute]
+        public virtual ActionResult ClearInvoice(int? id)
+        {
+            return View(id);
+        }
+
+
+        [HttpPost, ActionName("ClearInvoice")]
+        [ValidateAntiForgeryToken, ExportModelStateToTempData]
+        public virtual ActionResult ClearInvoiceConfirmed(int id)
+        {
+            try
+            {
+                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Editable);
+                if (accountInvoice == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                AccountInvoiceViewModel accountInvoiceViewModel = this.GetViewModel(accountInvoice, true);
+
+                if (accountInvoiceViewModel.Approved && this.GenericService.GetUnApprovalPermitted(accountInvoice.OrganizationalUnitID) && this.GenericService.UnApprovable(accountInvoiceViewModel))
+                {
+                    string xmlContent = ""; string responedMessage = "";
+                    xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
+
+                    #region MyRegion
+                    string apiAccount = "tanthanh-cn1admin";
+                    string apiACPass = "Einv@oi@vn#pt20";
+                    string apiUserName = "tanthanhcn1service";
+                    string apiPassWord = "Einv@oi@vn#pt20";
+                    string invoiceSerial = "TT/20E";
+                    string fkey = accountInvoiceViewModel.AccountInvoiceID.ToString();
+                    #endregion
+                    string xmlData = xmlContent;
+                    xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
+                    xmlContent += "<x:Header /> <x:Body> <tem:cancelInv> <tem:Account>" + apiAccount + "</tem:Account> <tem:ACpass>" + apiACPass + "</tem:ACpass> <tem:xmlInvData>";
+                    xmlContent += "<tem:fkey>" + fkey + "</tem:fkey>";
+                    xmlContent += "</tem:xmlInvData><tem:username>" + apiUserName + "</tem:username><tem:password>" + apiPassWord + "</tem:password>";
+                    xmlContent += "</tem:cancelInv></x:Body></x:Envelope>";
+
+
+                    if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/BusinessService.asmx", "http://tempuri.org/cancelInv", xmlContent, out responedMessage))
+                    {
+                        int i = responedMessage.IndexOf("<CancelInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
+                        if (i != -1)
+                        {
+                            responedMessage = responedMessage.Substring(i + "<CancelInvResult>".Length);
+                            i = responedMessage.IndexOf("</CancelInvResult>");
+                            if (i != -1)
+                            {
+                                responedMessage = responedMessage.Substring(0, i);
+                                i = responedMessage.IndexOf(invoiceSerial + "-" + fkey + "_");
+                                if (i != -1)
+                                {
+                                    apiSerialString = responedMessage.Substring(i + (invoiceSerial + "-" + fkey + "_").Length);
+                                    int.TryParse(apiSerialString, out apiSerialID);
+                                }
+                            }
+
+                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+
+                            return View("PublishSucceed", accountInvoice);
+                        }
+                        else
+                        {
+                            i = responedMessage.IndexOf("<CancelInvResult>ERR");
+                            if (i != -1)
+                            {
+                                responedMessage = responedMessage.Substring(i + "<CancelInvResult>".Length);
+                                i = responedMessage.IndexOf("</CancelInvResult>");
+                                if (i != -1) responedMessage = responedMessage.Substring(0, i);
+                            }
+                            throw new System.ArgumentException("Lỗi xóa HĐ điện tử", responedMessage);
+                        }
+                    }
+                    else
+                        throw new System.ArgumentException("Lỗi xóa HĐ điện tử", responedMessage);
+                }
+                else
+                    throw new System.ArgumentException("Lỗi xóa HĐ điện tử", "Không thể mở hóa đơn để xóa.");
+            }
+            catch (Exception exception)
+            {
+                ModelState.AddValidationErrors(exception);
+                return RedirectToAction("ClearInvoice", id);
+            }
+        }
+        #endregion ImportAndPublishInv
         #endregion
+
     }
 }

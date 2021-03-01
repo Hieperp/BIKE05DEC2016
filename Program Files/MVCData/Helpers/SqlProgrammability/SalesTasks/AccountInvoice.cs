@@ -23,6 +23,11 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             this.AccountInvoiceSaveRelative();
             this.AccountInvoicePostSaveValidate();
 
+            this.AccountInvoiceApproved();
+            this.AccountInvoiceEditable();
+
+            this.AccountInvoiceToggleApproved();
+
             this.UpdateAccountInvoiceApi();
             this.ClearAccountInvoiceApi();
 
@@ -176,6 +181,36 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryArray[0] = " SELECT TOP 1 @FoundEntity = N'Phiếu bán hàng chưa hoàn tất, hoặc ngày hóa đơn không hợp lệ. Ngày bán hàng: ' + CAST(SalesInvoiceDetails.EntryDate AS nvarchar) FROM AccountInvoiceDetails INNER JOIN SalesInvoiceDetails ON AccountInvoiceDetails.AccountInvoiceID = @EntityID AND AccountInvoiceDetails.SalesInvoiceDetailID = SalesInvoiceDetails.SalesInvoiceDetailID AND (SalesInvoiceDetails.IsFinished = 0 OR AccountInvoiceDetails.EntryDate < SalesInvoiceDetails.EntryDate OR CAST(AccountInvoiceDetails.EntryDate AS DATE) <> CAST(SalesInvoiceDetails.EntryDate AS DATE)) ";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("AccountInvoicePostSaveValidate", queryArray);
+        }
+
+        private void AccountInvoiceApproved()
+        {
+            string[] queryArray = new string[1];
+
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = AccountInvoiceID FROM AccountInvoices WHERE AccountInvoiceID = @EntityID AND Approved = 1";
+
+            this.totalBikePortalsEntities.CreateProcedureToCheckExisting("AccountInvoiceApproved", queryArray);
+        }
+
+        private void AccountInvoiceEditable()
+        {
+            string[] queryArray = new string[1];
+
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = AccountInvoiceID FROM AccountInvoices WHERE AccountInvoiceID = @EntityID AND NOT ResponedMessage IS NULL ";
+
+            this.totalBikePortalsEntities.CreateProcedureToCheckExisting("AccountInvoiceEditable", queryArray);
+        }
+
+
+        private void AccountInvoiceToggleApproved()
+        {
+            string queryString = " @EntityID int, @Approved bit " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       UPDATE      AccountInvoices  SET Approved = @Approved, ApprovedDate = GetDate() WHERE AccountInvoiceID = @EntityID AND Approved = ~@Approved" + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("AccountInvoiceToggleApproved", queryString);
         }
 
 

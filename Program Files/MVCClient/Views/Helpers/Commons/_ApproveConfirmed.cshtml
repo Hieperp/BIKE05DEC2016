@@ -4,7 +4,7 @@
     @if (Model.Approvable || Model.UnApprovable)
     {
         <div class="div-button">
-            <button type="submit" form="MainForm" class="k-button custom-button"> <img src="~/Content/Images/New/Delete32m.png" alt="" /> @(Model.Approvable ? "Duyệt" : "Hủy duyệt") </button>
+            <button type="submit" form="MainForm" class="k-button custom-button"> <img src="~/Content/Images/New/Delete32m.png" alt="" /> Xác nhận @(Model.Approvable ? "duyệt" : "hủy duyệt") </button>
         </div>
     }
     else

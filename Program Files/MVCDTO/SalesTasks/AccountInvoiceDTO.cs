@@ -48,6 +48,13 @@ namespace MVCDTO.SalesTasks
         [Display(Name = "Phương thức thanh toán")]
         public int PaymentTermID { get; set; }
 
+
+        #region
+        public string ApiSerialString { get; set; }
+        public int? ApiSerialID { get; set; }
+        public string ResponedMessage { get; set; }
+        #endregion
+
         public override void PerformPresaveRule()
         {
             base.PerformPresaveRule();
