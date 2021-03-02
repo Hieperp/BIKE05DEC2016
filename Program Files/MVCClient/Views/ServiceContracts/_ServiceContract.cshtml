@@ -11,51 +11,52 @@
     {
         @Html.AntiForgeryToken()
 
-        <div class="div-main">
+    <div class="div-main">
 
-            @Html.HiddenFor(model => model.ServiceContractID)
-            @Html.HiddenFor(model => model.SalesInvoiceDetailID)
+        @Html.HiddenFor(model => model.ServiceContractID)
+        @Html.HiddenFor(model => model.SalesInvoiceDetailID)
 
-            @Html.HiddenFor(model => model.SubmitTypeOption)
+        @Html.HiddenFor(model => model.LocationID)
+        @Html.HiddenFor(model => model.SubmitTypeOption)
 
 
-            <div class="div-left">
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
-                    </div>
+        <div class="div-left">
+            <div class="form-group1">
+                @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group1">
+                @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.LicensePlate, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.LicensePlate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.LicensePlate, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group1">
+                @Html.LabelFor(model => model.LicensePlate, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.LicensePlate).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.LicensePlate, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().DatePickerFor(model => model.PurchaseDate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group1">
+                @Html.LabelFor(model => model.PurchaseDate, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().DatePickerFor(model => model.PurchaseDate).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.AgentName, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @(Html.Kendo().AutoCompleteFor(model => model.AgentName)
+            <div class="form-group1">
+                @Html.LabelFor(model => model.AgentName, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @(Html.Kendo().AutoCompleteFor(model => model.AgentName)
                             .DataSource(source =>
                             {
                                 source.Read(read =>
@@ -66,26 +67,26 @@
                             })
                             .HtmlAttributes(new { @class = "input-class" })
                         )
-                        @Html.ValidationMessageFor(model => model.AgentName, "", new { @class = "text-danger" })
-                    </div>
+                    @Html.ValidationMessageFor(model => model.AgentName, "", new { @class = "text-danger" })
                 </div>
-
             </div>
 
+        </div>
 
-            <div class="div-right">
-                <div class="contract-separator">
-                    <div id="customer-div" class="customer-background">
-                        @if (@Model.SalesInvoiceDetailID > 0 || !@Model.Deletable)
-                        {
-                            @Html.Partial("~/Views/Helpers/Commons/_CustomerMaskedTextBox.cshtml")}
-                        else
-                        {
-                            @Html.Partial("~/Views/Helpers/Commons/_CustomerAutoComplete.cshtml")}
-                    </div>
+
+        <div class="div-right">
+            <div class="contract-separator">
+                <div id="customer-div" class="customer-background">
+                    @if (@Model.SalesInvoiceDetailID > 0 || !@Model.Deletable)
+                    {
+                        @Html.Partial("~/Views/Helpers/Commons/_CustomerMaskedTextBox.cshtml")}
+                    else
+                    {
+                        @Html.Partial("~/Views/Helpers/Commons/_CustomerAutoComplete.cshtml")}
                 </div>
-                <div class="panel-div" style="margin-top: 0px;">
-                    @(Html.Kendo().PanelBar()
+            </div>
+            <div class="panel-div" style="margin-top: 0px;">
+                @(Html.Kendo().PanelBar()
                     .Name("IntroPanelBar")
                     .Items(items =>
                     {
@@ -228,20 +229,20 @@
                             </text>).HtmlAttributes(new { @class = "panel-class" });
                     })
                     )
-                </div>
-
             </div>
 
-
-            <div class="div-button">
-                @if (Model.Editable)
-                {
-                    <input id="closedSubmitButton" type="submit" formaction="@Url.Action("Edit", "ServiceContracts")" value="Save" class="k-button custom-button" />
-                }
-                <input id="submitCreateWizard" style="display:none" type="submit" formaction="@Url.Action("Edit", "ServiceContracts")" class="k-button custom-button cancel" />
-            </div>
-            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
         </div>
+
+
+        <div class="div-button">
+            @if (Model.Editable)
+            {
+                <input id="closedSubmitButton" type="submit" formaction="@Url.Action("Edit", "ServiceContracts")" value="Save" class="k-button custom-button" />
+            }
+            <input id="submitCreateWizard" style="display:none" type="submit" formaction="@Url.Action("Edit", "ServiceContracts")" class="k-button custom-button cancel" />
+        </div>
+        @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+    </div>
     }
 </div>
 

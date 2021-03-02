@@ -133,6 +133,7 @@ namespace MVCClient.Controllers.SalesTasks
 
                     if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/PublishService.asmx", "http://tempuri.org/ImportAndPublishInv", xmlContent, out responedMessage))
                     {
+                        //<ImportAndPublishInvResult>OK:01GTKT0/001;TT/20E-220564_455</ImportAndPublishInvResult>
                         int i = responedMessage.IndexOf("<ImportAndPublishInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
                         if (i != -1)
                         {
@@ -155,7 +156,7 @@ namespace MVCClient.Controllers.SalesTasks
                         }
                         else
                         {
-                            i = responedMessage.IndexOf("<ImportAndPublishInvResult>ERR");
+                            i = responedMessage.IndexOf("<ImportAndPublishInvResult>");
                             if (i != -1)
                             {
                                 responedMessage = responedMessage.Substring(i + "<ImportAndPublishInvResult>".Length);
@@ -182,7 +183,7 @@ namespace MVCClient.Controllers.SalesTasks
 
 
         #region ImportAndPublishInv
-        [AccessLevelAuthorize, ImportModelStateFromTempData]
+        [AccessLevelAuthorize(GlobalEnums.AccessLevel.Readable), ImportModelStateFromTempData]
         [OnResultExecutingFilterAttribute]
         public virtual ActionResult ClearInvoice(int? id)
         {
@@ -196,7 +197,7 @@ namespace MVCClient.Controllers.SalesTasks
         {
             try
             {
-                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Editable);
+                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Readable);
                 if (accountInvoice == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
                 AccountInvoiceViewModel accountInvoiceViewModel = this.GetViewModel(accountInvoice, true);
@@ -216,41 +217,42 @@ namespace MVCClient.Controllers.SalesTasks
                     #endregion
                     string xmlData = xmlContent;
                     xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
-                    xmlContent += "<x:Header /> <x:Body> <tem:cancelInv> <tem:Account>" + apiAccount + "</tem:Account> <tem:ACpass>" + apiACPass + "</tem:ACpass> <tem:xmlInvData>";
+                    xmlContent += "<x:Header /> <x:Body> <tem:cancelInv> <tem:Account>" + apiAccount + "</tem:Account> <tem:ACpass>" + apiACPass + "</tem:ACpass>";
                     xmlContent += "<tem:fkey>" + fkey + "</tem:fkey>";
-                    xmlContent += "</tem:xmlInvData><tem:username>" + apiUserName + "</tem:username><tem:userPass>" + apiPassWord + "</tem:userPass>";
+                    xmlContent += "<tem:userName>" + apiUserName + "</tem:userName><tem:userPass>" + apiPassWord + "</tem:userPass>";
                     xmlContent += "</tem:cancelInv></x:Body></x:Envelope>";
 
-                    //<cancelInvResult>OK:</cancelInvResult>
+                    
                     if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/BusinessService.asmx", "http://tempuri.org/cancelInv", xmlContent, out responedMessage))
                     {
-                        int i = responedMessage.IndexOf("<CancelInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
+                        //<cancelInvResult>OK:</cancelInvResult>
+                        int i = responedMessage.IndexOf("<cancelInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
                         if (i != -1)
                         {
-                            responedMessage = responedMessage.Substring(i + "<CancelInvResult>".Length);
-                            i = responedMessage.IndexOf("</CancelInvResult>");
+                            responedMessage = responedMessage.Substring(i + "<cancelInvResult>".Length);
+                            i = responedMessage.IndexOf("</cancelInvResult>");
                             if (i != -1)
                             {
                                 responedMessage = responedMessage.Substring(0, i);
-                                i = responedMessage.IndexOf(invoiceSerial + "-" + fkey + "_");
-                                if (i != -1)
-                                {
-                                    apiSerialString = responedMessage.Substring(i + (invoiceSerial + "-" + fkey + "_").Length);
-                                    int.TryParse(apiSerialString, out apiSerialID);
-                                }
+                                //i = responedMessage.IndexOf(invoiceSerial + "-" + fkey + "_");
+                                //if (i != -1)
+                                //{
+                                //    apiSerialString = responedMessage.Substring(i + (invoiceSerial + "-" + fkey + "_").Length);
+                                //    int.TryParse(apiSerialString, out apiSerialID);
+                                //}
                             }
 
-                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+                            this.accountInvoiceService.ClearAccountInvoiceApi(accountInvoice.AccountInvoiceID);
 
                             return View("PublishSucceed", accountInvoice);
                         }
                         else
                         {
-                            i = responedMessage.IndexOf("<CancelInvResult>ERR");
+                            i = responedMessage.IndexOf("<cancelInvResult>");
                             if (i != -1)
                             {
-                                responedMessage = responedMessage.Substring(i + "<CancelInvResult>".Length);
-                                i = responedMessage.IndexOf("</CancelInvResult>");
+                                responedMessage = responedMessage.Substring(i + "<cancelInvResult>".Length);
+                                i = responedMessage.IndexOf("</cancelInvResult>");
                                 if (i != -1) responedMessage = responedMessage.Substring(0, i);
                             }
                             throw new System.ArgumentException("Lỗi xóa HĐ điện tử", responedMessage);
@@ -260,7 +262,7 @@ namespace MVCClient.Controllers.SalesTasks
                         throw new System.ArgumentException("Lỗi xóa HĐ điện tử", responedMessage);
                 }
                 else
-                    throw new System.ArgumentException("Lỗi xóa HĐ điện tử", "Không thể mở hóa đơn để xóa.");
+                    throw new System.ArgumentException("Lỗi xóa HĐ điện tử", "Bạn không có quyền xóa hóa đơn này.");
             }
             catch (Exception exception)
             {

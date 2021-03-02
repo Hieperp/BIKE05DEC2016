@@ -78,7 +78,7 @@ namespace MVCService
 
         public virtual bool GlobalLocked(TDto dto)
         {
-            return (dto.EntryDate <= this.genericRepository.GetEditLockedDate(this.LocationID, this.nmvnTaskID));
+            return (dto.EntryDate <= this.genericRepository.GetEditLockedDate(dto.LocationID, this.nmvnTaskID));
         }
 
         public override GlobalEnums.AccessLevel GetAccessLevel(int? organizationalUnitID)

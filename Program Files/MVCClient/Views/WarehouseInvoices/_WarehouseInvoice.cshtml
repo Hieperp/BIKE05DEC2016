@@ -14,6 +14,7 @@
         @Html.HiddenFor(model => model.TotalGrossAmount)
         @Html.HiddenFor(model => model.AverageDiscountPercent)
 
+        @Html.HiddenFor(model => model.LocationID)
         @Html.HiddenFor(model => model.SubmitTypeOption)
 
         <div id="popupWindow"></div>
@@ -89,7 +90,7 @@
                         {
                             <div class="div-row3 warehouse-lmargin" style="padding-top: 34px;">
                                 <div class="div-row3">
-                                    <div class="div-input" style="margin-left: 0px;">                                        
+                                    <div class="div-input" style="margin-left: 0px;">
                                         @Html.Kendo().MaskedTextBoxFor(model => model.SourceWarehouseName).HtmlAttributes(new { @class = "input-class1", @readonly = "readonly" })
                                     </div>
                                 </div>
@@ -107,7 +108,7 @@
                             columns.Template(t => { }).Title("&nbsp;").ClientTemplate("#= RowNumber(data) #").Width(35);
                             columns.Bound(p => p.VATInvoiceNo).DisplayNameTitle().Filterable(false).Hidden(Model.SourceWarehouseID != null)
                                 .ClientTemplate("#= (VATInvoiceNo == null)? '' : VATInvoiceNo #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].VATInvoiceNo' value='#= (VATInvoiceNo == null) ? '' : VATInvoiceNo #' />");
-                            
+
                             columns.Bound(p => p.WarehouseInvoiceDetailID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= WarehouseInvoiceDetailID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].WarehouseInvoiceDetailID' value='#= WarehouseInvoiceDetailID #' />");
                             columns.Bound(p => p.WarehouseInvoiceID).DisplayNameTitle().Filterable(false).Hidden()
@@ -132,7 +133,7 @@
                             columns.Bound(p => p.CommodityName).DisplayNameTitle().Filterable(false).Width(242)
                                 .ClientFooterTemplate("Tổng cộng:")
                                 .ClientTemplate("#= CommodityName #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityName' value='#= CommodityName #' />");
-                                                     
+
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='WarehouseInvoiceViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
 
@@ -307,10 +308,10 @@
                     @*<button id="closedSubmitButton_NMVN" type="submit" onclick="$('#PrintAfterClosedSubmit').val(true);" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>*@
                 }
                 @*else
-                {
-                    <button formaction="@Url.Action("Print", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
-                    <button formaction="@Url.Action("PrintDetail", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
-                }*@
+                    {
+                        <button formaction="@Url.Action("Print", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In hóa đơn</button>
+                        <button formaction="@Url.Action("PrintDetail", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID })" class="k-button custom-button"> <img src="~/Content/Images/New/Apps-printer-icon.png" alt="SavePreview" /> In bảng kê</button>
+                    }*@
 
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID, pgid = 0 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn </button>
                 <button type="button" class="k-button custom-button" onclick="window.open('@Url.Action("PrintInvoice", "WarehouseInvoices", new { id = @Model.WarehouseInvoiceID, pgid = 1 })')"> <img src="~/Content/Images/New/Apps-printer-icon.png" /> In hóa đơn rút gọn </button>

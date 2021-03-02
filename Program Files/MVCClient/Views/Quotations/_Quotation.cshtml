@@ -15,6 +15,7 @@
         @Html.HiddenFor(model => model.TotalGrossAmount)
         @Html.HiddenFor(model => model.AverageDiscountPercent)
 
+        @Html.HiddenFor(model => model.LocationID)
         @Html.HiddenFor(model => model.SubmitTypeOption)
 
         <div id="popupWindow"></div>
@@ -77,7 +78,7 @@
 
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='QuotationViewDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
-                            
+
 
                             columns.Bound(p => p.QuantityAvailable).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(50)
                                 .Format("{0:n0}")
@@ -115,7 +116,7 @@
                             columns.Bound(p => p.GrossPrice).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
                                 .Format("{0:n0}")
                                 .ClientTemplate("#= kendo.format('{0:n0}', GrossPrice) #" + "<input type='hidden' name='QuotationViewDetails[#= index(data) #].GrossPrice' value='#= GrossPrice #' />");
-                            
+
                             columns.Bound(p => p.GrossAmount).DisplayNameTitle().Filterable(false).HtmlAttributes(new { @class = "grid-number-column" }).Width(90)
                                 .Format("{0:n0}")
                                 .ClientFooterTemplate("#= kendo.format('{0:n0}', sum) #")
@@ -222,7 +223,7 @@
                                                 </div>
                                             </div>
 
-                                           
+
                                             @Html.Partial("~/Views/Helpers/Commons/_PaymentTermDropDown.cshtml")
                                         </div>
                                         <div class="div-panel-right">
@@ -235,7 +236,7 @@
                         )
                     </div>
 
-                    
+
 
 
 

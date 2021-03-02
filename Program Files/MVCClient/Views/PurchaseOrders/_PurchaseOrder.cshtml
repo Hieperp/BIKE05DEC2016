@@ -6,79 +6,80 @@
         @Html.AntiForgeryToken()
 
 
-        <div class="div-main">
+    <div class="div-main">
 
-            @Html.HiddenFor(model => model.PurchaseOrderID)
-            @Html.HiddenFor(model => model.SupplierID)
-            @Html.HiddenFor(model => model.TotalQuantity)
-            @Html.HiddenFor(model => model.TotalAmount)
-            @Html.HiddenFor(model => model.TotalVATAmount)
-            @Html.HiddenFor(model => model.TotalGrossAmount)
+        @Html.HiddenFor(model => model.PurchaseOrderID)
+        @Html.HiddenFor(model => model.SupplierID)
+        @Html.HiddenFor(model => model.TotalQuantity)
+        @Html.HiddenFor(model => model.TotalAmount)
+        @Html.HiddenFor(model => model.TotalVATAmount)
+        @Html.HiddenFor(model => model.TotalGrossAmount)
 
-            @Html.HiddenFor(model => model.SubmitTypeOption)
+        @Html.HiddenFor(model => model.LocationID)
+        @Html.HiddenFor(model => model.SubmitTypeOption)
 
-            <div class="div-left">
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
-                    </div>
+        <div class="div-left">
+            <div class="form-group1">
+                @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().DateTimePickerFor(model => model.EntryDate).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
                 </div>
-
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group1">
-                    <div class="div-label">
-                        @Html.LabelFor(model => model.ConfirmDate, htmlAttributes: new { @class = "control-label-left" })
-                    </div>
-                    <div class="div-input">
-                        @Html.Kendo().DatePickerFor(model => model.ConfirmDate).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.ConfirmDate, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group1">
-                    <div class="div-label">
-                        @Html.LabelFor(model => model.ConfirmReference, htmlAttributes: new { @class = "control-label-left" })
-                    </div>
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.ConfirmReference).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.ConfirmReference, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.AttentionName, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.AttentionName).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.AttentionName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group1">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label-left" })
-                    <div class="div-input">
-                        @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
             </div>
 
-            <div class="div-right">
-                <div class="contract-separator">
-                    @Html.Partial("~/Views/Purchases/_NoOrderInvoice.cshtml")
+            <div class="form-group1">
+                @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.Reference).HtmlAttributes(new { @class = "input-class", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div>
-                    @(Html.Kendo().Grid(Model.PurchaseOrderDetails)
+            <div class="form-group1">
+                <div class="div-label">
+                    @Html.LabelFor(model => model.ConfirmDate, htmlAttributes: new { @class = "control-label-left" })
+                </div>
+                <div class="div-input">
+                    @Html.Kendo().DatePickerFor(model => model.ConfirmDate).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.ConfirmDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group1">
+                <div class="div-label">
+                    @Html.LabelFor(model => model.ConfirmReference, htmlAttributes: new { @class = "control-label-left" })
+                </div>
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.ConfirmReference).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.ConfirmReference, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group1">
+                @Html.LabelFor(model => model.AttentionName, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.AttentionName).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.AttentionName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group1">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.Description).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="div-right">
+            <div class="contract-separator">
+                @Html.Partial("~/Views/Purchases/_NoOrderInvoice.cshtml")
+            </div>
+
+            <div>
+                @(Html.Kendo().Grid(Model.PurchaseOrderDetails)
                         .Name("kendoGridDetails")
                         .Columns(columns =>
                         {
@@ -104,7 +105,7 @@
 
                             columns.Bound(p => p.CommodityTypeID).DisplayNameTitle().Filterable(false).Hidden()
                                 .ClientTemplate("#= CommodityTypeID #" + "<input type='hidden' name='PurchaseOrderDetails[#= index(data) #].CommodityTypeID' value='#= CommodityTypeID #' />");
-                            
+
                             columns.Bound(p => p.Origin).DisplayNameTitle().Filterable(false).Hidden()
                               .ClientTemplate("#= (Origin == null) ? '' : Origin #" + "<input type='hidden' name='PurchaseOrderDetails[#= index(data) #].Origin' value='#= (Origin == null) ? '' : Origin #' />");
                             columns.Bound(p => p.Packing).DisplayNameTitle().Filterable(false).Hidden()
@@ -162,7 +163,7 @@
                         .ToolBar(toolbar =>
                         {
                             if (Model.Editable)
-                            {     
+                            {
                                 toolbar.Create();
                             }
                             else
@@ -211,10 +212,10 @@
                         )
                     )
 
-                </div>
+            </div>
 
-                <div class="panel-div">
-                    @(Html.Kendo().PanelBar()
+            <div class="panel-div">
+                @(Html.Kendo().PanelBar()
                     .Name("IntroPanelBar")
                     .Items(items =>
                     {
@@ -246,23 +247,23 @@
                             </text>).HtmlAttributes(new { @class = "panel-class" });
                     })
                     )
-                </div>
-
             </div>
 
-            
-            <div class="div-button">
-                @if (Model.Editable)
-                { 
-                    <input id="closedSubmitButton" type="submit" value="Save" class="k-button custom-button" />
-                }
-            </div>
-            @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        </div>
+
+
+        <div class="div-button">
             @if (Model.Editable)
             {
-                <div><input type="file" name="xlfile" id="xlf" /></div>
+                <input id="closedSubmitButton" type="submit" value="Save" class="k-button custom-button" />
             }
         </div>
+        @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
+        @if (Model.Editable)
+        {
+            <div><input type="file" name="xlfile" id="xlf" /></div>
+        }
+    </div>
     }
 
 </div>
