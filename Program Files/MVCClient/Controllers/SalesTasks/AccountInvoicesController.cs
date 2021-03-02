@@ -202,8 +202,8 @@ namespace MVCClient.Controllers.SalesTasks
 
                 AccountInvoiceViewModel accountInvoiceViewModel = this.GetViewModel(accountInvoice, true);
 
-                if (accountInvoiceViewModel.Approved && this.GenericService.GetUnApprovalPermitted(accountInvoice.OrganizationalUnitID) && this.GenericService.UnApprovable(accountInvoiceViewModel))
-                {
+                if (accountInvoiceViewModel.Approved && this.GenericService.GetUnApprovalPermitted(accountInvoice.OrganizationalUnitID))
+                { //NEED GetUnApprovalPermitted IN ORDER TO CLEAR API INVOICE
                     string xmlContent = ""; string responedMessage = "";
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 

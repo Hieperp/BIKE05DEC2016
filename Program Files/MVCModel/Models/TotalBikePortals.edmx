@@ -56,6 +56,7 @@
           <Property Name="VATInvoiceSeries" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiApprovedDate" Type="datetime" />
           <Property Name="ApiSerialString" Type="nvarchar" MaxLength="30" />
           <Property Name="ApiSerialID" Type="int" />
           <Property Name="ResponedMessage" Type="nvarchar" MaxLength="100" />
@@ -3833,10 +3834,10 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="ResponedMessage" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="AccountInvoiceApproved" ReturnType="Collection(String)">
-            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          <Parameter Name="EntityID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AccountInvoiceEditable" ReturnType="Collection(String)">
-            <Parameter Name="EntityID" Mode="In" Type="Int32" />
+          <Parameter Name="EntityID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AccountInvoiceToggleApproved">
             <Parameter Name="EntityID" Mode="In" Type="Int32" />
@@ -5913,6 +5914,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="ApiSerialString" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="ApiSerialID" Type="Int32" />
           <Property Name="ResponedMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiApprovedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
           <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
@@ -8390,6 +8392,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <EntitySetMapping Name="AccountInvoices">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
               <MappingFragment StoreEntitySet="AccountInvoices">
+                <ScalarProperty Name="ApiApprovedDate" ColumnName="ApiApprovedDate" />
                 <ScalarProperty Name="ResponedMessage" ColumnName="ResponedMessage" />
                 <ScalarProperty Name="ApiSerialID" ColumnName="ApiSerialID" />
                 <ScalarProperty Name="ApiSerialString" ColumnName="ApiSerialString" />
