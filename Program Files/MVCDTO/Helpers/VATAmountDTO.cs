@@ -20,7 +20,7 @@ namespace MVCDTO.Helpers
             if (this.TotalGrossAmount != this.GetTotalGrossAmount()) yield return new ValidationResult("Lỗi tổng tiền sau thuế", new[] { "TotalGrossAmount" });
         }
 
-        protected virtual decimal GetTotalVATAmount() { return this.DtoDetails().Select(o => o.VATAmount).Sum(); }
-        protected virtual decimal GetTotalGrossAmount() { return this.DtoDetails().Select(o => o.GrossAmount).Sum(); }
+        public virtual decimal GetTotalVATAmount() { return this.DtoDetails().Select(o => o.VATAmount).Sum(); }
+        public virtual decimal GetTotalGrossAmount() { return this.DtoDetails().Select(o => o.GrossAmount).Sum(); }
     }
 }

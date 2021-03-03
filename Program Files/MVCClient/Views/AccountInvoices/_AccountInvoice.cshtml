@@ -293,7 +293,7 @@
                 }
                 @if (Model.AccountInvoiceID > 0 && Model.Approved)
                 {
-                    <button type="button" class="k-button custom-button" onclick="callPublishClearInvoice(@(string.IsNullOrEmpty(Model.ApiMessage)? 1: 0) )"> <img src="~/Content/Images/Mains/invoiceRed.png" /> @(string.IsNullOrEmpty(Model.ApiMessage) ? "Xuất HĐ điện tử" : "Xóa HĐ điện tử [" + Model.ApiMessage + "]" ) </button>
+                    <button type="button" class="k-button custom-button" onclick="callPublishClearInvoice(@(string.IsNullOrEmpty(Model.ApiMessage)? 1: 0) )"> <img src="~/Content/Images/Mains/@(string.IsNullOrEmpty(Model.ApiMessage) ? "invoiceRed.png" : "invoiceO.png")" /> @(string.IsNullOrEmpty(Model.ApiMessage) ? "Xuất HĐ điện tử" : "Xóa HĐ điện tử [" + Model.ApiMessage + "]" ) </button>
                 }
             </div>
             <div class="div-button">

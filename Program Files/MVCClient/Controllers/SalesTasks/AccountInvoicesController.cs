@@ -77,7 +77,7 @@ namespace MVCClient.Controllers.SalesTasks
                 {
 
                     Invoices invoices = new Invoices();
-                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID).ToString() + (accountInvoiceSheets[0].ApiPublishID == null ? "" : "#" + accountInvoiceSheets[0].AccountInvoiceID.ToString()) };
+                    invoices.Inv = new Inv() { key = (accountInvoiceSheets[0].AccountInvoiceID).ToString() + (accountInvoiceSheets[0].ApiPublishID == null ? "" : "#" + accountInvoiceSheets[0].ApiPublishID.ToString()) };
 
                     invoices.Inv.Invoice.ArisingDate = accountInvoiceSheets[0].VATInvoiceDate.ToString("dd/MM/yyyy");
 
@@ -116,12 +116,12 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
                     #region MyRegion
-                    string apiAccount = "tanthanh-cn1admin";
-                    string apiACPass = "Einv@oi@vn#pt20";
-                    string apiUserName = "tanthanhcn1service";
-                    string apiPassWord = "Einv@oi@vn#pt20";
-                    string invoicePattern = "01GTKT0/001";
-                    string invoiceSerial = "TT/20E";
+                    string apiAccount = accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
+                    string apiACPass = accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
+                    string apiUserName = accountInvoiceSheets[0].ApiUsername;// "tanthanhcn1service";
+                    string apiPassWord = accountInvoiceSheets[0].ApiPass;// "Einv@oi@vn#pt20";
+                    string invoicePattern = accountInvoiceSheets[0].ApiPattern;// "01GTKT0/001";
+                    string invoiceSerial = accountInvoiceSheets[0].ApiSerial;// "TT/20E";
                     #endregion
                     string xmlData = xmlContent;
                     xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
@@ -131,7 +131,7 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent += "<tem:pattern>" + invoicePattern + "</tem:pattern><tem:serial>" + invoiceSerial + "</tem:serial><tem:convert>0</tem:convert></tem:ImportAndPublishInv></x:Body></x:Envelope>";
 
 
-                    if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/PublishService.asmx", "http://tempuri.org/ImportAndPublishInv", xmlContent, out apiMessage))
+                    if (this.SOAPPost("https://" + accountInvoiceSheets[0].ApiURL + "/PublishService.asmx", "http://tempuri.org/ImportAndPublishInv", xmlContent, out apiMessage))
                     {
                         //<ImportAndPublishInvResult>OK:01GTKT0/001;TT/20E-220564_455</ImportAndPublishInvResult>
                         int i = apiMessage.IndexOf("<ImportAndPublishInvResult>OK"); string apiSerialString = null; int apiSerialID = 0;
@@ -204,15 +204,19 @@ namespace MVCClient.Controllers.SalesTasks
 
                 if (accountInvoiceViewModel.Approved && this.GenericService.GetUnApprovalPermitted(accountInvoice.OrganizationalUnitID))
                 { //NEED GetUnApprovalPermitted IN ORDER TO CLEAR API INVOICE
+                    string fkey = "";
+
+                    List<AccountInvoiceSheet> accountInvoiceSheets = this.accountInvoiceService.GetAccountInvoiceSheet(accountInvoice.AccountInvoiceID);
+                    if (accountInvoiceSheets.Count > 0 && accountInvoiceSheets[0].Approved) { fkey = (accountInvoiceSheets[0].AccountInvoiceID).ToString() + (accountInvoiceSheets[0].ApiPublishID == null ? "" : "#" + accountInvoiceSheets[0].ApiPublishID.ToString()); } else throw new System.ArgumentException("Lỗi xuất HĐ điện tử", "Không thể mở hóa đơn để xóa.");
+
                     string xmlContent = ""; string apiMessage = "";
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
                     #region MyRegion
-                    string apiAccount = "tanthanh-cn1admin";
-                    string apiACPass = "Einv@oi@vn#pt20";
-                    string apiUserName = "tanthanhcn1service";
-                    string apiPassWord = "Einv@oi@vn#pt20";
-                    string fkey = accountInvoiceViewModel.AccountInvoiceID.ToString();
+                    string apiAccount = accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
+                    string apiACPass = accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
+                    string apiUserName = accountInvoiceSheets[0].ApiUsername;// "tanthanhcn1service";
+                    string apiPassWord = accountInvoiceSheets[0].ApiPass;// "Einv@oi@vn#pt20";
                     #endregion
                     string xmlData = xmlContent;
                     xmlContent = "<x:Envelope xmlns:x='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>";
@@ -222,7 +226,7 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent += "</tem:cancelInv></x:Body></x:Envelope>";
 
 
-                    if (this.SOAPPost("https://tanthanh-cn1admindemo.vnpt-invoice.com.vn/BusinessService.asmx", "http://tempuri.org/cancelInv", xmlContent, out apiMessage))
+                    if (this.SOAPPost("https://" + accountInvoiceSheets[0].ApiURL + "/BusinessService.asmx", "http://tempuri.org/cancelInv", xmlContent, out apiMessage))
                     {
                         //<cancelInvResult>OK:</cancelInvResult>
                         int i = apiMessage.IndexOf("<cancelInvResult>OK");

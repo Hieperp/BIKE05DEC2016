@@ -105,11 +105,6 @@ namespace MVCService.SalesTasks
                     accountInvoiceDTO.PreparedPersonID = vehiclesInvoiceDTO.PreparedPersonID;
                     accountInvoiceDTO.ApproverID = vehiclesInvoiceDTO.ApproverID;
 
-                    accountInvoiceDTO.TotalQuantity = vehiclesInvoiceDTO.TotalQuantity;
-                    accountInvoiceDTO.TotalAmount = vehiclesInvoiceDTO.TotalAmount;
-                    accountInvoiceDTO.TotalVATAmount = vehiclesInvoiceDTO.TotalVATAmount;
-                    accountInvoiceDTO.TotalGrossAmount = vehiclesInvoiceDTO.TotalGrossAmount;
-                    accountInvoiceDTO.AverageDiscountPercent = vehiclesInvoiceDTO.AverageDiscountPercent;
 
                     accountInvoiceDTO.Remarks = vehiclesInvoiceDTO.Remarks;
                     //accountInvoiceDTO.Approved = vehiclesInvoiceDTO.Approved;
@@ -121,6 +116,13 @@ namespace MVCService.SalesTasks
                         if (lDescription.IndexOf(pendingSalesInvoice.CommodityName) < 0) lDescription = lDescription + (lDescription != "" ? ", " : "") + pendingSalesInvoice.CommodityName;
                         accountInvoiceDTO.ViewDetails.Insert(0, new AccountInvoiceDetailDTO { SalesInvoiceDetailID = pendingSalesInvoice.SalesInvoiceDetailID, CommodityID = pendingSalesInvoice.CommodityID, CommodityTypeID = pendingSalesInvoice.CommodityTypeID, Quantity = pendingSalesInvoice.Quantity, ListedPrice = pendingSalesInvoice.ListedPrice, DiscountPercent = pendingSalesInvoice.DiscountPercent, UnitPrice = pendingSalesInvoice.UnitPrice, VATPercent = pendingSalesInvoice.VATPercent, GrossPrice = pendingSalesInvoice.GrossPrice, Amount = pendingSalesInvoice.Amount, VATAmount = pendingSalesInvoice.VATAmount, GrossAmount = pendingSalesInvoice.GrossAmount, IsBonus = pendingSalesInvoice.IsBonus, IsWarrantyClaim = pendingSalesInvoice.IsWarrantyClaim });
                     }
+
+                    accountInvoiceDTO.TotalQuantity = accountInvoiceDTO.GetTotalQuantity();
+                    accountInvoiceDTO.TotalAmount = accountInvoiceDTO.GetTotalAmount();
+                    accountInvoiceDTO.TotalVATAmount = accountInvoiceDTO.GetTotalVATAmount();
+                    accountInvoiceDTO.TotalGrossAmount = accountInvoiceDTO.GetTotalGrossAmount();
+                    accountInvoiceDTO.AverageDiscountPercent = vehiclesInvoiceDTO.AverageDiscountPercent;
+
 
                     accountInvoiceDTO.Description = lDescription.Length > 99 ? lDescription.Substring(0, 98) : lDescription;
 

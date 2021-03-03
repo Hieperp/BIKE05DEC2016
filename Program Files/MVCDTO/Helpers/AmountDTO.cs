@@ -18,6 +18,6 @@ namespace MVCDTO.Helpers
             if (this.TotalAmount != this.GetTotalAmount()) yield return new ValidationResult("Lỗi tổng thành tiền", new[] { "TotalAmount" });
         }
 
-        protected virtual decimal GetTotalAmount() { return this.DtoDetails().Select(o => o.Amount).Sum(); }
+        public virtual decimal GetTotalAmount() { return this.DtoDetails().Select(o => o.Amount).Sum(); }
     }
 }

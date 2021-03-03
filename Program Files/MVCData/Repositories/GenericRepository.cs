@@ -28,7 +28,7 @@ namespace MVCData.Repositories
 
         private readonly string functionNameEditable;
         private readonly string functionNameApproved;
-        private readonly string functionNameDeletable;        
+        private readonly string functionNameDeletable;
 
 
         public GenericRepository(TotalBikePortalsEntities totalBikePortalsEntities)
@@ -47,7 +47,7 @@ namespace MVCData.Repositories
 
             this.functionNameEditable = functionNameEditable;
             this.functionNameApproved = functionNameApproved;
-            this.functionNameDeletable = functionNameDeletable;            
+            this.functionNameDeletable = functionNameDeletable;
         }
 
 
@@ -129,7 +129,7 @@ namespace MVCData.Repositories
 
         public DateTime GetEditLockedDate(int? locationID, GlobalEnums.NmvnTaskID nmvnTaskID)
         {
-            if (nmvnTaskID == GlobalEnums.NmvnTaskID.ServiceContract)
+            if (nmvnTaskID == GlobalEnums.NmvnTaskID.ServiceContract || locationID == 0)
                 return DateTime.Now.AddYears(-20);
             else
             {
