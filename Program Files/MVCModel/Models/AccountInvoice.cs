@@ -23,6 +23,7 @@ namespace MVCModel.Models
         public System.DateTime EntryDate { get; set; }
         public string Reference { get; set; }
         public int CustomerID { get; set; }
+        public int PaymentTermID { get; set; }
         public int UserID { get; set; }
         public int PreparedPersonID { get; set; }
         public int OrganizationalUnitID { get; set; }
@@ -37,6 +38,11 @@ namespace MVCModel.Models
         public string VATInvoiceSeries { get; set; }
         public string Description { get; set; }
         public string Remarks { get; set; }
+        public Nullable<System.DateTime> ApiDate { get; set; }
+        public Nullable<int> ApiPublishID { get; set; }
+        public Nullable<int> ApiSerialID { get; set; }
+        public string ApiSerialString { get; set; }
+        public string ApiMessage { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime EditedDate { get; set; }
         public bool Approved { get; set; }
@@ -44,11 +50,6 @@ namespace MVCModel.Models
         public bool InActive { get; set; }
         public bool InActivePartial { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
-        public int PaymentTermID { get; set; }
-        public string ApiSerialString { get; set; }
-        public Nullable<int> ApiSerialID { get; set; }
-        public string ResponedMessage { get; set; }
-        public Nullable<System.DateTime> ApiApprovedDate { get; set; }
     
         public virtual ICollection<AccountInvoiceDetail> AccountInvoiceDetails { get; set; }
         public virtual Customer Customer { get; set; }

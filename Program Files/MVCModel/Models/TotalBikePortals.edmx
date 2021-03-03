@@ -56,10 +56,11 @@
           <Property Name="VATInvoiceSeries" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
-          <Property Name="ApiApprovedDate" Type="datetime" />
-          <Property Name="ApiSerialString" Type="nvarchar" MaxLength="30" />
+          <Property Name="ApiDate" Type="datetime" />
+          <Property Name="ApiPublishID" Type="int" />
           <Property Name="ApiSerialID" Type="int" />
-          <Property Name="ResponedMessage" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiSerialString" Type="nvarchar" MaxLength="30" />
+          <Property Name="ApiMessage" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="EditedDate" Type="datetime" Nullable="false" />
           <Property Name="Approved" Type="bit" Nullable="false" />
@@ -354,6 +355,14 @@
           <Property Name="LockedDate" Type="datetime" Nullable="false" />
           <Property Name="AspUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="EditedDate" Type="datetime" Nullable="false" />
+          <Property Name="ApiUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="ApiURL" Type="nvarchar" MaxLength="200" />
+          <Property Name="ApiAccount" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiACPass" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiUsername" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiPass" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiPattern" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiSerial" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ModuleDetails">
           <Key>
@@ -2524,7 +2533,18 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
           <Parameter Name="ApiSerialID" Type="int" Mode="In" />
           <Parameter Name="ApiSerialString" Type="nvarchar" Mode="In" />
-          <Parameter Name="ResponedMessage" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiMessage" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateApiSettings" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
+          <Parameter Name="LocationID" Type="int" Mode="In" />
+          <Parameter Name="ApiURL" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiAccount" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiACPass" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiUsername" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiPass" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiPattern" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiSerial" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="UpdateLockedDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AspUserID" Type="nvarchar" Mode="In" />
@@ -3516,19 +3536,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <End Role="Quotation" EntitySet="Quotations" />
           </AssociationSet>
           <EntitySet Name="AccountInvoiceDetails" EntityType="TotalBikePortalsModel.AccountInvoiceDetail" />
-          <EntitySet Name="AccountInvoices" EntityType="TotalBikePortalsModel.AccountInvoice" />
-          <AssociationSet Name="FK_AccountInvoiceDetails_AccountInvoices" Association="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices">
-            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
-            <End Role="AccountInvoiceDetail" EntitySet="AccountInvoiceDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AccountInvoices_Customers" Association="TotalBikePortalsModel.FK_AccountInvoices_Customers">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AccountInvoices_Locations" Association="TotalBikePortalsModel.FK_AccountInvoices_Locations">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
-          </AssociationSet>
           <FunctionImport Name="GetAccountInvoiceIndexes" ReturnType="Collection(TotalBikePortalsModel.AccountInvoiceIndex)">
             <Parameter Name="AspUserID" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -3831,7 +3838,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
             <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="ApiSerialID" Mode="In" Type="Int32" />
             <Parameter Name="ApiSerialString" Mode="In" Type="String" />
-            <Parameter Name="ResponedMessage" Mode="In" Type="String" />
+            <Parameter Name="ApiMessage" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="AccountInvoiceApproved" ReturnType="Collection(String)">
           <Parameter Name="EntityID" Mode="In" Type="Int32" />
@@ -3842,6 +3849,30 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <FunctionImport Name="AccountInvoiceToggleApproved">
             <Parameter Name="EntityID" Mode="In" Type="Int32" />
             <Parameter Name="Approved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <EntitySet Name="AccountInvoices" EntityType="TotalBikePortalsModel.AccountInvoice" />
+          <AssociationSet Name="FK_AccountInvoiceDetails_AccountInvoices" Association="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices">
+            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
+            <End Role="AccountInvoiceDetail" EntitySet="AccountInvoiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountInvoices_Customers" Association="TotalBikePortalsModel.FK_AccountInvoices_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountInvoices_Locations" Association="TotalBikePortalsModel.FK_AccountInvoices_Locations">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="AccountInvoice" EntitySet="AccountInvoices" />
+          </AssociationSet>
+          <FunctionImport Name="UpdateApiSettings">
+            <Parameter Name="AspUserID" Mode="In" Type="String" />
+            <Parameter Name="LocationID" Mode="In" Type="Int32" />
+            <Parameter Name="ApiURL" Mode="In" Type="String" />
+            <Parameter Name="ApiAccount" Mode="In" Type="String" />
+            <Parameter Name="ApiACPass" Mode="In" Type="String" />
+            <Parameter Name="ApiUsername" Mode="In" Type="String" />
+            <Parameter Name="ApiPass" Mode="In" Type="String" />
+            <Parameter Name="ApiPattern" Mode="In" Type="String" />
+            <Parameter Name="ApiSerial" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="PurchaseInvoiceViewDetail">
@@ -4279,7 +4310,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="TransferOrders" Relationship="TotalBikePortalsModel.FK_TransferOrders_Locations" FromRole="Location" ToRole="TransferOrder" />
           <Property Name="OfficialName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Employees" Relationship="TotalBikePortalsModel.FK_Employees_Locations" FromRole="Location" ToRole="Employee" />
-          <NavigationProperty Name="AccountInvoices" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="Location" ToRole="AccountInvoice" />
           <Property Name="LockedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AspUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -4287,6 +4317,15 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="SalesInvoices" Relationship="TotalBikePortalsModel.FK_SalesInvoices_Locations" FromRole="Location" ToRole="SalesInvoice" />
           <Property Name="Taxcode" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="WarehouseInvoices" Relationship="TotalBikePortalsModel.FK_WarehouseInvoices_Locations" FromRole="Location" ToRole="WarehouseInvoice" />
+          <Property Name="ApiUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ApiURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ApiAccount" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiACPass" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiUsername" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiPass" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiPattern" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiSerial" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AccountInvoices" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="Location" ToRole="AccountInvoice" />
           </EntityType>
         <EntityType Name="PaymentTerm">
           <Key>
@@ -4824,9 +4863,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="PurchaseOrders" Relationship="TotalBikePortalsModel.FK_PurchaseOrders_Customers" FromRole="Customer" ToRole="PurchaseOrder" />
           <NavigationProperty Name="ServiceContracts" Relationship="TotalBikePortalsModel.FK_ServiceContracts_Customers" FromRole="Customer" ToRole="ServiceContract" />
           <NavigationProperty Name="Quotations" Relationship="TotalBikePortalsModel.FK_Quotations_Customers" FromRole="Customer" ToRole="Quotation" />
-          <NavigationProperty Name="AccountInvoices" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="Customer" ToRole="AccountInvoice" />
           <NavigationProperty Name="InventoryAdjustments" Relationship="TotalBikePortalsModel.FK_InventoryAdjustments_Customers" FromRole="Customer" ToRole="InventoryAdjustment" />
           <NavigationProperty Name="SalesInvoices" Relationship="TotalBikePortalsModel.FK_SalesInvoices_Customers" FromRole="Customer" ToRole="SalesInvoice" />
+          <NavigationProperty Name="AccountInvoices" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="Customer" ToRole="AccountInvoice" />
         </EntityType>
         <EntityType Name="EntireTerritory">
           <Key>
@@ -5875,83 +5914,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="SalesInvoiceDetailID" Type="Int32" Nullable="false" />
           <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AccountInvoice" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoiceDetail" ToRole="AccountInvoice" />
           <NavigationProperty Name="SalesInvoiceDetail" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_SalesInvoiceDetails" FromRole="AccountInvoiceDetail" ToRole="SalesInvoiceDetail" />
+          <NavigationProperty Name="AccountInvoice" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoiceDetail" ToRole="AccountInvoice" />
         </EntityType>
-        <EntityType Name="AccountInvoice">
-          <Key>
-            <PropertyRef Name="AccountInvoiceID" />
-          </Key>
-          <Property Name="AccountInvoiceID" Type="Int32" Nullable="false" />
-          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Reference" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="PreparedPersonID" Type="Int32" Nullable="false" />
-          <Property Name="OrganizationalUnitID" Type="Int32" Nullable="false" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="ApproverID" Type="Int32" Nullable="false" />
-          <Property Name="TotalQuantity" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalVATAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalGrossAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="VATInvoiceNo" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="VATInvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="VATInvoiceSeries" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Approved" Type="Boolean" Nullable="false" />
-          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
-          <Property Name="InActive" Type="Boolean" Nullable="false" />
-          <Property Name="InActivePartial" Type="Boolean" Nullable="false" />
-          <Property Name="InActiveDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="AccountInvoiceDetails" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoice" ToRole="AccountInvoiceDetail" />
-          <NavigationProperty Name="Customer" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="AccountInvoice" ToRole="Customer" />
-          <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="AccountInvoice" ToRole="Location" />
-          <Property Name="PaymentTermID" Type="Int32" Nullable="false" />
-          <Property Name="ApiSerialString" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="ApiSerialID" Type="Int32" />
-          <Property Name="ResponedMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ApiApprovedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
-          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
-          <End Type="TotalBikePortalsModel.AccountInvoiceDetail" Role="AccountInvoiceDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AccountInvoice">
-              <PropertyRef Name="AccountInvoiceID" />
-            </Principal>
-            <Dependent Role="AccountInvoiceDetail">
-              <PropertyRef Name="AccountInvoiceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AccountInvoices_Customers">
-          <End Type="TotalBikePortalsModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CustomerID" />
-            </Principal>
-            <Dependent Role="AccountInvoice">
-              <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AccountInvoices_Locations">
-          <End Type="TotalBikePortalsModel.Location" Role="Location" Multiplicity="1" />
-          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="LocationID" />
-            </Principal>
-            <Dependent Role="AccountInvoice">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="AccountInvoiceIndex">
           <Property Type="Int32" Name="AccountInvoiceID" Nullable="false" />
           <Property Type="DateTime" Name="EntryDate" Nullable="true" />
@@ -6881,7 +6846,90 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="LocationFacsimile" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="Telephone" Nullable="false" MaxLength="100" />
           <Property Type="Boolean" Name="Approved" Nullable="false" />
+          <Property Type="Int32" Name="ApiPublishID" Nullable="true" />
+          <Property Type="String" Name="ApiURL" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ApiAccount" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApiACPass" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApiUsername" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApiPass" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApiPattern" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApiSerial" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="AccountInvoice">
+          <Key>
+            <PropertyRef Name="AccountInvoiceID" />
+          </Key>
+          <Property Name="AccountInvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Reference" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentTermID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PreparedPersonID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationalUnitID" Type="Int32" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="ApproverID" Type="Int32" Nullable="false" />
+          <Property Name="TotalQuantity" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalVATAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalGrossAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="VATInvoiceNo" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="VATInvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VATInvoiceSeries" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApiDate" Type="DateTime" Precision="3" />
+          <Property Name="ApiPublishID" Type="Int32" />
+          <Property Name="ApiSerialID" Type="Int32" />
+          <Property Name="ApiSerialString" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ApiMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EditedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Approved" Type="Boolean" Nullable="false" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+          <Property Name="InActive" Type="Boolean" Nullable="false" />
+          <Property Name="InActivePartial" Type="Boolean" Nullable="false" />
+          <Property Name="InActiveDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AccountInvoiceDetails" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoice" ToRole="AccountInvoiceDetail" />
+          <NavigationProperty Name="Customer" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="AccountInvoice" ToRole="Customer" />
+          <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="AccountInvoice" ToRole="Location" />
+        </EntityType>
+        <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
+          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
+          <End Type="TotalBikePortalsModel.AccountInvoiceDetail" Role="AccountInvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountInvoice">
+              <PropertyRef Name="AccountInvoiceID" />
+            </Principal>
+            <Dependent Role="AccountInvoiceDetail">
+              <PropertyRef Name="AccountInvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountInvoices_Customers">
+          <End Type="TotalBikePortalsModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="AccountInvoice">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountInvoices_Locations">
+          <End Type="TotalBikePortalsModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationID" />
+            </Principal>
+            <Dependent Role="AccountInvoice">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7392,6 +7440,14 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.Location">
               <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="ApiSerial" ColumnName="ApiSerial" />
+                <ScalarProperty Name="ApiPattern" ColumnName="ApiPattern" />
+                <ScalarProperty Name="ApiPass" ColumnName="ApiPass" />
+                <ScalarProperty Name="ApiUsername" ColumnName="ApiUsername" />
+                <ScalarProperty Name="ApiACPass" ColumnName="ApiACPass" />
+                <ScalarProperty Name="ApiAccount" ColumnName="ApiAccount" />
+                <ScalarProperty Name="ApiURL" ColumnName="ApiURL" />
+                <ScalarProperty Name="ApiUserID" ColumnName="ApiUserID" />
                 <ScalarProperty Name="Taxcode" ColumnName="Taxcode" />
                 <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
                 <ScalarProperty Name="AspUserID" ColumnName="AspUserID" />
@@ -8389,42 +8445,6 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AccountInvoices">
-            <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
-              <MappingFragment StoreEntitySet="AccountInvoices">
-                <ScalarProperty Name="ApiApprovedDate" ColumnName="ApiApprovedDate" />
-                <ScalarProperty Name="ResponedMessage" ColumnName="ResponedMessage" />
-                <ScalarProperty Name="ApiSerialID" ColumnName="ApiSerialID" />
-                <ScalarProperty Name="ApiSerialString" ColumnName="ApiSerialString" />
-                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
-                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
-                <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
-                <ScalarProperty Name="InActive" ColumnName="InActive" />
-                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
-                <ScalarProperty Name="Approved" ColumnName="Approved" />
-                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="VATInvoiceSeries" ColumnName="VATInvoiceSeries" />
-                <ScalarProperty Name="VATInvoiceDate" ColumnName="VATInvoiceDate" />
-                <ScalarProperty Name="VATInvoiceNo" ColumnName="VATInvoiceNo" />
-                <ScalarProperty Name="TotalGrossAmount" ColumnName="TotalGrossAmount" />
-                <ScalarProperty Name="TotalVATAmount" ColumnName="TotalVATAmount" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
-                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="OrganizationalUnitID" ColumnName="OrganizationalUnitID" />
-                <ScalarProperty Name="PreparedPersonID" ColumnName="PreparedPersonID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
-                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetAccountInvoiceIndexes" FunctionName="TotalBikePortalsModel.Store.GetAccountInvoiceIndexes">
             <ResultMapping>
               <ComplexTypeMapping TypeName="TotalBikePortalsModel.AccountInvoiceIndex">
@@ -9075,6 +9095,14 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
                 <ScalarProperty Name="LocationFacsimile" ColumnName="LocationFacsimile" />
                 <ScalarProperty Name="Telephone" ColumnName="Telephone" />
                 <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="ApiPublishID" ColumnName="ApiPublishID" />
+                <ScalarProperty Name="ApiURL" ColumnName="ApiURL" />
+                <ScalarProperty Name="ApiAccount" ColumnName="ApiAccount" />
+                <ScalarProperty Name="ApiACPass" ColumnName="ApiACPass" />
+                <ScalarProperty Name="ApiUsername" ColumnName="ApiUsername" />
+                <ScalarProperty Name="ApiPass" ColumnName="ApiPass" />
+                <ScalarProperty Name="ApiPattern" ColumnName="ApiPattern" />
+                <ScalarProperty Name="ApiSerial" ColumnName="ApiSerial" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -9083,6 +9111,44 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <FunctionImportMapping FunctionImportName="AccountInvoiceApproved" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceApproved" />
           <FunctionImportMapping FunctionImportName="AccountInvoiceEditable" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceEditable" />
           <FunctionImportMapping FunctionImportName="AccountInvoiceToggleApproved" FunctionName="TotalBikePortalsModel.Store.AccountInvoiceToggleApproved" />
+          <EntitySetMapping Name="AccountInvoices">
+            <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
+              <MappingFragment StoreEntitySet="AccountInvoices">
+                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
+                <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ApiMessage" ColumnName="ApiMessage" />
+                <ScalarProperty Name="ApiSerialString" ColumnName="ApiSerialString" />
+                <ScalarProperty Name="ApiSerialID" ColumnName="ApiSerialID" />
+                <ScalarProperty Name="ApiPublishID" ColumnName="ApiPublishID" />
+                <ScalarProperty Name="ApiDate" ColumnName="ApiDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="VATInvoiceSeries" ColumnName="VATInvoiceSeries" />
+                <ScalarProperty Name="VATInvoiceDate" ColumnName="VATInvoiceDate" />
+                <ScalarProperty Name="VATInvoiceNo" ColumnName="VATInvoiceNo" />
+                <ScalarProperty Name="TotalGrossAmount" ColumnName="TotalGrossAmount" />
+                <ScalarProperty Name="TotalVATAmount" ColumnName="TotalVATAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="OrganizationalUnitID" ColumnName="OrganizationalUnitID" />
+                <ScalarProperty Name="PreparedPersonID" ColumnName="PreparedPersonID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="AccountInvoiceID" ColumnName="AccountInvoiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateApiSettings" FunctionName="TotalBikePortalsModel.Store.UpdateApiSettings" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

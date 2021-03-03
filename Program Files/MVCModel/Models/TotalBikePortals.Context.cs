@@ -63,7 +63,6 @@ namespace MVCModel.Models
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Quotation> Quotations { get; set; }
         public virtual DbSet<AccountInvoiceDetail> AccountInvoiceDetails { get; set; }
-        public virtual DbSet<AccountInvoice> AccountInvoices { get; set; }
         public virtual DbSet<SalesInvoiceDetail> SalesInvoiceDetails { get; set; }
         public virtual DbSet<InventoryAdjustmentDetail> InventoryAdjustmentDetails { get; set; }
         public virtual DbSet<InventoryAdjustment> InventoryAdjustments { get; set; }
@@ -73,6 +72,7 @@ namespace MVCModel.Models
         public virtual DbSet<AccessControl> AccessControls { get; set; }
         public virtual DbSet<WarehouseInvoiceDetail> WarehouseInvoiceDetails { get; set; }
         public virtual DbSet<WarehouseInvoice> WarehouseInvoices { get; set; }
+        public virtual DbSet<AccountInvoice> AccountInvoices { get; set; }
     
         public virtual ObjectResult<PurchaseInvoiceViewDetail> GetPurchaseInvoiceViewDetails(Nullable<int> purchaseInvoiceID, Nullable<int> purchaseOrderID, Nullable<int> supplierID, Nullable<bool> isReadonly)
         {
@@ -1611,7 +1611,7 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClearAccountInvoiceApi", accountInvoiceIDParameter);
         }
     
-        public virtual int UpdateAccountInvoiceApi(Nullable<int> accountInvoiceID, Nullable<int> apiSerialID, string apiSerialString, string responedMessage)
+        public virtual int UpdateAccountInvoiceApi(Nullable<int> accountInvoiceID, Nullable<int> apiSerialID, string apiSerialString, string apiMessage)
         {
             var accountInvoiceIDParameter = accountInvoiceID.HasValue ?
                 new ObjectParameter("AccountInvoiceID", accountInvoiceID) :
@@ -1625,11 +1625,11 @@ namespace MVCModel.Models
                 new ObjectParameter("ApiSerialString", apiSerialString) :
                 new ObjectParameter("ApiSerialString", typeof(string));
     
-            var responedMessageParameter = responedMessage != null ?
-                new ObjectParameter("ResponedMessage", responedMessage) :
-                new ObjectParameter("ResponedMessage", typeof(string));
+            var apiMessageParameter = apiMessage != null ?
+                new ObjectParameter("ApiMessage", apiMessage) :
+                new ObjectParameter("ApiMessage", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAccountInvoiceApi", accountInvoiceIDParameter, apiSerialIDParameter, apiSerialStringParameter, responedMessageParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAccountInvoiceApi", accountInvoiceIDParameter, apiSerialIDParameter, apiSerialStringParameter, apiMessageParameter);
         }
     
         public virtual ObjectResult<string> AccountInvoiceApproved(Nullable<int> entityID)
@@ -1661,6 +1661,47 @@ namespace MVCModel.Models
                 new ObjectParameter("Approved", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AccountInvoiceToggleApproved", entityIDParameter, approvedParameter);
+        }
+    
+        public virtual int UpdateApiSettings(string aspUserID, Nullable<int> locationID, string apiURL, string apiAccount, string apiACPass, string apiUsername, string apiPass, string apiPattern, string apiSerial)
+        {
+            var aspUserIDParameter = aspUserID != null ?
+                new ObjectParameter("AspUserID", aspUserID) :
+                new ObjectParameter("AspUserID", typeof(string));
+    
+            var locationIDParameter = locationID.HasValue ?
+                new ObjectParameter("LocationID", locationID) :
+                new ObjectParameter("LocationID", typeof(int));
+    
+            var apiURLParameter = apiURL != null ?
+                new ObjectParameter("ApiURL", apiURL) :
+                new ObjectParameter("ApiURL", typeof(string));
+    
+            var apiAccountParameter = apiAccount != null ?
+                new ObjectParameter("ApiAccount", apiAccount) :
+                new ObjectParameter("ApiAccount", typeof(string));
+    
+            var apiACPassParameter = apiACPass != null ?
+                new ObjectParameter("ApiACPass", apiACPass) :
+                new ObjectParameter("ApiACPass", typeof(string));
+    
+            var apiUsernameParameter = apiUsername != null ?
+                new ObjectParameter("ApiUsername", apiUsername) :
+                new ObjectParameter("ApiUsername", typeof(string));
+    
+            var apiPassParameter = apiPass != null ?
+                new ObjectParameter("ApiPass", apiPass) :
+                new ObjectParameter("ApiPass", typeof(string));
+    
+            var apiPatternParameter = apiPattern != null ?
+                new ObjectParameter("ApiPattern", apiPattern) :
+                new ObjectParameter("ApiPattern", typeof(string));
+    
+            var apiSerialParameter = apiSerial != null ?
+                new ObjectParameter("ApiSerial", apiSerial) :
+                new ObjectParameter("ApiSerial", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateApiSettings", aspUserIDParameter, locationIDParameter, apiURLParameter, apiAccountParameter, apiACPassParameter, apiUsernameParameter, apiPassParameter, apiPatternParameter, apiSerialParameter);
         }
     }
 }

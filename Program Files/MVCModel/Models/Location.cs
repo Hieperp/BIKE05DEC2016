@@ -21,10 +21,10 @@ namespace MVCModel.Models
             this.ServiceContracts = new HashSet<ServiceContract>();
             this.TransferOrders = new HashSet<TransferOrder>();
             this.Employees = new HashSet<Employee>();
-            this.AccountInvoices = new HashSet<AccountInvoice>();
             this.InventoryAdjustments = new HashSet<InventoryAdjustment>();
             this.SalesInvoices = new HashSet<SalesInvoice>();
             this.WarehouseInvoices = new HashSet<WarehouseInvoice>();
+            this.AccountInvoices = new HashSet<AccountInvoice>();
         }
     
         public int LocationID { get; set; }
@@ -39,15 +39,23 @@ namespace MVCModel.Models
         public string AspUserID { get; set; }
         public System.DateTime EditedDate { get; set; }
         public string Taxcode { get; set; }
+        public string ApiUserID { get; set; }
+        public string ApiURL { get; set; }
+        public string ApiAccount { get; set; }
+        public string ApiACPass { get; set; }
+        public string ApiUsername { get; set; }
+        public string ApiPass { get; set; }
+        public string ApiPattern { get; set; }
+        public string ApiSerial { get; set; }
     
         public virtual ICollection<Warehouse> Warehouses { get; set; }
         public virtual ICollection<OrganizationalUnit> OrganizationalUnits { get; set; }
         public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
         public virtual ICollection<TransferOrder> TransferOrders { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
-        public virtual ICollection<AccountInvoice> AccountInvoices { get; set; }
         public virtual ICollection<InventoryAdjustment> InventoryAdjustments { get; set; }
         public virtual ICollection<SalesInvoice> SalesInvoices { get; set; }
         public virtual ICollection<WarehouseInvoice> WarehouseInvoices { get; set; }
+        public virtual ICollection<AccountInvoice> AccountInvoices { get; set; }
     }
 }

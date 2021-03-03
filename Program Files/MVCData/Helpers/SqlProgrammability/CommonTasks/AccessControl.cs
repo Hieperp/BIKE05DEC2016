@@ -84,6 +84,16 @@ namespace MVCData.Helpers.SqlProgrammability.CommonTasks
             queryString = queryString + "       WHERE       LocationID = @LocationID " + "\r\n";
 
             this.totalBikePortalsEntities.CreateStoredProcedure("UpdateLockedDate", queryString);
+
+            queryString = " @AspUserID nvarchar(128), @LocationID Int, @ApiURL nvarchar(200), @ApiAccount nvarchar(100), @ApiACPass nvarchar(100), @ApiUsername nvarchar(100), @ApiPass nvarchar(100), @ApiPattern nvarchar(100), @ApiSerial nvarchar(100) " + "\r\n";
+            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            queryString = queryString + " AS " + "\r\n";
+
+            queryString = queryString + "       UPDATE      Locations " + "\r\n";
+            queryString = queryString + "       SET         ApiUserID = @AspUserID, ApiURL = @ApiURL, ApiAccount = @ApiAccount, ApiACPass = @ApiACPass, ApiUsername = @ApiUsername, ApiPass = @ApiPass, ApiPattern = @ApiPattern, ApiSerial = @ApiSerial " + "\r\n";
+            queryString = queryString + "       WHERE       LocationID = @LocationID " + "\r\n";
+
+            this.totalBikePortalsEntities.CreateStoredProcedure("UpdateApiSettings", queryString);
         }
     }
 }

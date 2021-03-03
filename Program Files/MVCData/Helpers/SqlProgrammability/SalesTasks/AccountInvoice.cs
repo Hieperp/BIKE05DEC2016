@@ -196,7 +196,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         {
             string[] queryArray = new string[1];
 
-            queryArray[0] = " SELECT TOP 1 @FoundEntity = AccountInvoiceID FROM AccountInvoices WHERE AccountInvoiceID = @EntityID AND NOT ResponedMessage IS NULL ";
+            queryArray[0] = " SELECT TOP 1 @FoundEntity = AccountInvoiceID FROM AccountInvoices WHERE AccountInvoiceID = @EntityID AND NOT ApiMessage IS NULL ";
 
             this.totalBikePortalsEntities.CreateProcedureToCheckExisting("AccountInvoiceEditable", queryArray);
         }
@@ -216,13 +216,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
         private void UpdateAccountInvoiceApi()
         {
-            string queryString = " @AccountInvoiceID int, @ApiSerialID int, @ApiSerialString nvarchar(30), @ResponedMessage nvarchar(100) " + "\r\n";
+            string queryString = " @AccountInvoiceID int, @ApiSerialID int, @ApiSerialString nvarchar(30), @ApiMessage nvarchar(100) " + "\r\n";
             queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiApprovedDate = GetDate(), ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ResponedMessage = @ResponedMessage " + "\r\n";
+            queryString = queryString + "           SET             ApiDate = GetDate(), ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ApiMessage = @ApiMessage " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
@@ -244,7 +244,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiApprovedDate = GetDate(), ApiSerialID = NULL, ApiSerialString = NULL, ResponedMessage = NULL " + "\r\n";
+            queryString = queryString + "           SET             ApiPublishID = IIF(ApiPublishID IS NULL, 1, ApiPublishID + 1), ApiDate = GetDate(), ApiSerialID = NULL, ApiSerialString = NULL, ApiMessage = NULL " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
@@ -280,7 +280,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "                       MINGoodsReceiptDetails.MINSalesInvoiceTypeID, AccountInvoiceCollections.SalesInvoiceDetailID, ISNULL(AccountInvoiceCollections.IsBonus, CAST(0 AS bit)) AS IsBonus, Commodities.CommodityID, Commodities.Code, Commodities.OfficialName + ' ' + ISNULL('(' + AccountInvoiceCollections.Remarks + ')', '') AS Name, Commodities.SalesUnit, AccountInvoiceCollections.LineDescription AS LineDescription, AccountInvoiceCollections.ChassisCode, AccountInvoiceCollections.EngineCode, AccountInvoiceCollections.ColorCode, AccountInvoiceCollections.ColorCodeName, " + "\r\n";
             queryString = queryString + "                       AccountInvoiceCollections.Quantity, AccountInvoiceCollections.UnitPrice, AccountInvoiceCollections.VATPercent, AccountInvoiceCollections.Amount, AccountInvoiceCollections.VATAmount, AccountInvoiceCollections.GrossAmount, " + "\r\n";
             queryString = queryString + "                       AccountInvoices.TotalQuantity, AccountInvoices.TotalAmount, AccountInvoices.TotalVATAmount, AccountInvoices.TotalGrossAmount, dbo.SayVND(AccountInvoices.TotalGrossAmount) AS TotalGrossAmountInWords, AccountInvoices.Description, " + "\r\n";
-            queryString = queryString + "                       Locations.OfficialName AS LocationOfficialName, Locations.Address AS LocationAddress, Locations.Taxcode AS LocationTaxcode, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile, AccountInvoices.Approved " + "\r\n";
+            queryString = queryString + "                       Locations.OfficialName AS LocationOfficialName, Locations.Address AS LocationAddress, Locations.Taxcode AS LocationTaxcode, Locations.Telephone AS LocationTelephone, Locations.Facsimile AS LocationFacsimile, AccountInvoices.Approved, AccountInvoices.ApiPublishID, Locations.ApiURL, Locations.ApiAccount, Locations.ApiACPass, Locations.ApiUsername, Locations.ApiPass, Locations.ApiPattern, Locations.ApiSerial " + "\r\n";
 
             queryString = queryString + "       FROM            (SELECT SalesInvoiceDetails.AccountInvoiceID, SalesInvoiceDetails.SalesInvoiceDetailID, SalesInvoiceDetails.CommodityID, N'' AS LineDescription, SalesInvoiceDetails.Quantity, SalesInvoiceDetails.UnitPrice, SalesInvoiceDetails.Amount, SalesInvoiceDetails.VATPercent, SalesInvoiceDetails.VATAmount, SalesInvoiceDetails.GrossAmount, SalesInvoiceDetails.Remarks, SalesInvoiceDetails.IsBonus, GoodsReceiptDetails.ChassisCode, GoodsReceiptDetails.EngineCode, GoodsReceiptDetails.ColorCode, ISNULL(ColorCodes.Name, GoodsReceiptDetails.ColorCode) AS ColorCodeName FROM SalesInvoiceDetails LEFT JOIN GoodsReceiptDetails ON SalesInvoiceDetails.GoodsReceiptDetailID = GoodsReceiptDetails.GoodsReceiptDetailID LEFT JOIN ColorCodes ON GoodsReceiptDetails.CommodityID = ColorCodes.CommodityID AND GoodsReceiptDetails.ColorCode = ColorCodes.Code WHERE SalesInvoiceDetails.AccountInvoiceID = @LocalAccountInvoiceID) AS AccountInvoiceCollections " + "\r\n";
 

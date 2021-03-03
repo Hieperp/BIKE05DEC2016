@@ -58,5 +58,13 @@ namespace MVCModel.Models
         public string LocationFacsimile { get; set; }
         public string Telephone { get; set; }
         public bool Approved { get; set; }
+        public Nullable<int> ApiPublishID { get; set; }
+        public string ApiURL { get; set; }
+        public string ApiAccount { get; set; }
+        public string ApiACPass { get; set; }
+        public string ApiUsername { get; set; }
+        public string ApiPass { get; set; }
+        public string ApiPattern { get; set; }
+        public string ApiSerial { get; set; }
     }
 }

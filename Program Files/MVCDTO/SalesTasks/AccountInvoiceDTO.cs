@@ -52,7 +52,7 @@ namespace MVCDTO.SalesTasks
         #region
         public string ApiSerialString { get; set; }
         public int? ApiSerialID { get; set; }
-        public string ResponedMessage { get; set; }
+        public string ApiMessage { get; set; }
         #endregion
 
         public override void PerformPresaveRule()

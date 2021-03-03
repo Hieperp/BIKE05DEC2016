@@ -30,7 +30,7 @@ namespace MVCClient.Controllers
             RequireJsOptions.Add("NmvnTaskID", this.baseService.NmvnTaskID, RequireJsOptionsScope.Page);
         }
 
-        public virtual bool SOAPPost(string requestUri, string soapAction, string xmlContent, out string responedMessage)
+        public virtual bool SOAPPost(string requestUri, string soapAction, string xmlContent, out string apiMessage)
         {
             var httpClient = new HttpClient();
 
@@ -46,11 +46,11 @@ namespace MVCClient.Controllers
             {
                 var receivedStream = sendResult.Content.ReadAsStreamAsync(); var receivedResult = receivedStream.Result;
                 StreamReader readStream = new StreamReader(receivedResult, Encoding.UTF8);
-                responedMessage = readStream.ReadToEnd();
+                apiMessage = readStream.ReadToEnd();
 
                 return true;
             }
-            else { responedMessage = sendResult.ReasonPhrase; return false; }
+            else { apiMessage = sendResult.ReasonPhrase; return false; }
         }
     }
 }

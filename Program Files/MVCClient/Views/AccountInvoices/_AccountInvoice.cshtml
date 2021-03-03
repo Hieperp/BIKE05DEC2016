@@ -16,7 +16,7 @@
 
         @Html.HiddenFor(model => model.ApiSerialID)
         @Html.HiddenFor(model => model.ApiSerialString)
-        @Html.HiddenFor(model => model.ResponedMessage)
+        @Html.HiddenFor(model => model.ApiMessage)
 
         @Html.HiddenFor(model => model.Approved)
 
@@ -293,7 +293,7 @@
                 }
                 @if (Model.AccountInvoiceID > 0 && Model.Approved)
                 {
-                    <button type="button" class="k-button custom-button" onclick="callPublishClearInvoice(@(string.IsNullOrEmpty(Model.ResponedMessage)? 1: 0) )"> <img src="~/Content/Images/Mains/invoiceRed.png" /> @(string.IsNullOrEmpty(Model.ResponedMessage)? "Xuất HĐ điện tử" : "Xóa HĐ điện tử [" + Model.ResponedMessage + "]" ) </button>
+                    <button type="button" class="k-button custom-button" onclick="callPublishClearInvoice(@(string.IsNullOrEmpty(Model.ApiMessage)? 1: 0) )"> <img src="~/Content/Images/Mains/invoiceRed.png" /> @(string.IsNullOrEmpty(Model.ApiMessage) ? "Xuất HĐ điện tử" : "Xóa HĐ điện tử [" + Model.ApiMessage + "]" ) </button>
                 }
             </div>
             <div class="div-button">

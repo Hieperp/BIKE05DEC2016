@@ -28,9 +28,9 @@ namespace MVCService.SalesTasks
             this.accountInvoiceRepository.ClearAccountInvoiceApi(accountInvoiceID);
         }
         
-        public void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string responedMessage)
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string apiMessage)
         {
-            this.accountInvoiceRepository.UpdateAccountInvoiceApi(accountInvoiceID, apiSerialID, apiSerialString, responedMessage);
+            this.accountInvoiceRepository.UpdateAccountInvoiceApi(accountInvoiceID, apiSerialID, apiSerialString, apiMessage);
         }
 
 

@@ -22,7 +22,7 @@ namespace MVCModel.Models
         public int SalesInvoiceDetailID { get; set; }
         public string Remarks { get; set; }
     
-        public virtual AccountInvoice AccountInvoice { get; set; }
         public virtual SalesInvoiceDetail SalesInvoiceDetail { get; set; }
+        public virtual AccountInvoice AccountInvoice { get; set; }
     }
 }
