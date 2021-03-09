@@ -1611,11 +1611,15 @@ namespace MVCModel.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClearAccountInvoiceApi", accountInvoiceIDParameter);
         }
     
-        public virtual int UpdateAccountInvoiceApi(Nullable<int> accountInvoiceID, Nullable<int> apiSerialID, string apiSerialString, string apiMessage)
+        public virtual int UpdateAccountInvoiceApi(Nullable<int> accountInvoiceID, string vATInvoiceSeries, Nullable<int> apiSerialID, string apiSerialString, string apiMessage)
         {
             var accountInvoiceIDParameter = accountInvoiceID.HasValue ?
                 new ObjectParameter("AccountInvoiceID", accountInvoiceID) :
                 new ObjectParameter("AccountInvoiceID", typeof(int));
+    
+            var vATInvoiceSeriesParameter = vATInvoiceSeries != null ?
+                new ObjectParameter("VATInvoiceSeries", vATInvoiceSeries) :
+                new ObjectParameter("VATInvoiceSeries", typeof(string));
     
             var apiSerialIDParameter = apiSerialID.HasValue ?
                 new ObjectParameter("ApiSerialID", apiSerialID) :
@@ -1629,7 +1633,7 @@ namespace MVCModel.Models
                 new ObjectParameter("ApiMessage", apiMessage) :
                 new ObjectParameter("ApiMessage", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAccountInvoiceApi", accountInvoiceIDParameter, apiSerialIDParameter, apiSerialStringParameter, apiMessageParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAccountInvoiceApi", accountInvoiceIDParameter, vATInvoiceSeriesParameter, apiSerialIDParameter, apiSerialStringParameter, apiMessageParameter);
         }
     
         public virtual ObjectResult<string> AccountInvoiceApproved(Nullable<int> entityID)

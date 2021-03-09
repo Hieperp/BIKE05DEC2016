@@ -216,13 +216,13 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
 
         private void UpdateAccountInvoiceApi()
         {
-            string queryString = " @AccountInvoiceID int, @ApiSerialID int, @ApiSerialString nvarchar(30), @ApiMessage nvarchar(100) " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            string queryString = " @AccountInvoiceID int, @VATInvoiceSeries nvarchar(30), @ApiSerialID int, @ApiSerialString nvarchar(30), @ApiMessage nvarchar(100) " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiDate = GetDate(), ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ApiMessage = @ApiMessage " + "\r\n";
+            queryString = queryString + "           SET             ApiDate = GetDate(), VATInvoiceSeries = @VATInvoiceSeries, VATInvoiceNo = @ApiSerialID, ApiSerialID = @ApiSerialID, ApiSerialString = @ApiSerialString, ApiMessage = @ApiMessage " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";
@@ -239,12 +239,12 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
         private void ClearAccountInvoiceApi()
         {
             string queryString = " @AccountInvoiceID int " + "\r\n";
-            queryString = queryString + " WITH ENCRYPTION " + "\r\n";
+            //queryString = queryString + " WITH ENCRYPTION " + "\r\n";
             queryString = queryString + " AS " + "\r\n";
 
             queryString = queryString + "       BEGIN " + "\r\n";
             queryString = queryString + "           UPDATE          AccountInvoices " + "\r\n";
-            queryString = queryString + "           SET             ApiPublishID = IIF(ApiPublishID IS NULL, 1, ApiPublishID + 1), ApiDate = GetDate(), ApiSerialID = NULL, ApiSerialString = NULL, ApiMessage = NULL " + "\r\n";
+            queryString = queryString + "           SET             VATInvoiceSeries = '#', VATInvoiceNo = '#', ApiPublishID = IIF(ApiPublishID IS NULL, 1, ApiPublishID + 1), ApiDate = GetDate(), ApiSerialID = NULL, ApiSerialString = NULL, ApiMessage = NULL " + "\r\n";
             queryString = queryString + "           WHERE           AccountInvoiceID = @AccountInvoiceID AND Approved = 1" + "\r\n";
 
             queryString = queryString + "           IF @@ROWCOUNT <> 1 " + "\r\n";

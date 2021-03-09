@@ -150,7 +150,7 @@ namespace MVCClient.Controllers.SalesTasks
                                 }
                             }
 
-                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, apiSerialID, apiSerialString, apiMessage);
+                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, invoiceSerial, apiSerialID, apiSerialString, apiMessage);
 
                             return View("PublishSucceed", accountInvoice);
                         }

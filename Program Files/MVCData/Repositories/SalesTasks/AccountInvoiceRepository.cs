@@ -22,10 +22,10 @@ namespace MVCData.Repositories.SalesTasks
             base.TotalBikePortalsEntities.ClearAccountInvoiceApi(accountInvoiceID);
         }
 
-        public void UpdateAccountInvoiceApi(int? accountInvoiceID, int? apiSerialID, string apiSerialString, string apiMessage)
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, string vATInvoiceSeries, int? apiSerialID, string apiSerialString, string apiMessage)
         {
             if (apiSerialID == 0) apiSerialID = null;
-            base.TotalBikePortalsEntities.UpdateAccountInvoiceApi(accountInvoiceID, apiSerialID, apiSerialString, apiMessage);
+            base.TotalBikePortalsEntities.UpdateAccountInvoiceApi(accountInvoiceID, vATInvoiceSeries, apiSerialID, apiSerialString, apiMessage);
         }
 
         public List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID)

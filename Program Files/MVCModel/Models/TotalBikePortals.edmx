@@ -2531,6 +2531,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         </Function>
         <Function Name="UpdateAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+          <Parameter Name="VATInvoiceSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="ApiSerialID" Type="int" Mode="In" />
           <Parameter Name="ApiSerialString" Type="nvarchar" Mode="In" />
           <Parameter Name="ApiMessage" Type="nvarchar" Mode="In" />
@@ -3836,6 +3837,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </FunctionImport>
           <FunctionImport Name="UpdateAccountInvoiceApi">
             <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+            <Parameter Name="VATInvoiceSeries" Mode="In" Type="String" />
             <Parameter Name="ApiSerialID" Mode="In" Type="Int32" />
             <Parameter Name="ApiSerialString" Mode="In" Type="String" />
             <Parameter Name="ApiMessage" Mode="In" Type="String" />

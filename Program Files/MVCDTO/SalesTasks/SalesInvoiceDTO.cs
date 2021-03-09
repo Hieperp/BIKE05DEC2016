@@ -142,6 +142,7 @@ namespace MVCDTO.SalesTasks
     {
         public VehiclesInvoiceDTO()
         {
+            this.VATInvoiceNo = "#"; this.VATInvoiceSeries = "#";
             this.VehiclesInvoiceViewDetails = new List<VehiclesInvoiceDetailDTO>();
         }
 
