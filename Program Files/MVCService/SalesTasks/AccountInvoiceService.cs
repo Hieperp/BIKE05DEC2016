@@ -23,14 +23,14 @@ namespace MVCService.SalesTasks
             return base.Save(dto, true);
         }
 
-        public void ClearAccountInvoiceApi(int? accountInvoiceID)
+        public void ClearAccountInvoiceApi(int? accountInvoiceID, string apiAccount)
         {
-            this.accountInvoiceRepository.ClearAccountInvoiceApi(accountInvoiceID);
+            this.accountInvoiceRepository.ClearAccountInvoiceApi(accountInvoiceID, apiAccount);
         }
         
-        public void UpdateAccountInvoiceApi(int? accountInvoiceID, string vATInvoiceSeries, int? apiSerialID, string apiSerialString, string apiMessage)
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, string vATInvoiceSeries, string apiAccount, int? apiSerialID, string apiSerialString, string apiMessage)
         {
-            this.accountInvoiceRepository.UpdateAccountInvoiceApi(accountInvoiceID, vATInvoiceSeries, apiSerialID, apiSerialString, apiMessage);
+            this.accountInvoiceRepository.UpdateAccountInvoiceApi(accountInvoiceID, vATInvoiceSeries, apiAccount, apiSerialID, apiSerialString, apiMessage);
         }
 
 

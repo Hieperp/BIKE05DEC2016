@@ -56,6 +56,7 @@
           <Property Name="VATInvoiceSeries" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApiAccount" Type="nvarchar" MaxLength="30" />
           <Property Name="ApiDate" Type="datetime" />
           <Property Name="ApiPublishID" Type="int" />
           <Property Name="ApiSerialID" Type="int" />
@@ -2122,6 +2123,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         </Function>
         <Function Name="ClearAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
+          <Parameter Name="ApiAccount" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="GetAccessLevel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
@@ -2532,6 +2534,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <Function Name="UpdateAccountInvoiceApi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AccountInvoiceID" Type="int" Mode="In" />
           <Parameter Name="VATInvoiceSeries" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApiAccount" Type="nvarchar" Mode="In" />
           <Parameter Name="ApiSerialID" Type="int" Mode="In" />
           <Parameter Name="ApiSerialString" Type="nvarchar" Mode="In" />
           <Parameter Name="ApiMessage" Type="nvarchar" Mode="In" />
@@ -3834,10 +3837,12 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </FunctionImport>
           <FunctionImport Name="ClearAccountInvoiceApi">
           <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+            <Parameter Name="ApiAccount" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="UpdateAccountInvoiceApi">
             <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="VATInvoiceSeries" Mode="In" Type="String" />
+            <Parameter Name="ApiAccount" Mode="In" Type="String" />
             <Parameter Name="ApiSerialID" Mode="In" Type="Int32" />
             <Parameter Name="ApiSerialString" Mode="In" Type="String" />
             <Parameter Name="ApiMessage" Mode="In" Type="String" />
@@ -6895,6 +6900,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <NavigationProperty Name="AccountInvoiceDetails" Relationship="TotalBikePortalsModel.FK_AccountInvoiceDetails_AccountInvoices" FromRole="AccountInvoice" ToRole="AccountInvoiceDetail" />
           <NavigationProperty Name="Customer" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Customers" FromRole="AccountInvoice" ToRole="Customer" />
           <NavigationProperty Name="Location" Relationship="TotalBikePortalsModel.FK_AccountInvoices_Locations" FromRole="AccountInvoice" ToRole="Location" />
+          <Property Name="ApiAccount" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_AccountInvoiceDetails_AccountInvoices">
           <End Type="TotalBikePortalsModel.AccountInvoice" Role="AccountInvoice" Multiplicity="1" />
@@ -9116,6 +9122,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <EntitySetMapping Name="AccountInvoices">
             <EntityTypeMapping TypeName="TotalBikePortalsModel.AccountInvoice">
               <MappingFragment StoreEntitySet="AccountInvoices">
+                <ScalarProperty Name="ApiAccount" ColumnName="ApiAccount" />
                 <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
                 <ScalarProperty Name="InActivePartial" ColumnName="InActivePartial" />
                 <ScalarProperty Name="InActive" ColumnName="InActive" />

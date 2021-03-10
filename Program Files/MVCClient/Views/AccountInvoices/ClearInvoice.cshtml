@@ -1,14 +1,31 @@
 ﻿@{Layout = "~/Views/Shared/_LayoutPopupWindow.cshtml";}
 
-@model int?
+@model MVCDTO.SalesTasks.PublishApi
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    @Html.Hidden("Id", @Model);
+    @Html.HiddenFor(m => m.AccountInvoiceID);
 
-    <div style="height: 130px;">
+    <div style="height: 230px;">
+        <div style="margin-left: 80px; padding-top: 10px;">
+            <div class="form-group1">
+                @Html.LabelFor(model => model.ApiAccount, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.ApiAccount).HtmlAttributes(new { @class = "input-class" })
+                    @Html.ValidationMessageFor(model => model.ApiAccount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group1">
+                @Html.LabelFor(model => model.ApiACPass, htmlAttributes: new { @class = "control-label-left" })
+                <div class="div-input">
+                    @Html.Kendo().MaskedTextBoxFor(model => model.ApiACPass).HtmlAttributes(new { @class = "input-class", @Type = "password" })
+                    @Html.ValidationMessageFor(model => model.ApiACPass, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
 
         @Html.Partial("~/Views/Helpers/Commons/_ViewHeader.cshtml")
 
@@ -41,5 +58,13 @@
 
     .validation-summary-errors {
         width: 600px;
+    }
+
+    .form-group1 {
+        padding-top: 10px;
+    }
+
+    .input-class {
+        width: 280px;
     }
 </style>

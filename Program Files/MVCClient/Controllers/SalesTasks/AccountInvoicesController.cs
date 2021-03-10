@@ -57,22 +57,23 @@ namespace MVCClient.Controllers.SalesTasks
         #region ImportAndPublishInv
         [AccessLevelAuthorize, ImportModelStateFromTempData]
         [OnResultExecutingFilterAttribute]
-        public virtual ActionResult PublishInvoice(int? id)
+        public virtual ActionResult PublishInvoice(int id)
         {
-            return View(id);
+            PublishApi publishApi = new PublishApi() { AccountInvoiceID = id };
+            return View(publishApi);
         }
 
 
         [HttpPost, ActionName("PublishInvoice")]
         [ValidateAntiForgeryToken, ExportModelStateToTempData]
-        public virtual ActionResult PublishInvoiceConfirmed(int id)
+        public virtual ActionResult PublishInvoiceConfirmed(PublishApi publishApi)
         {
             try
             {
-                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Editable);
+                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(publishApi.AccountInvoiceID, GlobalEnums.AccessLevel.Editable);
                 if (accountInvoice == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                List<AccountInvoiceSheet> accountInvoiceSheets = this.accountInvoiceService.GetAccountInvoiceSheet(accountInvoice.AccountInvoiceID);
+                List<AccountInvoiceSheet> accountInvoiceSheets = this.accountInvoiceService.GetAccountInvoiceSheet(accountInvoice.AccountInvoiceID).OrderBy(o => o.IsBonus).ThenBy(od => od.Code).ThenBy(ob => ob.Name).ToList(); //OrderBy IS VERY IMPORTANT FOR THE BELOW STATEMENTS
                 if (accountInvoiceSheets.Count > 0 && accountInvoiceSheets[0].Approved)
                 {
 
@@ -81,21 +82,34 @@ namespace MVCClient.Controllers.SalesTasks
 
                     invoices.Inv.Invoice.ArisingDate = accountInvoiceSheets[0].VATInvoiceDate.ToString("dd/MM/yyyy");
 
-                    invoices.Inv.Invoice.CusName = accountInvoiceSheets[0].CustomerName;
+                    if (string.IsNullOrEmpty(accountInvoiceSheets[0].VATCode) || accountInvoiceSheets[0].VATCode.Trim() == "") invoices.Inv.Invoice.Buyer = accountInvoiceSheets[0].CustomerName; else invoices.Inv.Invoice.CusName = accountInvoiceSheets[0].CustomerName;
+
                     invoices.Inv.Invoice.CusTaxCode = accountInvoiceSheets[0].VATCode;
                     invoices.Inv.Invoice.CusPhone = accountInvoiceSheets[0].Telephone;
                     invoices.Inv.Invoice.CusAddress = accountInvoiceSheets[0].AddressNo + " " + accountInvoiceSheets[0].EntireTerritoryEntireName;
                     invoices.Inv.Invoice.PaymentMethod = accountInvoiceSheets[0].PaymentTermName;
 
                     invoices.Inv.Invoice.Total = accountInvoiceSheets[0].TotalAmount.ToString("0");
-                    invoices.Inv.Invoice.VATRate = accountInvoiceSheets.Max(w => w.VATPercent).ToString("0");
+                    invoices.Inv.Invoice.VATRate = accountInvoiceSheets[0].IsBonus ? "-1" : accountInvoiceSheets.Max(w => w.VATPercent).ToString("0");
                     invoices.Inv.Invoice.VATAmount = accountInvoiceSheets[0].TotalVATAmount.ToString("0");
                     invoices.Inv.Invoice.Amount = accountInvoiceSheets[0].TotalGrossAmount.ToString("0");
                     invoices.Inv.Invoice.AmountInWords = accountInvoiceSheets[0].TotalGrossAmountInWords;
 
+                    bool isBonus = false; int li = 0;
+
                     foreach (AccountInvoiceSheet accountInvoiceSheet in accountInvoiceSheets)
                     {
+                        if (isBonus != accountInvoiceSheet.IsBonus)
+                        {
+                            isBonus = accountInvoiceSheet.IsBonus;
+                            Product productA = new Product() { ProdName = "(Hàng khuyến mãi không thu tiền)" };
+                            invoices.Inv.Invoice.Products.Add(productA);
+                        }
+
                         Product product = new Product();
+
+                        li++; product.Extra1 = li.ToString("0");
+
                         product.ProdName = accountInvoiceSheet.Name + (accountInvoiceSheet.ColorCodeName != null ? "\\Màu: " + accountInvoiceSheet.ColorCodeName : "") + (accountInvoiceSheet.ChassisCode != null ? "\\SK: " + accountInvoiceSheet.ChassisCode : "") + (accountInvoiceSheet.EngineCode != null ? "\\SM: " + accountInvoiceSheet.EngineCode : "");
                         product.ProdUnit = accountInvoiceSheet.SalesUnit;
                         product.ProdQuantity = accountInvoiceSheet.Quantity.ToString("0");
@@ -116,8 +130,8 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
                     #region MyRegion
-                    string apiAccount = accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
-                    string apiACPass = accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
+                    string apiAccount = publishApi.ApiAccount;// accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
+                    string apiACPass = publishApi.ApiACPass; // accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
                     string apiUserName = accountInvoiceSheets[0].ApiUsername;// "tanthanhcn1service";
                     string apiPassWord = accountInvoiceSheets[0].ApiPass;// "Einv@oi@vn#pt20";
                     string invoicePattern = accountInvoiceSheets[0].ApiPattern;// "01GTKT0/001";
@@ -150,7 +164,7 @@ namespace MVCClient.Controllers.SalesTasks
                                 }
                             }
 
-                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, invoiceSerial, apiSerialID, apiSerialString, apiMessage);
+                            this.accountInvoiceService.UpdateAccountInvoiceApi(accountInvoice.AccountInvoiceID, invoiceSerial, publishApi.ApiAccount, apiSerialID, apiSerialString, apiMessage);
 
                             return View("PublishSucceed", accountInvoice);
                         }
@@ -175,7 +189,7 @@ namespace MVCClient.Controllers.SalesTasks
             catch (Exception exception)
             {
                 ModelState.AddValidationErrors(exception);
-                return RedirectToAction("PublishInvoice", id);
+                return RedirectToAction("PublishInvoice", publishApi.AccountInvoiceID);
             }
         }
         #endregion ImportAndPublishInv
@@ -185,19 +199,20 @@ namespace MVCClient.Controllers.SalesTasks
         #region ImportAndPublishInv
         [AccessLevelAuthorize(GlobalEnums.AccessLevel.Readable), ImportModelStateFromTempData]
         [OnResultExecutingFilterAttribute]
-        public virtual ActionResult ClearInvoice(int? id)
+        public virtual ActionResult ClearInvoice(int id)
         {
-            return View(id);
+            PublishApi publishApi = new PublishApi() { AccountInvoiceID = id };
+            return View(publishApi);
         }
 
 
         [HttpPost, ActionName("ClearInvoice")]
         [ValidateAntiForgeryToken, ExportModelStateToTempData]
-        public virtual ActionResult ClearInvoiceConfirmed(int id)
+        public virtual ActionResult ClearInvoiceConfirmed(PublishApi publishApi)
         {
             try
             {
-                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(id, GlobalEnums.AccessLevel.Readable);
+                AccountInvoice accountInvoice = this.GetEntityAndCheckAccessLevel(publishApi.AccountInvoiceID, GlobalEnums.AccessLevel.Readable);
                 if (accountInvoice == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
                 AccountInvoiceViewModel accountInvoiceViewModel = this.GetViewModel(accountInvoice, true);
@@ -213,8 +228,8 @@ namespace MVCClient.Controllers.SalesTasks
                     xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
                     #region MyRegion
-                    string apiAccount = accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
-                    string apiACPass = accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
+                    string apiAccount = publishApi.ApiAccount;// accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";
+                    string apiACPass = publishApi.ApiACPass; // accountInvoiceSheets[0].ApiACPass;// "Einv@oi@vn#pt20";
                     string apiUserName = accountInvoiceSheets[0].ApiUsername;// "tanthanhcn1service";
                     string apiPassWord = accountInvoiceSheets[0].ApiPass;// "Einv@oi@vn#pt20";
                     #endregion
@@ -236,7 +251,7 @@ namespace MVCClient.Controllers.SalesTasks
                             i = apiMessage.IndexOf("</cancelInvResult>");
                             if (i != -1) apiMessage = apiMessage.Substring(0, i);
 
-                            this.accountInvoiceService.ClearAccountInvoiceApi(accountInvoice.AccountInvoiceID);
+                            this.accountInvoiceService.ClearAccountInvoiceApi(accountInvoice.AccountInvoiceID, publishApi.ApiAccount);
 
                             return View("PublishSucceed", accountInvoice);
                         }
@@ -261,7 +276,7 @@ namespace MVCClient.Controllers.SalesTasks
             catch (Exception exception)
             {
                 ModelState.AddValidationErrors(exception);
-                return RedirectToAction("ClearInvoice", id);
+                return RedirectToAction("ClearInvoice", publishApi.AccountInvoiceID);
             }
         }
         #endregion ImportAndPublishInv

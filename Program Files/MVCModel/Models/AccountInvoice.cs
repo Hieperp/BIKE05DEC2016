@@ -50,6 +50,7 @@ namespace MVCModel.Models
         public bool InActive { get; set; }
         public bool InActivePartial { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
+        public string ApiAccount { get; set; }
     
         public virtual ICollection<AccountInvoiceDetail> AccountInvoiceDetails { get; set; }
         public virtual Customer Customer { get; set; }

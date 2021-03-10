@@ -82,6 +82,19 @@ namespace MVCDTO.SalesTasks
 
     #region HELPER
 
+    public class PublishApi
+    {
+        public int AccountInvoiceID { get; set; }
+
+        [Display(Name = "Account")]
+        [Required(ErrorMessage = "Vui lòng nhập Account")]
+        public string ApiAccount { get; set; }
+
+        [Display(Name = "ACPass")]
+        [Required(ErrorMessage = "Vui lòng nhập ACPass")]
+        public string ApiACPass { get; set; }
+    }
+
     //https://json2csharp.com/xml-to-csharp
 
 
@@ -125,6 +138,7 @@ namespace MVCDTO.SalesTasks
 
         public string CusCode { get; set; } = "@#@";
         public string CusName { get; set; } = "@#@";
+        public string Buyer { get; set; } = "@#@";
         public string CusAddress { get; set; } = "@#@";
         public string CusPhone { get; set; } = "@#@";
         public string CusTaxCode { get; set; } = "@#@";

@@ -17,15 +17,15 @@ namespace MVCData.Repositories.SalesTasks
         public AccountInvoiceRepository(TotalBikePortalsEntities totalBikePortalsEntities)
             : base(totalBikePortalsEntities, "AccountInvoiceEditable", "AccountInvoiceApproved") { }
 
-        public void ClearAccountInvoiceApi(int? accountInvoiceID)
+        public void ClearAccountInvoiceApi(int? accountInvoiceID, string apiAccount)
         {
-            base.TotalBikePortalsEntities.ClearAccountInvoiceApi(accountInvoiceID);
+            base.TotalBikePortalsEntities.ClearAccountInvoiceApi(accountInvoiceID, apiAccount);
         }
 
-        public void UpdateAccountInvoiceApi(int? accountInvoiceID, string vATInvoiceSeries, int? apiSerialID, string apiSerialString, string apiMessage)
+        public void UpdateAccountInvoiceApi(int? accountInvoiceID, string vATInvoiceSeries, string apiAccount, int? apiSerialID, string apiSerialString, string apiMessage)
         {
             if (apiSerialID == 0) apiSerialID = null;
-            base.TotalBikePortalsEntities.UpdateAccountInvoiceApi(accountInvoiceID, vATInvoiceSeries, apiSerialID, apiSerialString, apiMessage);
+            base.TotalBikePortalsEntities.UpdateAccountInvoiceApi(accountInvoiceID, vATInvoiceSeries, apiAccount, apiSerialID, apiSerialString, apiMessage);
         }
 
         public List<AccountInvoiceSheet> GetAccountInvoiceSheet(int? accountInvoiceID)
