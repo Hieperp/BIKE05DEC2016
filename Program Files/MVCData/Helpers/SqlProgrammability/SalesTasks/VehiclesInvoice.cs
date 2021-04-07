@@ -67,7 +67,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             
             queryString = queryString + "       DECLARE @HasSavedData int SET @HasSavedData = 0" + "\r\n";
             queryString = queryString + "       DECLARE @SavedData TABLE (GoodsReceiptDetailID int NOT NULL, QuantityAvailable decimal(18, 2) NOT NULL)" + "\r\n";
-            queryString = queryString + "       DECLARE @Commodities TABLE (CommodityID int NOT NULL, Code nvarchar(50) NOT NULL, Name nvarchar(200) NOT NULL, GrossPrice decimal(18, 2) NOT NULL, CommodityTypeID int NOT NULL, CommodityCategoryID int NOT NULL)" + "\r\n";
+            queryString = queryString + "       DECLARE @Commodities TABLE (CommodityID int NOT NULL, Code nvarchar(50) NOT NULL, Name nvarchar(250) NOT NULL, GrossPrice decimal(18, 2) NOT NULL, CommodityTypeID int NOT NULL, CommodityCategoryID int NOT NULL)" + "\r\n";
 
             queryString = queryString + "       INSERT INTO @Commodities SELECT CommodityID, Code, Name, GrossPrice, CommodityTypeID, CommodityCategoryID FROM Commodities WHERE CommodityTypeID IN (" + (int)GlobalEnums.CommodityTypeID.Vehicles + ") AND (Code LIKE '%' + @SearchText + '%' OR Name LIKE '%' + @SearchText + '%') " + "\r\n";
 

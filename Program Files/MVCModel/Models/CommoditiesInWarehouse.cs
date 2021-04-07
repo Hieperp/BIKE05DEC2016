@@ -16,11 +16,11 @@ namespace MVCModel.Models
         public int CommodityID { get; set; }
         public string CommodityCode { get; set; }
         public string CommodityName { get; set; }
-        public int WarehouseID { get; set; }
+        public Nullable<int> WarehouseID { get; set; }
         public string WarehouseCode { get; set; }
-        public Nullable<decimal> QuantityAvailable { get; set; }
+        public decimal QuantityAvailable { get; set; }
         public decimal VATPercent { get; set; }
         public int CommodityTypeID { get; set; }
-        public decimal GrossPrice { get; set; }
+        public Nullable<decimal> GrossPrice { get; set; }
     }
 }

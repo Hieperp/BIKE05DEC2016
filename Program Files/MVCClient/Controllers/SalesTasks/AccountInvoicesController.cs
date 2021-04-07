@@ -102,7 +102,7 @@ namespace MVCClient.Controllers.SalesTasks
                         if (isBonus != accountInvoiceSheet.IsBonus)
                         {
                             isBonus = accountInvoiceSheet.IsBonus;
-                            Product productA = new Product() { ProdName = "(Hàng khuyến mãi không thu tiền)" };
+                            Product productA = new Product() { ProdName = "Hàng khuyến mãi không thu tiền:" };
                             invoices.Inv.Invoice.Products.Add(productA);
                         }
 
@@ -127,7 +127,7 @@ namespace MVCClient.Controllers.SalesTasks
                         serializer.Serialize(stringwriter, invoices);
                         xmlContent = stringwriter.ToString();
                     }
-                    xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("\"", "'"); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
+                    xmlContent = xmlContent.Replace(">@#@<", "><"); xmlContent = xmlContent.Replace("\r", ""); xmlContent = xmlContent.Replace("\n", ""); xmlContent = xmlContent.Replace("<?xml version='1.0' encoding='utf-16'?>", "");
 
                     #region MyRegion
                     string apiAccount = publishApi.ApiAccount;// accountInvoiceSheets[0].ApiAccount;// "tanthanh-cn1admin";

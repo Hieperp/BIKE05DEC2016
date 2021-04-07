@@ -97,9 +97,9 @@
           <Property Name="CommodityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="OfficialCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="OfficialName" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="OriginalName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="OfficialName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="OriginalName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="PreviousCommodityID" Type="int" />
           <Property Name="CommodityCategoryID" Type="int" Nullable="false" />
           <Property Name="CommodityTypeID" Type="int" Nullable="false" />
@@ -3836,7 +3836,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="ClearAccountInvoiceApi">
-          <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
+            <Parameter Name="AccountInvoiceID" Mode="In" Type="Int32" />
             <Parameter Name="ApiAccount" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="UpdateAccountInvoiceApi">
@@ -3904,7 +3904,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
@@ -3937,7 +3937,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="false" />
           <Property Type="Int32" Name="GoodsReceiptID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="Origin" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Packing" Nullable="true" MaxLength="100" />
           <Property Type="Decimal" Name="QuantityRemains" Nullable="true" Precision="19" Scale="2" />
@@ -3990,7 +3990,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Decimal" Name="GrossAmount" Nullable="false" Precision="18" Scale="2" />
           <Property Type="String" Name="Remarks" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="Decimal" Name="QuantityAvailable" Nullable="true" Precision="20" Scale="2" />
           <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
@@ -4006,7 +4006,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="true" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="true" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
@@ -4023,7 +4023,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="SalesInvoiceID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="Decimal" Name="QuantityAvailable" Nullable="true" Precision="38" Scale="2" />
@@ -4049,7 +4049,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
@@ -4065,13 +4065,13 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <ComplexType Name="CommoditiesInWarehouse">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
-          <Property Type="Int32" Name="WarehouseID" Nullable="false" />
-          <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
-          <Property Type="Decimal" Name="QuantityAvailable" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="WarehouseID" Nullable="true" />
+          <Property Type="String" Name="WarehouseCode" Nullable="true" MaxLength="10" />
+          <Property Type="Decimal" Name="QuantityAvailable" Nullable="false" Precision="38" Scale="2" />
           <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
-          <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossPrice" Nullable="true" Precision="38" Scale="6" />
         </ComplexType>
         <ComplexType Name="WarehouseJournal">
           <Property Type="Int32" Name="NMVNTaskID" Nullable="false" />
@@ -4118,7 +4118,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="StockTransferID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="Decimal" Name="QuantityAvailable" Nullable="true" Precision="38" Scale="2" />
@@ -4134,7 +4134,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="true" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
@@ -4175,7 +4175,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="QuotationID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Decimal" Name="QuantityAvailable" Nullable="false" Precision="38" Scale="2" />
           <Property Type="Decimal" Name="Quantity" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="2" />
@@ -4198,7 +4198,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="TransferOrderDetailID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="Decimal" Name="QuantityOrderPending" Nullable="true" Precision="19" Scale="2" />
@@ -4213,7 +4213,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="true" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
@@ -5015,9 +5015,9 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           </Key>
           <Property Name="CommodityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="OfficialName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="OriginalName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OfficialName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="OriginalName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="PreviousCommodityID" Type="Int32" />
           <Property Name="CommodityCategoryID" Type="Int32" Nullable="false" />
           <Property Name="CommodityTypeID" Type="Int32" Nullable="false" />
@@ -5478,7 +5478,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <ComplexType Name="CommoditiesAvailable">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
@@ -5489,7 +5489,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <ComplexType Name="PartAvailable">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
@@ -5502,7 +5502,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="TransferOrderID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
@@ -5513,7 +5513,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
         <ComplexType Name="VehicleAvailable">
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Decimal" Name="GrossPrice" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="VATPercent" Nullable="false" Precision="18" Scale="2" />
@@ -5526,7 +5526,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="TransferOrderID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
@@ -5541,7 +5541,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="VATInvoiceNo" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="CustomerDescription" Nullable="false" MaxLength="305" />
-          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="250" />
           <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Boolean" Name="IsFinished" Nullable="false" />
           <Property Type="Int32" Name="AccountInvoiceID" Nullable="true" />
@@ -5552,7 +5552,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="CustomerDescription" Nullable="false" MaxLength="305" />
-          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="250" />
           <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="60" />
           <Property Type="DateTime" Name="ServiceDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="ServiceReference" Nullable="true" MaxLength="10" />
@@ -5566,7 +5566,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="Reference" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="CustomerDescription" Nullable="false" MaxLength="305" />
-          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="250" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="60" />
@@ -5578,7 +5578,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="DateTime" Name="EntryDate" Nullable="true" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="CustomerDescription" Nullable="false" MaxLength="305" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="60" />
@@ -5940,7 +5940,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="SalesInvoiceDetailID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="ColorCode" Nullable="true" MaxLength="60" />
@@ -6064,7 +6064,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="SalesInvoiceDetailID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
@@ -6242,7 +6242,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="InventoryAdjustmentID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
@@ -6263,7 +6263,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="String" Name="MemoNo" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="LocationCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="SupplierDescription" Nullable="false" MaxLength="305" />
-          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="true" MaxLength="250" />
           <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="18" Scale="2" />
         </ComplexType>
         <ComplexType Name="VehicleAdjustmentViewDetail">
@@ -6272,7 +6272,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="GoodsReceiptDetailID" Nullable="true" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="Int32" Name="WarehouseID" Nullable="false" />
           <Property Type="String" Name="WarehouseCode" Nullable="false" MaxLength="10" />
@@ -6581,7 +6581,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="StockTransferDetailID" Nullable="true" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
           <Property Type="String" Name="EngineCode" Nullable="true" MaxLength="60" />
@@ -6605,7 +6605,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Int32" Name="StockTransferDetailID" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
@@ -6683,7 +6683,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="DateTime" Name="EntryDate" Nullable="false" Precision="23" />
           <Property Type="Int32" Name="CommodityID" Nullable="false" />
           <Property Type="String" Name="CommodityCode" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="CommodityName" Nullable="false" MaxLength="250" />
           <Property Type="Int32" Name="CommodityTypeID" Nullable="false" />
           <Property Type="String" Name="WarehouseName" Nullable="false" MaxLength="60" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />
@@ -6827,7 +6827,7 @@ warning 6035: The relationship 'FK_WarehouseInvoices_AspNetUsers2' has columns t
           <Property Type="Boolean" Name="IsBonus" Nullable="false" />
           <Property Type="Int32" Name="CommodityID" Nullable="true" />
           <Property Type="String" Name="Code" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="303" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="353" />
           <Property Type="String" Name="SalesUnit" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="LineDescription" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ChassisCode" Nullable="true" MaxLength="60" />

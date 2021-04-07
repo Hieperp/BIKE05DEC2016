@@ -181,7 +181,7 @@ namespace MVCClient.Api.CommonTasks
                 var result = commodityRepository.GetCommoditiesInWarehouses(locationID, entryDate, searchText, wholeMatch, includeCommoditiesOutOfStock, salesInvoiceID, stockTransferID, inventoryAdjustmentID).Select(s => new { s.CommodityID, s.CommodityCode, s.CommodityName, s.CommodityTypeID, s.WarehouseID, s.WarehouseCode, s.QuantityAvailable, s.GrossPrice, s.VATPercent });
 
                 if (result.Count() > 0)
-                    commodityResult = new { CommodityID = result.First().CommodityID, CommodityCode = result.First().CommodityCode, CommodityName = result.First().CommodityName, CommodityTypeID = result.First().CommodityTypeID, WarehouseID = result.First().WarehouseID, WarehouseCode = result.First().WarehouseCode, QuantityAvailable = (decimal)result.First().QuantityAvailable, GrossPrice = (decimal)result.First().GrossPrice, VATPercent = (decimal)result.First().VATPercent };
+                    commodityResult = new { CommodityID = result.First().CommodityID, CommodityCode = result.First().CommodityCode, CommodityName = result.First().CommodityName, CommodityTypeID = result.First().CommodityTypeID, WarehouseID = (result.First().WarehouseID == null? 0 : (int)result.First().WarehouseID), WarehouseCode = result.First().WarehouseCode, QuantityAvailable = (decimal)result.First().QuantityAvailable, GrossPrice = (decimal)result.First().GrossPrice, VATPercent = (decimal)result.First().VATPercent };
 
                 return Json(commodityResult, JsonRequestBehavior.AllowGet);
             }

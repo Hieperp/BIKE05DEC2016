@@ -59,7 +59,7 @@ namespace MVCData.Helpers.SqlProgrammability.SalesTasks
             queryString = queryString + "       DECLARE @HasFoundCommoditiesByName int SET @HasFoundCommoditiesByName = 0" + "\r\n";
             queryString = queryString + "       DECLARE @HasSavedData int SET @HasSavedData = 0" + "\r\n";
             queryString = queryString + "       DECLARE @SavedData TABLE (SalesInvoiceDetailID int NOT NULL)" + "\r\n";
-            queryString = queryString + "       DECLARE @Commodities TABLE (CommodityID int NOT NULL, Code nvarchar(50) NOT NULL, Name nvarchar(200) NOT NULL, CommodityCategoryID int NOT NULL)" + "\r\n";
+            queryString = queryString + "       DECLARE @Commodities TABLE (CommodityID int NOT NULL, Code nvarchar(50) NOT NULL, Name nvarchar(250) NOT NULL, CommodityCategoryID int NOT NULL)" + "\r\n";
 
             queryString = queryString + "       IF (@SearchText <> '') " + "\r\n";
             queryString = queryString + "           BEGIN " + "\r\n";
