@@ -84,7 +84,7 @@ namespace MVCClient.Controllers.SalesTasks
 
                     if (string.IsNullOrEmpty(accountInvoiceSheets[0].VATCode) || accountInvoiceSheets[0].VATCode.Trim() == "") invoices.Inv.Invoice.Buyer = accountInvoiceSheets[0].CustomerName; else invoices.Inv.Invoice.CusName = accountInvoiceSheets[0].CustomerName;
 
-                    invoices.Inv.Invoice.CusTaxCode = accountInvoiceSheets[0].VATCode;
+                    invoices.Inv.Invoice.CusTaxCode = (!string.IsNullOrEmpty(accountInvoiceSheets[0].VATCode) && accountInvoiceSheets[0].VATCode.Trim() == "-")? "" : accountInvoiceSheets[0].VATCode;
                     invoices.Inv.Invoice.CusPhone = accountInvoiceSheets[0].Telephone;
                     invoices.Inv.Invoice.CusAddress = accountInvoiceSheets[0].AddressNo + " " + accountInvoiceSheets[0].EntireTerritoryEntireName;
                     invoices.Inv.Invoice.PaymentMethod = accountInvoiceSheets[0].PaymentTermName;
